@@ -1,0 +1,208 @@
+body {
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    position: relative;
+    list-style-type: none;
+}
+
+div {
+    display: inline-block;
+}
+
+/* BANK */
+
+ul.bank-ul {
+    position: absolute;
+    top: 73px;
+    left: 28px;
+    width: 452px;
+    height: 196px;
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+    overflow-y: scroll;
+}
+
+.bank-ul span {
+    color: yellow;
+    position: absolute;
+    top: -5px;
+    font-size: 12px;
+    left: 0;
+    text-shadow: 1px 0px black;
+}
+
+.bank-ul li {
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 6px;
+    width: 11%;
+}
+
+.bank-spaces {
+    color: yellow;
+    position: absolute;
+    top: 2px;
+    left: 10px;
+}
+
+/* EQUIPMENT */
+
+.equipment {
+    position: absolute;
+}
+
+.HEAD {
+    top: 13px;
+    left: 87px;
+}
+
+.AMMO {
+    top: 58px;
+    left: 123px;
+}
+
+.CAPE {
+    top: 53px;
+    left: 44px;
+}
+
+.AMULET {
+    top: 53px;
+    left: 87px;
+}
+
+.WEAPON {
+    top: 92px;
+    left: 31px;
+}
+
+.BODY {
+    top: 92px;
+    left: 87px;
+}
+
+.SHIELD {
+    top: 92px;
+    left: 143px;
+}
+
+.LEGS {
+    top: 133px;
+    left: 87px;
+}
+
+.GLOVES {
+    top: 172px;
+    left: 30px;
+}
+
+.RING {
+    top: 172px;
+    left: 142px;
+}
+
+.BOOTS {
+    top: 172px;
+    left: 86px;
+}
+
+.equipment span {
+    color: yellow;
+    position: absolute;
+    top: -10px;
+    left: 2px;
+    font-size: 12px;
+    text-shadow: 1px 0px black;
+}
+
+/* INVENTORY */
+
+ul.inventory-ul {
+    position: absolute;
+    top: 13px;
+    left: 24px;
+    width: 185px;
+    height: 275px;
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+
+.inventory-ul span {
+    color: yellow;
+    position: absolute;
+    top: -5px;
+    font-size: 12px;
+    left: 0;
+    text-shadow: 1px 0px black;
+}
+
+.inventory-ul li {
+    display: inline-block;
+    list-style-type: none;
+    margin-top: 6px;
+    width: 20%;
+}
+
+/* QUESTS */
+
+
+.quest-ul {
+    position: absolute;
+    top: 38px;
+    left: 19px;
+    overflow-y: scroll;
+    width: 176px;
+    height: 212px;
+    font-size: 14px;
+    padding: 0px;
+    margin: 0px;
+    list-style-type: none;
+}
+
+.quest-points {
+    color: yellow;
+    position: absolute;
+    top: 5px;
+    left: 108px;
+}
+
+.NOT_STARTED {
+    color: #ff0000;
+}
+
+.IN_PROGRESS {
+    color: #ffff00;
+}
+
+.FINISHED {
+    color: #00ff00;
+}
+
+/* STATS */
+
+.stat-table {
+    position: absolute;
+    width: 188px;
+    height: 258px;
+    color: yellow;
+    top: 5px;
+}
+
+.stat-td {
+    height: 30px;
+    width: 50px;
+    text-align: right;
+    padding-top: 5px;
+}
+
+.stat-total {
+    position: relative;
+    text-align: center;
+    top: 5px;
+    left: 8px;
+}

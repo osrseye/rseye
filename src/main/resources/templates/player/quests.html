@@ -1,0 +1,9 @@
+<div style="position: relative">
+    <img width="204px" height="275px" src="/img/quest_tab.webp">
+    <span class="quest-points" th:text="${playerQuests.questPoints}"></span>
+    <ul class="quest-ul">
+        <li th:class="${quest.state}" th:each="quest : ${playerQuests.quests}">
+            <span th:text="${quest.name}"></span>
+        </li>
+    </ul>
+</div>

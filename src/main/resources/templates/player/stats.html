@@ -1,0 +1,45 @@
+<div style="position: relative">
+    <img width="204px" height="275px" src="/img/skills_tab.webp">
+    <table th:if="${!playerStats.stats.isEmpty}" class="stat-table">
+        <tr>
+            <td class="stat-td" th:text="${playerStats.stats.Attack}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Hitpoints}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Mining}"></td>
+        </tr>
+        <tr>
+            <td class="stat-td" th:text="${playerStats.stats.Strength}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Agility}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Smithing}"></td>
+        </tr>
+        <tr>
+            <td class="stat-td" th:text="${playerStats.stats.Defence}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Herblore}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Fishing}"></td>
+        </tr>
+        <tr>
+            <td class="stat-td" th:text="${playerStats.stats.Ranged}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Thieving}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Cooking}"></td>
+        </tr>
+        <tr>
+            <td class="stat-td" th:text="${playerStats.stats.Prayer}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Crafting}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Firemaking}"></td>
+        </tr>
+        <tr>
+            <td class="stat-td" th:text="${playerStats.stats.Magic}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Fletching}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Woodcutting}"></td>
+        </tr>
+        <tr>
+            <td class="stat-td" th:text="${playerStats.stats.Runecraft}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Slayer}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Farming}"></td>
+        </tr>
+        <tr>
+            <td class="stat-td" th:text="${playerStats.stats.Construction}"></td>
+            <td class="stat-td" th:text="${playerStats.stats.Hunter}"></td>
+            <td class="stat-td stat-total" th:text="${playerStats.totalLevel}"></td>
+        </tr>
+    </table>
+</div>

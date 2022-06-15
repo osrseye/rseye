@@ -1,0 +1,9 @@
+<div style="position: relative">
+    <img width="204px" height="275px" src="/img/inventory_tab.webp">
+    <ul class="inventory-ul">
+        <li th:each="item: ${playerInventory.slots}">
+            <img th:if="${item.keySet.iterator.next > 0}" th:src="@{${playerInventory.icons.get(item.keySet.iterator.next)}}" width="32"/>
+            <span th:if="${item.values.iterator.next > 1}" th:text="${item.values.iterator.next}"></span>
+        </li>
+    </ul>
+</div>

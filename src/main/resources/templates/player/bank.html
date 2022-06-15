@@ -1,0 +1,10 @@
+<div style="position: relative">
+    <img width="488px" height="311px" src="/img/bank_interface.webp">
+    <span class="bank-spaces" th:text="${playerBank.slots.size}"></span>
+    <ul class="bank-ul">
+        <li th:each="item: ${playerBank.slots}">
+            <img th:if="${item.keySet.iterator.next > 0}" th:src="@{${playerBank.icons.get(item.keySet.iterator.next)}}" width="32"/>
+            <span th:if="${item.values.iterator.next > 1}" th:text="${item.values.iterator.next}"></span>
+        </li>
+    </ul>
+</div>
