@@ -24,7 +24,7 @@ public class AssetManager {
             obj.keySet().forEach(key -> itemIcons.put(key, "data:image/png;base64, " + obj.get(key).getAsString()));
             log.info("Successfully parsed " + itemIcons.keySet().size() + " item icons");
         } catch(IOException e) {
-            e.printStackTrace();
+            log.error("There was an issue loading assets: {}", e.getMessage(), e);
         }
     }
 }
