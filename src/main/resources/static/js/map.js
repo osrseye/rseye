@@ -56,6 +56,7 @@ $(document).ready(function() {
     });
 
     canvasController.addEventListener('wheel', (e) => {
+        e.preventDefault();
         if(e.deltaY !== 0) {
             var delta = (e.deltaY < 0) ? 0.1 : -0.1;
             var temp = zoom + delta;
