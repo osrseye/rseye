@@ -13,7 +13,7 @@ $(document).ready(function() {
     var ctx = canvas.getContext('2d', {antialias: false});
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'center';
-        ctx.font = '12px sans-serif';
+        ctx.font = '16px sans-serif';
     var canvasController = document.getElementById('canvas-controller');
     var canvasMouse = Array.from({length: 3}, i => i = false);
     $('#canvas-container').css({'width': '' + canvas.width * canvasZoom + 'px','height':'' + canvas.height * canvasZoom + 'px','transform': 'translate(' + deltaX + 'px,' + deltaY + 'px) scale(' + zoom + ')'});
@@ -66,7 +66,7 @@ $(document).ready(function() {
     });
 
     function connect() {
-        ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
+        ws = new WebSocket('ws://' + location.host + ':' + location.port + '/map/events');
 
         ws.onopen = function(event) {
             ping = setInterval(function(){ send("ping"); }, 30000); // ping the server every 30 seconds to keep the connection alive
