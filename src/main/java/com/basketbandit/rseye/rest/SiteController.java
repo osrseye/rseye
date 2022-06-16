@@ -1,6 +1,7 @@
 package com.basketbandit.rseye.rest;
 
 import com.basketbandit.rseye.Application;
+import com.basketbandit.rseye.entity.Combat;
 import com.basketbandit.rseye.entity.Player;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,5 +66,17 @@ public class SiteController {
         ModelAndView mv = new ModelAndView("./player/quests");
         mv.addObject("playerQuests", player.quests);
         return mv;
+    }
+
+    @GetMapping("/combat/latest")
+    public ModelAndView getFeedLatest() {
+        int feedSize = Application.combatFeed.size();
+        if(feedSize > 0) {
+            Combat combat = Application.combatFeed.get(feedSize - 1);
+            ModelAndView mv = new ModelAndView("./combat/index");
+            mv.addObject("combat", combat);
+            return mv;
+        }
+        return new ModelAndView("./combat/empty");
     }
 }
