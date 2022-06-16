@@ -1,1 +1,20 @@
-hi :)
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <fragment th:replace="head"></fragment>
+    <link rel="stylesheet" type="text/css" href="/css/player.css" />
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <script src="/js/map.js"></script>
+</head>
+<body>
+<div class="canvas-main">
+    <div id="canvas-controller">
+        <div id="canvas-container" class="canvas-container text-center d-flex">
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="player-data"></div>
+</body>
+</html>
