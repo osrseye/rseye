@@ -1,6 +1,7 @@
 package com.basketbandit.rseye;
 
 import com.basketbandit.rseye.entity.Item;
+import com.basketbandit.rseye.entity.Monster;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ public class AssetManager {
     public Logger log = LoggerFactory.getLogger(AssetManager.class);
     public static ArrayList<String> tokens = new ArrayList<>();
     public static HashMap<String, Item> items = new HashMap<>();
+    public static HashMap<String, Monster> monsters = new HashMap<>();
 
     public AssetManager() {
         try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/items-cache-data.json"), StandardCharsets.UTF_8))) {
@@ -37,6 +39,15 @@ public class AssetManager {
                 items.put(key, item);
             });
             log.info("Successfully parsed " + items.keySet().size() + " item icons");
+        } catch(Exception e) {
+            log.error("There was an issue loading assets: {}", e.getMessage(), e);
+        }
+
+        try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/monsters-cache-data.json"), StandardCharsets.UTF_8))) {
+            Gson gson = new Gson();
+            JsonObject obj = gson.fromJson(r, JsonObject.class);
+            obj.keySet().forEach(key -> monsters.put(key, new Monster(key, obj.get(key).getAsJsonObject().get("name").getAsString())));
+            log.info("Successfully parsed " + monsters.keySet().size() + " monsters");
         } catch(Exception e) {
             log.error("There was an issue loading assets: {}", e.getMessage(), e);
         }
