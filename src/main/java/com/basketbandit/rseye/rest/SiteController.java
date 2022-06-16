@@ -66,9 +66,4 @@ public class SiteController {
         mv.addObject("playerQuests", player.quests);
         return mv;
     }
-
-    @GetMapping("/map")
-    public ModelAndView map() {
-        return  new ModelAndView("map");
-    }
 }
