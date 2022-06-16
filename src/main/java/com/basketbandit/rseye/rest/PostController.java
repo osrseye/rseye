@@ -65,7 +65,6 @@ public class PostController {
                 bank.add(item);
             });
             player.bank = new PlayerBank(value, bank);
-            System.out.println(body);
         }
     }
 

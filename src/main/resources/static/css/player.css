@@ -48,6 +48,17 @@ canvas {
     color: #ffffff;
 }
 
+.tooltip > .tooltip-inner {
+    background-color: #3B3226;
+    border: solid;
+    border-color: #575040;
+    color: #E7843D;
+}
+
+.tooltip-arrow {
+    display: none !important;
+}
+
 /* BANK */
 
 ul.bank-ul {
