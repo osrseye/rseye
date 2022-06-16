@@ -60,7 +60,7 @@ public class PostController {
             ArrayList<Item> bank = new ArrayList<>();
             inventoryArray.forEach(i -> {
                 JsonObject o = i.getAsJsonObject();
-                Item item = AssetManager.items.get(o.get("id").getAsString());
+                Item item = new Item(AssetManager.items.get(o.get("id").getAsString()));
                 item.quantity = o.get("quantity").getAsInt();
                 bank.add(item);
             });
@@ -82,7 +82,7 @@ public class PostController {
             HashMap<String, Item> equipped = new HashMap<>();
             equippedItemKeySet.forEach(slot -> {
                 JsonObject equipmentItem = equippedItemObject.get(slot).getAsJsonObject();
-                Item item = AssetManager.items.get(equipmentItem.get("id").getAsString());
+                Item item = new Item(AssetManager.items.get(equipmentItem.get("id").getAsString()));
                 item.quantity = equipmentItem.get("quantity").getAsInt();
                 equipped.put(slot, item);
             });
@@ -103,7 +103,7 @@ public class PostController {
             ArrayList<Item> inventory = new ArrayList<>();
             inventoryArray.forEach(slot -> {
                 JsonObject o = slot.getAsJsonObject();
-                Item item = AssetManager.items.get(o.get("id").getAsString());
+                Item item = new Item(AssetManager.items.get(o.get("id").getAsString()));
                 item.quantity = o.get("quantity").getAsInt();
                 inventory.add(item);
             });

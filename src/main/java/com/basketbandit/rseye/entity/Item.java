@@ -11,4 +11,15 @@ public class Item {
         this.name = name;
         this.icon = icon;
     }
+
+    /**
+     * Item constructor that allows cloning of an item.
+     * @param item {@link Item}
+     */
+    public Item(Item item) {
+        this.id = item.id;
+        this.name = item.name;
+        this.icon = item.icon;
+        this.quantity = item.quantity;
+    }
 }
