@@ -1,8 +1,8 @@
 <div th:id="${playerInfo.username}" class="player">
     <div class="player-header" th:text="${playerInfo.username + '(level-' + playerInfo.combatLevel + ')'}"></div>
-    <fragment th:replace="/player/equipment"></fragment>
-    <fragment th:replace="/player/inventory"></fragment>
-    <fragment th:replace="/player/stats"></fragment>
-    <fragment th:replace="/player/quests"></fragment>
-    <fragment th:replace="/player/bank"></fragment>
+    <fragment th:replace="./player/equipment"></fragment>
+    <fragment th:replace="./player/inventory"></fragment>
+    <fragment th:replace="./player/stats"></fragment>
+    <fragment th:replace="./player/quests"></fragment>
+    <fragment th:replace="./player/bank"></fragment>
 </div>
