@@ -59,6 +59,31 @@ canvas {
     display: none !important;
 }
 
+/* COMBAT FEED */
+
+.combat-feed {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0,0,0,0.5);
+    padding: 20px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    color: yellow;
+}
+
+.combat-player {
+    color: #ffff00;
+}
+
+.combat-monster {
+    color: #ffffff;
+}
+
+.combat-loot {
+    color: #ffffff;
+}
+
 /* BANK */
 
 ul.bank-ul {

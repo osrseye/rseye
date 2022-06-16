@@ -72,7 +72,7 @@ $(document).ready(function() {
         ws.onopen = function(event) {
             ping = setInterval(function(){ send("ping"); }, 30000); // ping the server every 30 seconds to keep the connection alive
             $(".player-data").empty(); // newZoom solution to disconnects (might flicker !BAD!)
-            send("fetch");
+            send("fetchLatestData");
         };
 
         ws.onerror = function(event) {
@@ -87,8 +87,8 @@ $(document).ready(function() {
         ws.onmessage = function(event) {
             const data = event.data;
 
-            if(data.startsWith("fetch:")) {
-                const json = data.substring("fetch:".length, data.length);
+            if(data.startsWith("fetchLatestData:")) {
+                const json = data.substring("fetchLatestData:".length, data.length);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(map, 0, 0);
                 $.each(JSON.parse(json), function(username, player) {
@@ -97,7 +97,6 @@ $(document).ready(function() {
                     ctx.drawImage(playerPointer, x, y);
                     ctx.fillStyle = "#ffffff";
                     ctx.fillText(player.username + "(level-" + player.combatLevel + ")", x + 16, y + 60);
-
                     $.get("/player/"+player.username, function(data) {
                         $(".player-data").append(data);
                     });
@@ -105,8 +104,8 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("updateLocation:")) {
-                const json = data.substring("updateLocation:".length, data.length);
+            if(data.startsWith("broadcastPlayerLocations:")) {
+                const json = data.substring("broadcastPlayerLocations:".length, data.length);
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(map, 0, 0);
                 $.each(JSON.parse(json), function(username, player) {
@@ -119,17 +118,22 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("newPlayer:")) {
-                const json = data.substring("newPlayer:".length, data.length);
+            if(data.startsWith("new_player:")) {
+                const json = data.substring("new_player:".length, data.length);
                 const player = JSON.parse(json);
-                var x = (Number(player.position.x)-baseX)*3;
-                var y = canvas.height - ((Number(player.position.y)-baseY)*3);
-                ctx.drawImage(playerPointer, x, y);
-                ctx.fillStyle = "#ffffff";
-                ctx.fillText(player.username + "(level-" + player.combatLevel + ")", x + 16, y + 60);
                 $.get("/player/"+player.username, function(data) {
                     $(".player-data").append(data);
                 });
+                return;
+            }
+
+            if(data.startsWith("npc_kill")) {
+                $.get("/combat/latest", function(data) {
+                    $(".combat-feed").prepend(data);
+                });
+                if($('.combat').length > 9) {
+                    $('.combat-feed').find(".combat:last").remove();
+                }
                 return;
             }
 
