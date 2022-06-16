@@ -22,19 +22,7 @@ public class MapSocketHandler extends TextWebSocketHandler {
     private static final ArrayList<WebSocketSession> clients = new ArrayList<>();
     private static final Gson gson = new Gson();
 
-    public static void broadcastNewPlayer(PlayerInfo player) {
-        synchronized(clients) {
-            clients.forEach(client -> {
-                try {
-                    client.sendMessage(new TextMessage("newPlayer:" + gson.toJson(player)));
-                } catch(IOException e) {
-                    log.warn("There was a problem contacting client, reason: {}", e.getMessage(), e);
-                }
-            });
-        }
-    }
-
-    public static void updateBroadcast(String updateType, PlayerInfo player) {
+    public static void broadcastUpdate(String updateType, PlayerInfo player) {
         synchronized(clients) {
             HashMap<String, PlayerInfo> playerLocations = new HashMap<>();
             Application.players.keySet().forEach(username -> {
@@ -45,7 +33,7 @@ public class MapSocketHandler extends TextWebSocketHandler {
             clients.forEach(client -> {
                 try {
                     client.sendMessage(new TextMessage(updateType + ":" + gson.toJson(player)));
-                    client.sendMessage(new TextMessage("updateLocation" + ":" + gson.toJson(playerLocations)));
+                    client.sendMessage(new TextMessage("broadcastPlayerLocations:" + gson.toJson(playerLocations)));
                 } catch(IOException e) {
                     log.warn("There was a problem contacting client, reason: {}", e.getMessage(), e);
                 }
@@ -61,13 +49,13 @@ public class MapSocketHandler extends TextWebSocketHandler {
                 return;
             }
 
-            if(message.getPayload().equals("fetch")) {
+            if(message.getPayload().equals("fetchLatestData")) {
                 HashMap<String, PlayerInfo> hashMap = new HashMap<>();
                 Application.players.keySet().forEach(username -> {
                     Player player = Application.players.get(username);
                     hashMap.put(username, player.info);
                 });
-                session.sendMessage(new TextMessage("fetch:" + gson.toJson(hashMap)));
+                session.sendMessage(new TextMessage("fetchLatestData:" + gson.toJson(hashMap)));
                 return;
             }
 
