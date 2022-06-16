@@ -17,11 +17,9 @@ import java.util.*;
 
 @RestController
 public class PostController {
-    ArrayList<String> tokens = new ArrayList<>(){{add("Bearer: josh");}};
-
     @PostMapping("/api/v1/login_state/")
     public void login(@RequestHeader("Authorization") String token, @RequestBody String body) {
-        if(tokens.contains(token)) {
+        if(AssetManager.tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             updatePlayerInfo("login_state", object);
         }
@@ -29,7 +27,7 @@ public class PostController {
 
     @PostMapping("/api/v1/level_change/")
     public void level(@RequestHeader("Authorization") String token, @RequestBody String body) {
-        if(tokens.contains(token)) {
+        if(AssetManager.tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
             if((player = updatePlayerInfo("level_change", object)) == null) {
@@ -48,7 +46,7 @@ public class PostController {
 
     @PostMapping("/api/v1/bank/")
     public void bank(@RequestHeader("Authorization") String token, @RequestBody String body) {
-        if(tokens.contains(token)) {
+        if(AssetManager.tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
             if((player = updatePlayerInfo("bank", object)) == null) {
@@ -71,7 +69,7 @@ public class PostController {
 
     @PostMapping("/api/v1/equipped_items/")
     public void equipment(@RequestHeader("Authorization") String token, @RequestBody String body) {
-        if(tokens.contains(token)) {
+        if(AssetManager.tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
             if((player = updatePlayerInfo("equipped_items", object)) == null) {
@@ -95,7 +93,7 @@ public class PostController {
 
     @PostMapping("/api/v1/inventory_items/")
     public void inventory(@RequestHeader("Authorization") String token, @RequestBody String body) {
-        if(tokens.contains(token)) {
+        if(AssetManager.tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
             if((player = updatePlayerInfo("inventory_items", object)) == null) {
@@ -116,7 +114,7 @@ public class PostController {
 
     @PostMapping("/api/v1/quest_change/")
     public void quest(@RequestHeader("Authorization") String token, @RequestBody String body) {
-        if(tokens.contains(token)) {
+        if(AssetManager.tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
             if((player = updatePlayerInfo("quest_change", object)) == null) {
@@ -137,7 +135,7 @@ public class PostController {
 
     @PostMapping("/api/v1/npc_kill/")
     public void kill(@RequestHeader("Authorization") String token, @RequestBody String body) {
-        if(tokens.contains(token)) {
+        if(AssetManager.tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
             if((player = updatePlayerInfo("npc_kill", object)) == null) {
