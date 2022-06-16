@@ -1,7 +1,8 @@
 package com.basketbandit.rseye.entity.fragment;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.basketbandit.rseye.entity.Item;
 
-public record PlayerEquipment(HashMap<String, Map<Integer, Integer>> equipped,  HashMap<Integer, String> icons) {
+import java.util.HashMap;
+
+public record PlayerEquipment(HashMap<String, Item> equipped) {
 }

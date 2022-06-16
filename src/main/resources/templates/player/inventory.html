@@ -2,8 +2,10 @@
     <img width="204px" height="275px" src="/img/inventory_tab.webp">
     <ul class="inventory-ul">
         <li th:each="item: ${playerInventory.slots}">
-            <img th:if="${item.keySet.iterator.next > 0}" th:src="@{${playerInventory.icons.get(item.keySet.iterator.next)}}" width="32"/>
-            <span th:if="${item.values.iterator.next > 1}" th:text="${item.values.iterator.next}"></span>
+            <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.name}__}" target="_blank">
+                <img th:alt="${item.name}" th:src="@{${item.icon}}" width="32"/>
+                <span th:if="${item.quantity > 1}" th:text="${item.quantity}"></span>
+            </a>
         </li>
     </ul>
 </div>

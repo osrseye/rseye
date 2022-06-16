@@ -1,5 +1,6 @@
 package com.basketbandit.rseye;
 
+import com.basketbandit.rseye.entity.Item;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.slf4j.Logger;
@@ -15,14 +16,27 @@ import java.util.HashMap;
 public class AssetManager {
     public Logger log = LoggerFactory.getLogger(AssetManager.class);
     public static ArrayList<String> tokens = new ArrayList<>();
-    public static HashMap<String, String> itemIcons = new HashMap<>();
+    public static HashMap<String, Item> items = new HashMap<>();
 
     public AssetManager() {
+        try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/items-cache-data.json"), StandardCharsets.UTF_8))) {
+            Gson gson = new Gson();
+            JsonObject obj = gson.fromJson(r, JsonObject.class);
+            obj.keySet().forEach(key -> items.put(key, new Item(key, obj.get(key).getAsJsonObject().get("name").getAsString(), null)));
+            log.info("Successfully parsed " + items.keySet().size() + " items");
+        } catch(Exception e) {
+            log.error("There was an issue loading assets: {}", e.getMessage(), e);
+        }
+
         try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/icons-items-complete.json"), StandardCharsets.UTF_8))) {
             Gson gson = new Gson();
             JsonObject obj = gson.fromJson(r, JsonObject.class);
-            obj.keySet().forEach(key -> itemIcons.put(key, "data:image/png;base64, " + obj.get(key).getAsString()));
-            log.info("Successfully parsed " + itemIcons.keySet().size() + " item icons");
+            obj.keySet().forEach(key -> {
+                Item item = items.getOrDefault(key, new Item(key, "", ""));
+                item.icon = "data:image/png;base64, " + obj.get(key).getAsString();
+                items.put(key, item);
+            });
+            log.info("Successfully parsed " + items.keySet().size() + " item icons");
         } catch(Exception e) {
             log.error("There was an issue loading assets: {}", e.getMessage(), e);
         }

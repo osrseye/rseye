@@ -1,7 +1,9 @@
 <div class="equipment-container">
     <img width="204px" height="275px" src="/img/worn_equipment_tab.webp">
     <div th:class="${'equipment ' + slot}" th:if="${!playerEquipment.equipped.isEmpty}" th:each="slot: ${playerEquipment.equipped.keySet}">
-        <img th:src="@{${playerEquipment.icons.get(playerEquipment.equipped.get(slot).keySet.iterator.next)}}" width="36"/>
-        <span th:if="${playerEquipment.equipped.get(slot).values.iterator.next} > 1" th:text="${playerEquipment.equipped.get(slot).values.iterator.next}"></span>
+        <a th:href="@{https://oldschool.runescape.wiki/w/__${playerEquipment.equipped.get(slot).name}__}" target="_blank">
+            <img th:src="@{${playerEquipment.equipped.get(slot).icon}}" width="36"/>
+            <span th:if="${playerEquipment.equipped.get(slot).quantity} > 1" th:text="${playerEquipment.equipped.get(slot).quantity}"></span>
+        </a>
     </div>
 </div>

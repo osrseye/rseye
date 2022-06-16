@@ -2,6 +2,7 @@ package com.basketbandit.rseye.rest;
 
 import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.AssetManager;
+import com.basketbandit.rseye.entity.Item;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.fragment.*;
 import com.basketbandit.rseye.socket.MapSocketHandler;
@@ -56,14 +57,15 @@ public class PostController {
             JsonObject obj = object.get("data").getAsJsonObject();
             Integer value = obj.get("value").getAsInt();
             JsonArray inventoryArray = obj.get("items").getAsJsonArray();
-            ArrayList<Map<Integer, Integer>> bank = new ArrayList<>();
-            HashMap<Integer, String> icons = new HashMap<>();
-            inventoryArray.forEach(item -> {
-                JsonObject o = item.getAsJsonObject();
-                bank.add(Collections.singletonMap(o.get("id").getAsInt(), o.get("quantity").getAsInt()));
-                icons.putIfAbsent(o.get("id").getAsInt(), AssetManager.itemIcons.get(o.get("id").getAsString()));
+            ArrayList<Item> bank = new ArrayList<>();
+            inventoryArray.forEach(i -> {
+                JsonObject o = i.getAsJsonObject();
+                Item item = AssetManager.items.get(o.get("id").getAsString());
+                item.quantity = o.get("quantity").getAsInt();
+                bank.add(item);
             });
-            player.bank = new PlayerBank(value, bank, icons);
+            player.bank = new PlayerBank(value, bank);
+            System.out.println(body);
         }
     }
 
@@ -78,16 +80,14 @@ public class PostController {
 
             JsonObject equippedItemObject = object.get("data").getAsJsonObject().get("equippedItems").getAsJsonObject();
             Set<String> equippedItemKeySet = equippedItemObject.keySet();
-            HashMap<String, Map<Integer, Integer>> equipped = new HashMap<>();
-            HashMap<Integer, String> icons = new HashMap<>();
-
+            HashMap<String, Item> equipped = new HashMap<>();
             equippedItemKeySet.forEach(slot -> {
-                JsonObject item = equippedItemObject.get(slot).getAsJsonObject();
-                equipped.put(slot, Collections.singletonMap(item.get("id").getAsInt(), item.get("quantity").getAsInt()));
-                icons.putIfAbsent(item.get("id").getAsInt(), AssetManager.itemIcons.get(item.get("id").getAsString()));
+                JsonObject equipmentItem = equippedItemObject.get(slot).getAsJsonObject();
+                Item item = AssetManager.items.get(equipmentItem.get("id").getAsString());
+                item.quantity = equipmentItem.get("quantity").getAsInt();
+                equipped.put(slot, item);
             });
-
-            player.equipment = new PlayerEquipment(equipped, icons);
+            player.equipment = new PlayerEquipment(equipped);
         }
     }
 
@@ -101,14 +101,14 @@ public class PostController {
             }
 
             JsonArray inventoryArray = object.get("data").getAsJsonObject().get("inventory").getAsJsonArray();
-            ArrayList<Map<Integer, Integer>> inventory = new ArrayList<>();
-            HashMap<Integer, String> icons = new HashMap<>();
-            inventoryArray.forEach(item -> {
-                JsonObject o = item.getAsJsonObject();
-                inventory.add(Collections.singletonMap(o.get("id").getAsInt(), o.get("quantity").getAsInt()));
-                icons.putIfAbsent(o.get("id").getAsInt(), AssetManager.itemIcons.get(o.get("id").getAsString()));
+            ArrayList<Item> inventory = new ArrayList<>();
+            inventoryArray.forEach(slot -> {
+                JsonObject o = slot.getAsJsonObject();
+                Item item = AssetManager.items.get(o.get("id").getAsString());
+                item.quantity = o.get("quantity").getAsInt();
+                inventory.add(item);
             });
-            player.inventory = new PlayerInventory(inventory, icons);
+            player.inventory = new PlayerInventory(inventory);
         }
     }
 

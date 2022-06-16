@@ -1,8 +1,8 @@
 package com.basketbandit.rseye.entity.fragment;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import com.basketbandit.rseye.entity.Item;
 
-public record PlayerInventory(ArrayList<Map<Integer, Integer>> slots, HashMap<Integer, String> icons) {
+import java.util.ArrayList;
+
+public record PlayerInventory(ArrayList<Item> slots) {
 }
