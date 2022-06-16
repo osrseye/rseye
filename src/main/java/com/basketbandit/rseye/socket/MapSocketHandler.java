@@ -13,13 +13,13 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 public class MapSocketHandler extends TextWebSocketHandler {
     private static final Logger log = LoggerFactory.getLogger(MapSocketHandler.class);
-    private static final ArrayList<WebSocketSession> clients = new ArrayList<>();
+    private static final CopyOnWriteArrayList<WebSocketSession> clients = new CopyOnWriteArrayList<>();
     private static final Gson gson = new Gson();
 
     public static void broadcastUpdate(String updateType, PlayerInfo player) {
