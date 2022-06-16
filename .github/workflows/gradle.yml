@@ -72,3 +72,9 @@ jobs:
             docker rmi $(docker images -q)
             docker pull $TAG
             docker run -d -p 443:8443 -v $(pwd):/app/data $TAG
+
+      - name: Cloudflare Purge Cache
+        uses: jakejarvis/cloudflare-purge-action@v0.3.0
+        env:
+          CLOUDFLARE_ZONE: ${{ secrets.CLOUDFLARE_ZONE }}
+          CLOUDFLARE_TOKEN: ${{ secrets.CLOUDFLARE_TOKEN }}
