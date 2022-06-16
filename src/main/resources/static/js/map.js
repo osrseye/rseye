@@ -141,7 +141,7 @@ $(document).ready(function() {
                 const json = data.substring("inventory_items:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username+"/inventory", function(data) {
-                    $("#"+player.username).find(".inventory-container").replaceWith(data);
+                    $("#"+player.username.split(" ").join("-")).find(".inventory-container").replaceWith(data);
                 });
                 return;
             }
@@ -150,7 +150,7 @@ $(document).ready(function() {
                 const json = data.substring("bank:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username+"/bank", function(data) {
-                    $("#"+player.username).find(".bank-container").replaceWith(data);
+                    $("#"+player.username.split(" ").join("-")).find(".bank-container").replaceWith(data);
                 });
                 return;
             }
@@ -159,7 +159,7 @@ $(document).ready(function() {
                 const json = data.substring("level_change:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username+"/stats", function(data) {
-                    $("#"+player.username).find(".stats-container").replaceWith(data);
+                    $("#"+player.username.split(" ").join("-")).find(".stats-container").replaceWith(data);
                 });
                 return;
             }
@@ -168,7 +168,7 @@ $(document).ready(function() {
                 const json = data.substring("quest_change:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username+"/quests", function(data) {
-                    $("#"+player.username).find(".quests-container").replaceWith(data);
+                    $("#"+player.username.split(" ").join("-")).find(".quests-container").replaceWith(data);
                 });
                 return;
             }
@@ -177,7 +177,7 @@ $(document).ready(function() {
                 const json = data.substring("equipped_items:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username+"/equipment", function(data) {
-                    $("#"+player.username).find(".equipment-container").replaceWith(data);
+                    $("#"+player.username.split(" ").join("-")).find(".equipment-container").replaceWith(data);
                 });
                 return;
             }
