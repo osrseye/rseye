@@ -3,6 +3,11 @@ body {
     margin: 0;
 }
 
+a, a:link, a:hover, a:active, a:visited {
+    all: unset!important;
+    cursor: pointer;
+}
+
 li {
     position: relative;
     list-style-type: none;

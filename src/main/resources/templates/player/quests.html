@@ -3,7 +3,7 @@
     <span class="quest-points" th:text="${playerQuests.questPoints}"></span>
     <ul class="quest-ul">
         <li th:class="${quest.state}" th:each="quest : ${playerQuests.quests}">
-            <span th:text="${quest.name}"></span>
+            <a th:href="@{https://oldschool.runescape.wiki/w/__${quest.name}__}" target="_blank"><span th:text="${quest.name}"></span></a>
         </li>
     </ul>
 </div>
