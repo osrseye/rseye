@@ -4,6 +4,7 @@ import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.AssetManager;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.fragment.*;
+import com.basketbandit.rseye.socket.MapSocketHandler;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -22,7 +23,7 @@ public class PostController {
     public void login(@RequestHeader("Authorization") String token, @RequestBody String body) {
         if(tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
-            updatePlayerInfo(object);
+            updatePlayerInfo("login_state", object);
         }
     }
 
@@ -31,7 +32,7 @@ public class PostController {
         if(tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
-            if((player = updatePlayerInfo(object)) == null) {
+            if((player = updatePlayerInfo("level_change", object)) == null) {
                 return;
             }
 
@@ -50,7 +51,7 @@ public class PostController {
         if(tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
-            if((player = updatePlayerInfo(object)) == null) {
+            if((player = updatePlayerInfo("bank", object)) == null) {
                 return;
             }
 
@@ -73,7 +74,7 @@ public class PostController {
         if(tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
-            if((player = updatePlayerInfo(object)) == null) {
+            if((player = updatePlayerInfo("equipped_items", object)) == null) {
                 return;
             }
 
@@ -97,7 +98,7 @@ public class PostController {
         if(tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
-            if((player = updatePlayerInfo(object)) == null) {
+            if((player = updatePlayerInfo("inventory_items", object)) == null) {
                 return;
             }
 
@@ -118,7 +119,7 @@ public class PostController {
         if(tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player;
-            if((player = updatePlayerInfo(object)) == null) {
+            if((player = updatePlayerInfo("quest_change", object)) == null) {
                 return;
             }
 
@@ -137,7 +138,11 @@ public class PostController {
     @PostMapping("/api/v1/npc_kill/")
     public void kill(@RequestHeader("Authorization") String token, @RequestBody String body) {
         if(tokens.contains(token)) {
-            System.out.println(body);
+            JsonObject object = JsonParser.parseString(body).getAsJsonObject();
+            Player player;
+            if((player = updatePlayerInfo("npc_kill", object)) == null) {
+                return;
+            }
         }
     }
 
@@ -145,15 +150,20 @@ public class PostController {
      * Updates players current info
      * @param object {@link JsonObject}
      */
-    private Player updatePlayerInfo(JsonObject object) {
+    private Player updatePlayerInfo(String updateType, JsonObject object) {
         if(!object.has("playerInfo")) {
             return null;
         }
 
         JsonObject info = object.get("playerInfo").getAsJsonObject();
         JsonObject position = info.get("position").getAsJsonObject();
+
+        if(!info.has("username")) {
+            return null;
+        }
+
         PlayerInfo playerInfo = new PlayerInfo(
-                info.has("username") ? info.get("username").getAsString() : "unknown",
+                info.get("username").getAsString(),
                 info.get("combatLevel").getAsString(),
                 new HashMap<>() {{
                     put("x", position.get("x").getAsString());
@@ -169,8 +179,10 @@ public class PostController {
             Player player = new Player();
             player.info = playerInfo;
             Application.players.put(playerInfo.username(), player);
+            MapSocketHandler.broadcastNewPlayer(playerInfo);
         }
 
+        MapSocketHandler.updateBroadcast(updateType, playerInfo);
         return Application.players.get(playerInfo.username());
     }
 }
