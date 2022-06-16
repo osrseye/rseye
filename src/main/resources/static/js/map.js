@@ -70,6 +70,7 @@ $(document).ready(function() {
 
         ws.onopen = function(event) {
             ping = setInterval(function(){ send("ping"); }, 30000); // ping the server every 30 seconds to keep the connection alive
+            $(".player-data").empty(); // temp solution to disconnects (might flicker !BAD!)
             send("fetch");
         };
 
