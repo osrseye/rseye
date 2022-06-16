@@ -5,7 +5,7 @@ body {
 
 a, a:link, a:hover, a:active, a:visited {
     all: unset!important;
-    cursor: pointer;
+    cursor: pointer!important;
 }
 
 li {
