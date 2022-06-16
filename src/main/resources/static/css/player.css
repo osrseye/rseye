@@ -8,8 +8,39 @@ li {
     list-style-type: none;
 }
 
-div {
+canvas {
+    image-rendering: -moz-crisp-edges;
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
+.canvas-main {
+    background-color: #687DAA;
+    overflow: hidden;
+    width: 100%;
+    height: 800px;
+}
+
+.bank-container, .equipment-container, .inventory-container, .quests-container, .stats-container {
+    position: relative;
+    display: inline-flex;
+}
+
+.player {
     display: inline-block;
+    width: 530px;
+    text-align: center;
+    background-color: rgba(0,0,0,0.5);
+    padding: 0px 0px 20px 0px;
+    margin: 10px;
+}
+
+.player-header {
+    background-color: rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+    padding: 10px;
+    color: #ffffff;
 }
 
 /* BANK */
@@ -17,13 +48,14 @@ div {
 ul.bank-ul {
     position: absolute;
     top: 73px;
-    left: 28px;
-    width: 452px;
+    left: 42px;
+    width: 440px;
     height: 196px;
     padding: 0px;
     margin: 0px;
     list-style-type: none;
     overflow-y: scroll;
+    text-align: initial!important;
 }
 
 .bank-ul span {
@@ -130,6 +162,7 @@ ul.inventory-ul {
     padding: 0px;
     margin: 0px;
     list-style-type: none;
+    text-align: initial!important;
 }
 
 .inventory-ul span {
@@ -150,7 +183,6 @@ ul.inventory-ul {
 
 /* QUESTS */
 
-
 .quest-ul {
     position: absolute;
     top: 38px;
@@ -162,6 +194,7 @@ ul.inventory-ul {
     padding: 0px;
     margin: 0px;
     list-style-type: none;
+    text-align: initial!important;
 }
 
 .quest-points {
