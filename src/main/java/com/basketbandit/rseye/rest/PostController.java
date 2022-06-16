@@ -69,7 +69,7 @@ public class PostController {
             ArrayList<Item> bank = new ArrayList<>();
             inventoryArray.forEach(i -> {
                 JsonObject o = i.getAsJsonObject();
-                Item item = new Item(AssetManager.items.get(o.get("id").getAsString()));
+                Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
                 item.quantity = o.get("quantity").getAsInt();
                 bank.add(item);
             });
@@ -93,7 +93,7 @@ public class PostController {
             HashMap<String, Item> equipped = new HashMap<>();
             equippedItemKeySet.forEach(slot -> {
                 JsonObject equipmentItem = equippedItemObject.get(slot).getAsJsonObject();
-                Item item = new Item(AssetManager.items.get(equipmentItem.get("id").getAsString()));
+                Item item = new Item(AssetManager.items.getOrDefault(equipmentItem.get("id").getAsString(), AssetManager.items.get("0")));
                 item.quantity = equipmentItem.get("quantity").getAsInt();
                 equipped.put(slot, item);
             });
@@ -116,7 +116,7 @@ public class PostController {
             ArrayList<Item> inventory = new ArrayList<>();
             inventoryArray.forEach(slot -> {
                 JsonObject o = slot.getAsJsonObject();
-                Item item = new Item(AssetManager.items.get(o.get("id").getAsString()));
+                Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
                 item.quantity = o.get("quantity").getAsInt();
                 inventory.add(item);
             });
@@ -165,7 +165,7 @@ public class PostController {
             ArrayList<Item> loot = new ArrayList<>();
             lootArray.forEach(slot -> {
                 JsonObject o = slot.getAsJsonObject();
-                Item item = new Item(AssetManager.items.get(o.get("id").getAsString()));
+                Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
                 item.quantity = o.get("quantity").getAsInt();
                 loot.add(item);
             });
