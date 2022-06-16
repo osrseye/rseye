@@ -58,11 +58,11 @@ $(document).ready(function() {
     canvasController.addEventListener('wheel', (e) => {
         e.preventDefault();
         if(e.deltaY !== 0) {
-            var delta = (e.deltaY < 0) ? 0.1 : -0.1;
-            var temp = zoom + delta;
-            temp = (temp < canvasMinZoomRatio) ? canvasMinZoomRatio : temp > canvasMaxZoomRatio ? canvasMaxZoomRatio : temp; // minimum 0.1, maximum 4
-            zoom = Math.round(temp * 10) / 10; // deal with strange non-precise math
-            $('#canvas-container').css('transform', 'translate('+deltaX+'px,'+deltaY+'px) scale('+zoom+')');
+            //var delta = (e.deltaY < 0) ? 0.1 : -0.1;
+            //var temp = zoom + delta;
+            //temp = (temp < canvasMinZoomRatio) ? canvasMinZoomRatio : temp > canvasMaxZoomRatio ? canvasMaxZoomRatio : temp; // minimum 0.1, maximum 4
+            //zoom = Math.round(temp * 10) / 10; // deal with strange non-precise math
+            //$('#canvas-container').css('transform', 'translate('+deltaX+'px,'+deltaY+'px) scale('+zoom+')');
         }
     });
 
@@ -71,7 +71,7 @@ $(document).ready(function() {
 
         ws.onopen = function(event) {
             ping = setInterval(function(){ send("ping"); }, 30000); // ping the server every 30 seconds to keep the connection alive
-            $(".player-data").empty(); // temp solution to disconnects (might flicker !BAD!)
+            $(".player-data").empty(); // newZoom solution to disconnects (might flicker !BAD!)
             send("fetch");
         };
 
