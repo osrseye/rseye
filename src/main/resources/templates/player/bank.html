@@ -3,7 +3,7 @@
     <span class="bank-spaces" th:text="${playerBank.slots.size}"></span>
     <ul class="bank-ul">
         <li th:each="item: ${playerBank.slots}">
-            <a th:href="@{https://oldschool.runescape.wiki/w/__${item.name}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}">
+            <a th:href="@{https://oldschool.runescape.wiki/w/__${item.urlName}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}">
                 <img th:src="@{${item.icon}}" width="32"/>
                 <span th:if="${item.quantity != 1}" th:text="${item.quantity}"></span>
             </a>

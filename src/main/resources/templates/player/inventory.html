@@ -2,7 +2,7 @@
     <img width="204px" height="275px" src="/img/inventory_tab.webp">
     <ul class="inventory-ul">
         <li th:each="item: ${playerInventory.slots}">
-            <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.name}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}">
+            <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.urlName}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}">
                 <img th:alt="${item.name}" th:src="@{${item.icon}}" width="32"/>
                 <span th:if="${item.quantity > 1}" th:text="${item.quantity}"></span>
             </a>
