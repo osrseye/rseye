@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <fragment th:replace="head"></fragment>
-    <link rel="stylesheet" type="text/css" href="/css/player.css" />
-    <script src="/js/jquery-3.6.0.min.js"></script>
-</head>
-<body>
-    <fragment th:replace="/player/stats"></fragment>
-    <fragment th:replace="/player/inventory"></fragment>
+<div th:id="${playerInfo.username}" class="player">
+    <div class="player-header" th:text="${playerInfo.username + '(level-' + playerInfo.combatLevel + ')'}"></div>
     <fragment th:replace="/player/equipment"></fragment>
-    <fragment th:replace="/player/bank"></fragment>
+    <fragment th:replace="/player/inventory"></fragment>
+    <fragment th:replace="/player/stats"></fragment>
     <fragment th:replace="/player/quests"></fragment>
-</body>
-</html>
+    <fragment th:replace="/player/bank"></fragment>
+</div>

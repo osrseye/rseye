@@ -1,4 +1,4 @@
-<div style="position: relative">
+<div class="equipment-container">
     <img width="204px" height="275px" src="/img/worn_equipment_tab.webp">
     <div th:class="${'equipment ' + slot}" th:if="${!playerEquipment.equipped.isEmpty}" th:each="slot: ${playerEquipment.equipped.keySet}">
         <img th:src="@{${playerEquipment.icons.get(playerEquipment.equipped.get(slot).keySet.iterator.next)}}" width="36"/>
