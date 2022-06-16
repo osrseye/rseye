@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var ping;
     var baseX = 1152, baseY = 2496;
-    var clickX = 0, clickY = 0, transX = 0, transY = 0, deltaX = 0, deltaY = 0, zoom = 1.0; // weird offsets to center pre-zoomed canvas
+    var clickX = 0, clickY = 0, transX = -3525, transY = -1350, deltaX = -3525, deltaY = -1350, zoom = 1.0; // weird offsets to center pre-zoomed canvas
     var canvasZoom = 1; // multiplier
     var canvasMinZoomRatio = 0.1;
     var canvasMaxZoomRatio = 4.0;
