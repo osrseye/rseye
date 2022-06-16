@@ -6,12 +6,14 @@
     <span th:if="${combat.weapon == null}"> 💀 </span>
     <span class="combat-monster" th:text="${combat.monster.name}"></span>
     <span th:if="${combat.loot.size > 0}" class="combat-loot">
-        (
-        <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.urlName}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}" th:each="item: ${combat.loot}">
-            <img th:src="@{${item.icon}}" width="32"/>
-            <span th:if="${item.quantity > 1}" th:text="${item.quantity}"></span>
-        </a>
-        )
+        [
+            <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.urlName}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}" th:each="item: ${combat.loot}">
+                <div class="loot-item">
+                    <img th:src="@{${item.icon}}" width="32"/>
+                    <span th:if="${item.quantity > 1}" th:text="${item.quantity}"></span>
+                </div>
+            </a>
+        ]
     </span>
 
     <script>

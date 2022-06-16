@@ -84,6 +84,20 @@ canvas {
     color: #ffffff;
 }
 
+.loot-item {
+    position: relative;
+    display: inline-block;
+}
+
+.loot-item span {
+    color: #ff0;
+    position: absolute;
+    top: -5px;
+    font-size: 12px;
+    left: 0;
+    text-shadow: 1px 0 #000;
+}
+
 /* BANK */
 
 ul.bank-ul {
