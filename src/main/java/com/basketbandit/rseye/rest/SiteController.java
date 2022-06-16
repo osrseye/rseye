@@ -17,7 +17,7 @@ public class SiteController {
     @GetMapping("/player/{username}")
     public ModelAndView getPlayer(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
-        ModelAndView mv = new ModelAndView("/player/index");
+        ModelAndView mv = new ModelAndView("./player/index");
         mv.addObject("playerInfo", player.info);
         mv.addObject("playerStats", player.stats);
         mv.addObject("playerQuests", player.quests);
@@ -30,7 +30,7 @@ public class SiteController {
     @GetMapping("/player/{username}/stats")
     public ModelAndView getPlayerStats(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
-        ModelAndView mv = new ModelAndView("/player/stats");
+        ModelAndView mv = new ModelAndView("./player/stats");
         mv.addObject("playerStats", player.stats);
         return mv;
     }
@@ -38,7 +38,7 @@ public class SiteController {
     @GetMapping("/player/{username}/equipment")
     public ModelAndView getPlayerEquipment(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
-        ModelAndView mv = new ModelAndView("/player/equipment");
+        ModelAndView mv = new ModelAndView("./player/equipment");
         mv.addObject("playerEquipment", player.equipment);
         return mv;
     }
@@ -46,7 +46,7 @@ public class SiteController {
     @GetMapping("/player/{username}/inventory")
     public ModelAndView getPlayerInventory(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
-        ModelAndView mv = new ModelAndView("/player/inventory");
+        ModelAndView mv = new ModelAndView("./player/inventory");
         mv.addObject("playerInventory", player.inventory);
         return mv;
     }
@@ -54,7 +54,7 @@ public class SiteController {
     @GetMapping("/player/{username}/bank")
     public ModelAndView getPlayerBank(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
-        ModelAndView mv = new ModelAndView("/player/bank");
+        ModelAndView mv = new ModelAndView("./player/bank");
         mv.addObject("playerBank", player.bank);
         return mv;
     }
@@ -62,7 +62,7 @@ public class SiteController {
     @GetMapping("/player/{username}/quests")
     public ModelAndView getPlayerQuests(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
-        ModelAndView mv = new ModelAndView("/player/quests");
+        ModelAndView mv = new ModelAndView("./player/quests");
         mv.addObject("playerQuests", player.quests);
         return mv;
     }
