@@ -20,6 +20,7 @@ public class SiteController {
     public ModelAndView getPlayer(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
         ModelAndView mv = new ModelAndView("./player/index");
+        mv.addObject("loginState", player.loginState);
         mv.addObject("playerInfo", player.info);
         mv.addObject("playerStats", player.stats);
         mv.addObject("playerQuests", player.quests);
