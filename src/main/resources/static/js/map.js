@@ -139,10 +139,20 @@ $(document).ready(function() {
 
             if(data.startsWith("npc_kill")) {
                 $.get("/combat/latest", function(data) {
-                    $(".combat-feed").prepend(data);
+                    $(".update-feed").prepend(data);
                 });
-                if($('.combat').length > 9) {
-                    $('.combat-feed').find(".combat:last").remove();
+                if($('.feed-item').length > 9) {
+                    $('.update-feed').find(".feed-item:last").remove();
+                }
+                return;
+            }
+
+            if(data.startsWith("level_change:")) {
+                $.get("/growth/latest", function(data) {
+                    $(".update-feed").prepend(data);
+                });
+                if($('.feed-item').length > 9) {
+                    $('.update-feed').find(".feed-item:last").remove();
                 }
                 return;
             }
@@ -165,8 +175,8 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("level_change:")) {
-                const json = data.substring("level_change:".length, data.length);
+            if(data.startsWith("level_data:")) {
+                const json = data.substring("level_data:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username+"/stats", function(data) {
                     $("#"+player.username.split(" ").join("-")).find(".stats-container").replaceWith(data);

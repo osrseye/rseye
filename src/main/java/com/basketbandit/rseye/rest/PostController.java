@@ -2,10 +2,11 @@ package com.basketbandit.rseye.rest;
 
 import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.AssetManager;
-import com.basketbandit.rseye.entity.Combat;
+import com.basketbandit.rseye.entity.event.Combat;
 import com.basketbandit.rseye.entity.Item;
 import com.basketbandit.rseye.entity.Monster;
 import com.basketbandit.rseye.entity.Player;
+import com.basketbandit.rseye.entity.event.Growth;
 import com.basketbandit.rseye.entity.fragment.*;
 import com.basketbandit.rseye.socket.MapSocketHandler;
 import com.google.gson.JsonArray;
@@ -46,15 +47,20 @@ public class PostController {
                 return;
             }
 
-            JsonObject obj = object.get("data").getAsJsonObject();
-            int totalLevel = obj.get("totalLevel").getAsInt();
-            JsonObject statsObject = obj.get("levels").getAsJsonObject();
+            object = object.get("data").getAsJsonObject();
+            if(object.has("updatedSkillName")) {
+                Application.growthFeed.add(new Growth(player.info.username(), object.get("updatedSkillName").getAsString(), object.get("updatedSkillLevel").getAsString()));
+                broadcastUpdate("level_change", player);
+            }
+
+            int totalLevel = object.get("totalLevel").getAsInt();
+            JsonObject statsObject = object.get("levels").getAsJsonObject();
             Set<String> statKeySet = statsObject.keySet();
             HashMap<String, Integer> skills = new HashMap<>();
             statKeySet.forEach(stat -> skills.put(stat, statsObject.get(stat).getAsInt()));
             player.stats = new PlayerStats(totalLevel-1, skills);
 
-            broadcastUpdate("level_change", player);
+            broadcastUpdate("level_data", player);
         }
     }
 

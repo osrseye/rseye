@@ -1,5 +1,5 @@
-<div class="combat">
-    <span class="combat-player" th:text="${combat.player}"></span>
+<div class="feed-item combat">
+    <span class="feed-player" th:text="${combat.player}"></span>
     <a th:if="${combat.weapon != null}" th:href="@{https://oldschool.runescape.wiki/w/__${combat.weapon.urlName}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${combat.weapon.name}">
         <img  th:src="@{${combat.weapon.icon}}" width="32" />
     </a>

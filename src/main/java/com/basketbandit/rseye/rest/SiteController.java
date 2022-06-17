@@ -1,8 +1,9 @@
 package com.basketbandit.rseye.rest;
 
 import com.basketbandit.rseye.Application;
-import com.basketbandit.rseye.entity.Combat;
+import com.basketbandit.rseye.entity.event.Combat;
 import com.basketbandit.rseye.entity.Player;
+import com.basketbandit.rseye.entity.event.Growth;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -69,7 +70,7 @@ public class SiteController {
     }
 
     @GetMapping("/combat/latest")
-    public ModelAndView getFeedLatest() {
+    public ModelAndView getCombatFeedLatest() {
         int feedSize = Application.combatFeed.size();
         if(feedSize > 0) {
             Combat combat = Application.combatFeed.get(feedSize - 1);
@@ -78,5 +79,17 @@ public class SiteController {
             return mv;
         }
         return new ModelAndView("./combat/empty");
+    }
+
+    @GetMapping("/growth/latest")
+    public ModelAndView getGrowthFeedLatest() {
+        int feedSize = Application.growthFeed.size();
+        if(feedSize > 0) {
+            Growth growth = Application.growthFeed.get(feedSize - 1);
+            ModelAndView mv = new ModelAndView("./growth/index");
+            mv.addObject("growth", growth);
+            return mv;
+        }
+        return new ModelAndView("./growth/empty");
     }
 }
