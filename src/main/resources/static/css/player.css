@@ -39,6 +39,7 @@ canvas {
     background-color: rgba(0,0,0,0.5);
     padding: 0px 0px 20px 0px;
     margin: 10px;
+    font-size; 14px
 }
 
 .player-header {
@@ -131,8 +132,8 @@ ul.bank-ul {
 
 .bank-spaces {
     position: absolute;
-    top: 2px;
-    left: 10px;
+    top: 5px;
+    left: 2px;
     color: #ffff00;
     text-shadow: 1px 1px 2px #000;
 }
@@ -246,7 +247,7 @@ ul.inventory-ul {
     overflow-y: scroll;
     width: 176px;
     height: 212px;
-    font-size: 14px;
+    font-size: 12px;
     padding: 0px;
     margin: 0px;
     list-style-type: none;
@@ -255,8 +256,8 @@ ul.inventory-ul {
 
 .quest-points {
     position: absolute;
-    top: 5px;
-    left: 108px;
+    top: 8px;
+    left: 110px;
     color: #ffff00;
     text-shadow: 1px 1px 2px #000;
 }
@@ -277,7 +278,7 @@ ul.inventory-ul {
 
 .stat-table {
     position: absolute;
-    width: 188px;
+    width: 185px;
     height: 258px;
     top: 5px;
     color: #ffff00;
@@ -295,5 +296,5 @@ ul.inventory-ul {
     position: relative;
     text-align: center;
     top: 5px;
-    left: 8px;
+    left: 10px;
 }
