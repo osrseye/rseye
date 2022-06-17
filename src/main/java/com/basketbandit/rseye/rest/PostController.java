@@ -2,6 +2,7 @@ package com.basketbandit.rseye.rest;
 
 import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.AssetManager;
+import com.basketbandit.rseye.Utils;
 import com.basketbandit.rseye.entity.event.Combat;
 import com.basketbandit.rseye.entity.Item;
 import com.basketbandit.rseye.entity.Monster;
@@ -81,6 +82,7 @@ public class PostController {
                 JsonObject o = i.getAsJsonObject();
                 Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
                 item.quantity = o.get("quantity").getAsInt();
+                item.quantityFormatted = Utils.formatNumber(o.get("quantity").getAsInt());
                 bank.add(item);
             });
             player.bank = new PlayerBank(value, bank);
@@ -102,9 +104,10 @@ public class PostController {
             Set<String> equippedItemKeySet = equippedItemObject.keySet();
             HashMap<String, Item> equipped = new HashMap<>();
             equippedItemKeySet.forEach(slot -> {
-                JsonObject equipmentItem = equippedItemObject.get(slot).getAsJsonObject();
-                Item item = new Item(AssetManager.items.getOrDefault(equipmentItem.get("id").getAsString(), AssetManager.items.get("0")));
-                item.quantity = equipmentItem.get("quantity").getAsInt();
+                JsonObject obj = equippedItemObject.get(slot).getAsJsonObject();
+                Item item = new Item(AssetManager.items.getOrDefault(obj.get("id").getAsString(), AssetManager.items.get("0")));
+                item.quantity = obj.get("quantity").getAsInt();
+                item.quantityFormatted = Utils.formatNumber(obj.get("quantity").getAsInt());
                 equipped.put(slot, item);
             });
             player.equipment = new PlayerEquipment(equipped);
@@ -128,6 +131,7 @@ public class PostController {
                 JsonObject o = slot.getAsJsonObject();
                 Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
                 item.quantity = o.get("quantity").getAsInt();
+                item.quantityFormatted = Utils.formatNumber(o.get("quantity").getAsInt());
                 inventory.add(item);
             });
             player.inventory = new PlayerInventory(inventory);
@@ -177,6 +181,7 @@ public class PostController {
                 JsonObject o = slot.getAsJsonObject();
                 Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
                 item.quantity = o.get("quantity").getAsInt();
+                item.quantityFormatted = Utils.formatNumber(o.get("quantity").getAsInt());
                 loot.add(item);
             });
 

@@ -27,6 +27,14 @@ canvas {
     height: 800px;
 }
 
+.thousand {
+    color: #ffffff!important;
+}
+
+.million {
+    color: #00ff00!important;
+}
+
 /* PLAYER */
 
 .bank-container, .equipment-container, .inventory-container, .quests-container, .stats-container {

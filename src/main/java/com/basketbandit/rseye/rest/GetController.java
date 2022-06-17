@@ -12,7 +12,6 @@ import java.util.HashMap;
 
 @RestController
 public class GetController {
-
     @GetMapping("/api/v1/player/{username}")
     public Player getPlayer(@PathVariable("username") String username) {
         return Application.players.getOrDefault(username, new Player());

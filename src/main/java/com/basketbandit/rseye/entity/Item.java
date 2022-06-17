@@ -9,6 +9,7 @@ public class Item {
     public String urlName;
     public String icon;
     public int quantity = -1;
+    public String quantityFormatted = "-1";
 
     public Item(String id, String name, String icon) {
         this.id = id;
