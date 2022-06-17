@@ -52,7 +52,7 @@ canvas {
     background-color: #3B3226;
     border: solid;
     border-color: #575040;
-    color: #E7843D;
+    color: #F79420;
 }
 
 .tooltip-arrow {
@@ -69,7 +69,7 @@ canvas {
     padding: 20px;
     padding-bottom: 10px;
     padding-top: 10px;
-    color: yellow;
+    color: #ffff00;
 }
 
 .combat-player {
@@ -90,11 +90,11 @@ canvas {
 }
 
 .loot-item span {
-    color: #ff0;
     position: absolute;
     top: -5px;
+    left: 0px;
     font-size: 12px;
-    left: 0;
+    color: #ff0;
     text-shadow: 1px 0 #000;
 }
 
@@ -114,12 +114,12 @@ ul.bank-ul {
 }
 
 .bank-ul span {
-    color: yellow;
     position: absolute;
     top: -5px;
+    left: 0px;
+    color: #ffff00;
     font-size: 12px;
-    left: 0;
-    text-shadow: 1px 0px black;
+    text-shadow: 1px 1px 2px #000;
 }
 
 .bank-ul li {
@@ -130,10 +130,11 @@ ul.bank-ul {
 }
 
 .bank-spaces {
-    color: yellow;
     position: absolute;
     top: 2px;
     left: 10px;
+    color: #ffff00;
+    text-shadow: 1px 1px 2px #000;
 }
 
 /* EQUIPMENT */
@@ -198,12 +199,12 @@ ul.bank-ul {
 }
 
 .equipment span {
-    color: yellow;
     position: absolute;
     top: -10px;
     left: 2px;
+    color: #ffff00;
     font-size: 12px;
-    text-shadow: 1px 0px black;
+    text-shadow: 1px 1px 2px #000;
 }
 
 /* INVENTORY */
@@ -221,12 +222,12 @@ ul.inventory-ul {
 }
 
 .inventory-ul span {
-    color: yellow;
     position: absolute;
     top: -5px;
+    left: 0px;
+    color: #ffff00;
     font-size: 12px;
-    left: 0;
-    text-shadow: 1px 0px black;
+    text-shadow: 1px 1px 2px #000;
 }
 
 .inventory-ul li {
@@ -253,10 +254,11 @@ ul.inventory-ul {
 }
 
 .quest-points {
-    color: yellow;
     position: absolute;
     top: 5px;
     left: 108px;
+    color: #ffff00;
+    text-shadow: 1px 1px 2px #000;
 }
 
 .NOT_STARTED {
@@ -277,8 +279,9 @@ ul.inventory-ul {
     position: absolute;
     width: 188px;
     height: 258px;
-    color: yellow;
     top: 5px;
+    color: #ffff00;
+    text-shadow: 1px 1px 2px #000;
 }
 
 .stat-td {
