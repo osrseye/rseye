@@ -27,9 +27,13 @@ public class PostController {
         if(AssetManager.tokens.contains(token)) {
             JsonObject object = JsonParser.parseString(body).getAsJsonObject();
             Player player = computePlayer(object);
-            if(player != null) {
-                broadcastUpdate("login_state", player);
+            if(player == null) {
+                return;
             }
+
+            player.loginState = object.get("data").getAsJsonObject().get("state").getAsString();
+
+            broadcastUpdate("login_state", player);
         }
     }
 

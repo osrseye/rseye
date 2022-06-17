@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
+    public String loginState;
     public PlayerInfo info;
     public PlayerStats stats;
     public PlayerQuests quests;
@@ -14,6 +15,7 @@ public class Player {
     public PlayerBank bank;
 
     public Player() {
+        this.loginState = "LOGGED_OUT";
         this.info = new PlayerInfo("", "", new HashMap<>());
         this.stats = new PlayerStats(-1, new HashMap<>());
         this.quests = new PlayerQuests(-1, new ArrayList<>());

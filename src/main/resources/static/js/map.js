@@ -127,6 +127,16 @@ $(document).ready(function() {
                 return;
             }
 
+            if(data.startsWith("login_state")) {
+                const json = data.substring("login_state:".length, data.length);
+                const player = JSON.parse(json);
+                $.get("/api/v1/player/"+player.username+"/login_state", function(data) {
+                    const badge = $("#"+player.username.split(" ").join("-")).find(".badge");
+                    (data == "LOGGED_IN") ? badge.removeClass("badge-danger").addClass("badge-success").text("Online") : badge.removeClass("badge-success").addClass("badge-danger").text("Offline")
+                });
+                return;
+            }
+
             if(data.startsWith("npc_kill")) {
                 $.get("/combat/latest", function(data) {
                     $(".combat-feed").prepend(data);

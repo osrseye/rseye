@@ -27,9 +27,21 @@ canvas {
     height: 800px;
 }
 
+/* PLAYER */
+
 .bank-container, .equipment-container, .inventory-container, .quests-container, .stats-container {
     position: relative;
     display: inline-flex;
+}
+
+.badge-success {
+    color: #fff;
+    background-color: #28a745;
+}
+
+.badge-danger {
+    color: #fff;
+    background-color: #dc3545;
 }
 
 .player {
@@ -39,7 +51,7 @@ canvas {
     background-color: rgba(0,0,0,0.5);
     padding: 0px 0px 20px 0px;
     margin: 10px;
-    font-size; 14px
+    font-size: 14px;
 }
 
 .player-header {
@@ -133,7 +145,7 @@ ul.bank-ul {
 .bank-spaces {
     position: absolute;
     top: 5px;
-    left: 2px;
+    left: 10px;
     color: #ffff00;
     text-shadow: 1px 1px 2px #000;
 }

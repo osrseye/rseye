@@ -18,6 +18,11 @@ public class GetController {
         return Application.players.getOrDefault(username, new Player());
     }
 
+    @GetMapping("/api/v1/player/{username}/login_state")
+    public String getPlayerLoginState(@PathVariable("username") String username) {
+        return Application.players.getOrDefault(username, new Player()).loginState;
+    }
+
     @GetMapping("/api/v1/players")
     public Collection<Player> getPlayers() {
         return Application.players.values();
