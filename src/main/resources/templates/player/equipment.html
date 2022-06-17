@@ -3,7 +3,7 @@
     <div th:class="${'equipment ' + slot}" th:if="${!playerEquipment.equipped.isEmpty}" th:each="slot: ${playerEquipment.equipped.keySet}">
         <a th:href="@{https://oldschool.runescape.wiki/w/__${playerEquipment.equipped.get(slot).urlName}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${playerEquipment.equipped.get(slot).name}">
             <img th:src="@{${playerEquipment.equipped.get(slot).icon}}" width="36"/>
-            <span th:if="${playerEquipment.equipped.get(slot).quantity} > 1" th:class="${playerEquipment.equipped.get(slot).quantity.quantity > 99999} ? thousand : (playerEquipment.equipped.get(slot).quantity.quantity > 9999999 ? million : shrapnel)" th:text="${playerEquipment.equipped.get(slot).quantityFormatted}"></span>
+            <span th:if="${playerEquipment.equipped.get(slot).quantity} > 1" th:class="${playerEquipment.equipped.get(slot).quantity.quantity > 99999} ? thousand : (${playerEquipment.equipped.get(slot).quantity.quantity > 9999999} ? million : shrapnel)" th:text="${playerEquipment.equipped.get(slot).quantityFormatted}"></span>
         </a>
     </div>
 
