@@ -1,7 +1,8 @@
 <div th:id="${#strings.replace(playerInfo.username,' ','-')}" class="player">
     <div class="player-header">
         <span th:text="${playerInfo.username + ' (level-' + playerInfo.combatLevel + ')'}"></span>
-        <span class="badge badge-success">Online</span>
+        <span th:if="${loginState == LOGGED_IN}" class="badge badge-success">Online</span>
+        <span th:if="${loginState != LOGGED_IN}" class="badge badge-danger">Offline</span>
     </div>
     <fragment th:replace="./player/equipment"></fragment>
     <fragment th:replace="./player/inventory"></fragment>
