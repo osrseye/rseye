@@ -98,7 +98,11 @@ $(document).ready(function() {
                     ctx.fillStyle = "#ffffff";
                     ctx.fillText(player.username + "(level-" + player.combatLevel + ")", x + 16, y + 60);
                     $.get("/player/"+player.username, function(data) {
-                        $(".player-data").append(data);
+                        if(data.includes("LOGGED_IN")) {
+                            $(".player-online").append(data);
+                            return;
+                        }
+                        $(".player-offline").append(data);
                     });
                 });
                 return;
@@ -122,7 +126,11 @@ $(document).ready(function() {
                 const json = data.substring("new_player:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username, function(data) {
-                    $(".player-data").append(data);
+                    if(data.includes("LOGGED_IN")) {
+                        $(".player-online").append(data);
+                        return;
+                    }
+                    $(".player-offline").append(data);
                 });
                 return;
             }
@@ -131,8 +139,15 @@ $(document).ready(function() {
                 const json = data.substring("login_state:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/api/v1/player/"+player.username+"/login_state", function(data) {
-                    const badge = $("#"+player.username.split(" ").join("-")).find(".badge");
-                    (data == "LOGGED_IN") ? badge.removeClass("badge-danger").addClass("badge-success").text("Online") : badge.removeClass("badge-success").addClass("badge-danger").text("Offline")
+                    const playerNode = $("#"+player.username.split(" ").join("-"));
+                    const badge = playerNode.find(".badge");
+                    if(data == "LOGGED_IN") {
+                        badge.removeClass("badge-danger").addClass("badge-success").text("Online");
+                        playerNode.detach().appendTo(".player-online");
+                        return;
+                    }
+                    badge.removeClass("badge-success").addClass("badge-danger").text("Offline");
+                    playerNode.detach().appendTo(".player-offline");
                 });
                 return;
             }
