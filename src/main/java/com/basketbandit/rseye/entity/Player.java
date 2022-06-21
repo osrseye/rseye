@@ -72,7 +72,7 @@ public class Player {
 
     public void setLoginState(String loginState) {
         this.loginState = loginState;
-        this.lastUpdate = System.currentTimeMillis();
+        this.lastUpdate = loginState.equals("LOGGED_IN") ? System.currentTimeMillis() : System.currentTimeMillis() - 600000; // make the time 10 minutes in the past so not logged back in
     }
 
     public void setInfo(PlayerInfo info) {
