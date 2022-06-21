@@ -110,6 +110,7 @@ canvas {
     padding-bottom: 10px;
     padding-top: 10px;
     margin-bottom: 5px;
+    width: fit-content;
 }
 
 .feed-player, .feed-skill {
