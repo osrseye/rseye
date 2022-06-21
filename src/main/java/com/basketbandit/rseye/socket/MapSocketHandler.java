@@ -24,16 +24,9 @@ public class MapSocketHandler extends TextWebSocketHandler {
 
     public static void broadcastUpdate(String updateType, PlayerInfo player) {
         synchronized(clients) {
-            HashMap<String, PlayerInfo> playerLocations = new HashMap<>();
-            Application.players.keySet().forEach(username -> {
-                Player p = Application.players.get(username);
-                playerLocations.put(username, p.info());
-            });
-
             clients.forEach(client -> {
                 try {
                     client.sendMessage(new TextMessage(updateType + ":" + gson.toJson(player)));
-                    client.sendMessage(new TextMessage("broadcastPlayerLocations:" + gson.toJson(playerLocations)));
                 } catch(IOException e) {
                     log.warn("There was a problem contacting client, reason: {}", e.getMessage(), e);
                 }

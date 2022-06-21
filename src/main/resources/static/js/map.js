@@ -137,20 +137,12 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("broadcastPlayerLocations:")) {
-                const json = data.substring("broadcastPlayerLocations:".length, data.length);
-                $.each(JSON.parse(json), function(username, player) {
-                    updatePosition(player);
-                });
-                return;
-            }
-
             if(data.startsWith("new_player:")) {
                 const json = data.substring("new_player:".length, data.length);
                 const player = JSON.parse(json);
+                updatePosition(player);
                 $.get("/player/"+player.username, function(data) {
                     data.includes("LOGGED_IN") ? $(".player-online").append(data) : $(".player-offline").append(data)
-                    updatePosition(player);
                 });
                 return;
             }
@@ -158,6 +150,7 @@ $(document).ready(function() {
             if(data.startsWith("login_state")) {
                 const json = data.substring("login_state:".length, data.length);
                 const player = JSON.parse(json);
+                updatePosition(player);
                 $.get("/api/v1/player/"+player.username+"/login_state", function(data) {
                     const pn = $("#"+player.username.split(" ").join("-"));
                     const badge = pn.find(".badge");
@@ -173,6 +166,7 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("npc_kill")) {
+                updatePosition(JSON.parse(data.substring("npc_kill:".length, data.length)));
                 $.get("/combat/latest", function(data) {
                     $(".update-feed").prepend(data);
                 });
@@ -183,6 +177,7 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("level_change:")) {
+                updatePosition(JSON.parse(data.substring("level_change:".length, data.length)));
                 $.get("/growth/latest", function(data) {
                     $(".update-feed").prepend(data);
                 });
@@ -195,6 +190,7 @@ $(document).ready(function() {
             if(data.startsWith("inventory_items:")) {
                 const json = data.substring("inventory_items:".length, data.length);
                 const player = JSON.parse(json);
+                updatePosition(player);
                 $.get("/player/"+player.username+"/inventory", function(data) {
                     $("#"+player.username.split(" ").join("-")).find(".inventory-container").replaceWith(data);
                 });
@@ -204,6 +200,7 @@ $(document).ready(function() {
             if(data.startsWith("bank:")) {
                 const json = data.substring("bank:".length, data.length);
                 const player = JSON.parse(json);
+                updatePosition(player);
                 $.get("/player/"+player.username+"/bank", function(data) {
                     $("#"+player.username.split(" ").join("-")).find(".bank-container").replaceWith(data);
                 });
@@ -213,6 +210,7 @@ $(document).ready(function() {
             if(data.startsWith("level_data:")) {
                 const json = data.substring("level_data:".length, data.length);
                 const player = JSON.parse(json);
+                updatePosition(player);
                 $.get("/player/"+player.username+"/stats", function(data) {
                     $("#"+player.username.split(" ").join("-")).find(".stats-container").replaceWith(data);
                 });
@@ -222,6 +220,7 @@ $(document).ready(function() {
             if(data.startsWith("quest_change:")) {
                 const json = data.substring("quest_change:".length, data.length);
                 const player = JSON.parse(json);
+                updatePosition(player);
                 $.get("/player/"+player.username+"/quests", function(data) {
                     $("#"+player.username.split(" ").join("-")).find(".quests-container").replaceWith(data);
                 });
@@ -231,6 +230,7 @@ $(document).ready(function() {
             if(data.startsWith("equipped_items:")) {
                 const json = data.substring("equipped_items:".length, data.length);
                 const player = JSON.parse(json);
+                updatePosition(player);
                 $.get("/player/"+player.username+"/equipment", function(data) {
                     $("#"+player.username.split(" ").join("-")).find(".equipment-container").replaceWith(data);
                 });
