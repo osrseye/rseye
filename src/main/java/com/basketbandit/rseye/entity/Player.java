@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
-    public String loginState;
-    public PlayerInfo info;
-    public PlayerStats stats;
-    public PlayerQuests quests;
-    public PlayerEquipment equipment;
-    public PlayerInventory inventory;
-    public PlayerBank bank;
+    private String loginState;
+    private PlayerInfo info;
+    private PlayerStats stats;
+    private PlayerQuests quests;
+    private PlayerEquipment equipment;
+    private PlayerInventory inventory;
+    private PlayerBank bank;
+    private long lastUpdate;
 
     public Player() {
         this.loginState = "LOGGED_OUT";
@@ -22,5 +23,85 @@ public class Player {
         this.equipment = new PlayerEquipment(new HashMap<>());
         this.inventory = new PlayerInventory(new ArrayList<>());
         this.bank = new PlayerBank(-1, new ArrayList<>());
+        this.lastUpdate = System.currentTimeMillis();
+    }
+
+    /**
+     * Logs out players who haven't been updated in the last 5 minutes. (xlogging doesn't send event)
+     * @return boolean
+     */
+    public boolean loginStateChanged() {
+        if(loginState.equals("LOGGED_IN") && (System.currentTimeMillis() - lastUpdate) > 300000) {
+            loginState = "LOGGED_OUT";
+            return true;
+        }
+        if(loginState.equals("LOGGED_OUT") && (System.currentTimeMillis() - lastUpdate) < 300000) {
+            loginState = "LOGGED_IN";
+            return true;
+        }
+        return false;
+    }
+
+    public String loginState() {
+        return loginState;
+    }
+
+    public PlayerInfo info() {
+        return info;
+    }
+
+    public PlayerStats stats() {
+        return stats;
+    }
+
+    public PlayerQuests quests() {
+        return quests;
+    }
+
+    public PlayerEquipment equipment() {
+        return equipment;
+    }
+
+    public PlayerInventory inventory() {
+        return inventory;
+    }
+
+    public PlayerBank bank() {
+        return bank;
+    }
+
+    public void setLoginState(String loginState) {
+        this.loginState = loginState;
+        this.lastUpdate = System.currentTimeMillis();
+    }
+
+    public void setInfo(PlayerInfo info) {
+        this.info = info;
+        this.lastUpdate = System.currentTimeMillis();
+    }
+
+    public void setStats(PlayerStats stats) {
+        this.stats = stats;
+        this.lastUpdate = System.currentTimeMillis();
+    }
+
+    public void setQuests(PlayerQuests quests) {
+        this.quests = quests;
+        this.lastUpdate = System.currentTimeMillis();
+    }
+
+    public void setEquipment(PlayerEquipment equipment) {
+        this.equipment = equipment;
+        this.lastUpdate = System.currentTimeMillis();
+    }
+
+    public void setInventory(PlayerInventory inventory) {
+        this.inventory = inventory;
+        this.lastUpdate = System.currentTimeMillis();
+    }
+
+    public void setBank(PlayerBank bank) {
+        this.bank = bank;
+        this.lastUpdate = System.currentTimeMillis();
     }
 }

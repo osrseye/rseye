@@ -19,7 +19,7 @@ public class GetController {
 
     @GetMapping("/api/v1/player/{username}/login_state")
     public String getPlayerLoginState(@PathVariable("username") String username) {
-        return Application.players.getOrDefault(username, new Player()).loginState;
+        return Application.players.getOrDefault(username, new Player()).loginState();
     }
 
     @GetMapping("/api/v1/players")
@@ -32,7 +32,7 @@ public class GetController {
         HashMap<String, PlayerInfo> hashMap = new HashMap<>();
         Application.players.keySet().forEach(username -> {
             Player player = Application.players.get(username);
-            hashMap.put(username, player.info);
+            hashMap.put(username, player.info());
         });
         return hashMap;
     }

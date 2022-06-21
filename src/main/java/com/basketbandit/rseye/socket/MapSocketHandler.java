@@ -27,7 +27,7 @@ public class MapSocketHandler extends TextWebSocketHandler {
             HashMap<String, PlayerInfo> playerLocations = new HashMap<>();
             Application.players.keySet().forEach(username -> {
                 Player p = Application.players.get(username);
-                playerLocations.put(username, p.info);
+                playerLocations.put(username, p.info());
             });
 
             clients.forEach(client -> {
@@ -53,7 +53,7 @@ public class MapSocketHandler extends TextWebSocketHandler {
                 HashMap<String, PlayerInfo> hashMap = new HashMap<>();
                 Application.players.keySet().forEach(username -> {
                     Player player = Application.players.get(username);
-                    hashMap.put(username, player.info);
+                    hashMap.put(username, player.info());
                 });
                 session.sendMessage(new TextMessage("fetchLatestData:" + gson.toJson(hashMap)));
                 return;

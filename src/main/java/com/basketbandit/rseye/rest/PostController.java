@@ -33,7 +33,7 @@ public class PostController {
                 return;
             }
 
-            player.loginState = object.get("data").getAsJsonObject().get("state").getAsString();
+            player.setLoginState(object.get("data").getAsJsonObject().get("state").getAsString());
 
             broadcastUpdate("login_state", player);
         }
@@ -50,7 +50,7 @@ public class PostController {
 
             object = object.get("data").getAsJsonObject();
             if(object.has("updatedSkillName")) {
-                Application.growthFeed.add(new Growth(player.info.username(), object.get("updatedSkillName").getAsString(), object.get("updatedSkillLevel").getAsString()));
+                Application.growthFeed.add(new Growth(player.info().username(), object.get("updatedSkillName").getAsString(), object.get("updatedSkillLevel").getAsString()));
                 broadcastUpdate("level_change", player);
             }
 
@@ -59,7 +59,7 @@ public class PostController {
             Set<String> statKeySet = statsObject.keySet();
             HashMap<String, Integer> skills = new HashMap<>();
             statKeySet.forEach(stat -> skills.put(stat, statsObject.get(stat).getAsInt()));
-            player.stats = new PlayerStats(totalLevel-1, skills);
+            player.setStats(new PlayerStats(totalLevel-1, skills));
 
             broadcastUpdate("level_data", player);
         }
@@ -85,7 +85,7 @@ public class PostController {
                 item.quantityFormatted = Utils.formatNumber(o.get("quantity").getAsInt());
                 bank.add(item);
             });
-            player.bank = new PlayerBank(value, bank);
+            player.setBank(new PlayerBank(value, bank));
 
             broadcastUpdate("bank", player);
         }
@@ -110,7 +110,7 @@ public class PostController {
                 item.quantityFormatted = Utils.formatNumber(obj.get("quantity").getAsInt());
                 equipped.put(slot, item);
             });
-            player.equipment = new PlayerEquipment(equipped);
+            player.setEquipment(new PlayerEquipment(equipped));
 
             broadcastUpdate("equipped_items", player);
         }
@@ -134,7 +134,7 @@ public class PostController {
                 item.quantityFormatted = Utils.formatNumber(o.get("quantity").getAsInt());
                 inventory.add(item);
             });
-            player.inventory = new PlayerInventory(inventory);
+            player.setInventory(new PlayerInventory(inventory));
 
             broadcastUpdate("inventory_items", player);
         }
@@ -157,7 +157,7 @@ public class PostController {
                 JsonObject quest = q.getAsJsonObject();
                 quests.add(new Quest(quest.get("id").getAsInt(), quest.get("name").getAsString(), quest.get("state").getAsString()));
             });
-            player.quests = new PlayerQuests(questPoints, quests);
+            player.setQuests(new PlayerQuests(questPoints, quests));
 
             broadcastUpdate("quest_change", player);
         }
@@ -174,7 +174,7 @@ public class PostController {
 
             JsonObject obj = object.get("data").getAsJsonObject();
             JsonArray lootArray = obj.get("items").getAsJsonArray();
-            Item weapon = player.equipment.equipped().getOrDefault("WEAPON", null);
+            Item weapon = player.equipment().equipped().getOrDefault("WEAPON", null);
             Monster monster = AssetManager.monsters.get(obj.get("npcId").getAsString());
             ArrayList<Item> loot = new ArrayList<>();
             lootArray.forEach(slot -> {
@@ -185,7 +185,7 @@ public class PostController {
                 loot.add(item);
             });
 
-            Application.combatFeed.add(new Combat(player.info.username() + " (level-" + player.info.combatLevel() + ")", weapon, monster, loot));
+            Application.combatFeed.add(new Combat(player.info().username() + " (level-" + player.info().combatLevel() + ")", weapon, monster, loot));
             if(Application.combatFeed.size() > 100) {
                 Application.combatFeed.remove(0);
             }
@@ -219,10 +219,10 @@ public class PostController {
         Player player;
         if(Application.players.containsKey(playerInfo.username())) {
             player = Application.players.get(playerInfo.username());
-            player.info = playerInfo;
+            player.setInfo(playerInfo);
         } else {
             player = new Player();
-            player.info = playerInfo;
+            player.setInfo(playerInfo);
             Application.players.put(playerInfo.username(), player);
             broadcastUpdate("new_player", player);
         }
@@ -231,6 +231,6 @@ public class PostController {
     }
 
     private void broadcastUpdate(String type, Player player){
-        MapSocketHandler.broadcastUpdate(type, player.info);
-    };
+        MapSocketHandler.broadcastUpdate(type, player.info());
+    }
 }
