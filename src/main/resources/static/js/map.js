@@ -83,6 +83,20 @@ $(document).ready(function() {
         }
     });
 
+    function updatePosition(player) {
+        const x = (Number(player.position.x)-baseX)*4;
+        const y = tHeight - ((Number(player.position.y)-baseY)*4);
+        const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
+        pn.attr("aria-tx", x);
+        pn.attr("aria-ty", y);
+
+        if(!$("#"+player.username.split(" ").join("-")+"-position").length) {
+            $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + " (level-" + player.combatLevel + ")</span></div>");
+            return;
+        }
+        $("#"+player.username.split(" ").join("-")+"-position").css({"top": y, "left": x})
+    }
+
     $(document).on('click','[class^=locator]',function() {
         const tx = $(this).attr("aria-tx") * -1;
         const ty = $(this).attr("aria-ty") * -1;
@@ -117,13 +131,7 @@ $(document).ready(function() {
                 $.each(JSON.parse(json), function(username, player) {
                     $.get("/player/"+player.username, function(data) {
                         data.includes("LOGGED_IN") ? $(".player-online").append(data) : $(".player-offline").append(data)
-                        const x = (Number(player.position.x)-baseX)*4;
-                        const y = tHeight - ((Number(player.position.y)-baseY)*4);
-                        const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
-                        pn.attr("aria-tx", x);
-                        pn.attr("aria-ty", y);
-                        $("#"+player.username.split(" ").join("-")+"-position").remove();
-                        $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + "(level-" + player.combatLevel + ")</span></div>");
+                        updatePosition(player);
                     });
                 });
                 return;
@@ -132,13 +140,7 @@ $(document).ready(function() {
             if(data.startsWith("broadcastPlayerLocations:")) {
                 const json = data.substring("broadcastPlayerLocations:".length, data.length);
                 $.each(JSON.parse(json), function(username, player) {
-                    const x = (Number(player.position.x)-baseX)*4;
-                    const y = tHeight - ((Number(player.position.y)-baseY)*4);
-                    const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
-                    pn.attr("aria-tx", x);
-                    pn.attr("aria-ty", y);
-                    $("#"+player.username.split(" ").join("-")+"-position").remove();
-                    $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + "(level-" + player.combatLevel + ")</span></div>");
+                    updatePosition(player);
                 });
                 return;
             }
@@ -148,13 +150,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username, function(data) {
                     data.includes("LOGGED_IN") ? $(".player-online").append(data) : $(".player-offline").append(data)
-                    const x = (Number(player.position.x)-baseX)*4;
-                    const y = tHeight - ((Number(player.position.y)-baseY)*4);
-                    const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
-                    pn.attr("aria-tx", x);
-                    pn.attr("aria-ty", y);
-                    $("#"+player.username.split(" ").join("-")+"-position").remove();
-                    $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map-pointer.webp'/><span class='player-position-label'>" + player.username + "(level-" + player.combatLevel + ")</span></div>");
+                    updatePosition(player);
                 });
                 return;
             }
