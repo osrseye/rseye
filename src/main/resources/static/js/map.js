@@ -114,7 +114,6 @@ $(document).ready(function() {
 
             if(data.startsWith("fetchLatestData:")) {
                 const json = data.substring("fetchLatestData:".length, data.length);
-                load();
                 $.each(JSON.parse(json), function(username, player) {
                     $.get("/player/"+player.username, function(data) {
                         data.includes("LOGGED_IN") ? $(".player-online").append(data) : $(".player-offline").append(data)
@@ -132,7 +131,6 @@ $(document).ready(function() {
 
             if(data.startsWith("broadcastPlayerLocations:")) {
                 const json = data.substring("broadcastPlayerLocations:".length, data.length);
-                load();
                 $.each(JSON.parse(json), function(username, player) {
                     const x = (Number(player.position.x)-baseX)*4;
                     const y = tHeight - ((Number(player.position.y)-baseY)*4);
