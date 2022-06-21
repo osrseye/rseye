@@ -1,29 +1,47 @@
 $(document).ready(function() {
     var ping;
-    var baseX = 1152, baseY = 2496;
-    var clickX = 0, clickY = 0, transX = -3525, transY = -1350, deltaX = -3525, deltaY = -1350, zoom = 1.0; // weird offsets to center pre-zoomed canvas
+    var baseX = 1152, baseY = 1215;
+    var clickX = 0, clickY = 0, transX = -7120, transY = -37175, deltaX = -7120, deltaY = -37175, zoom = 1.0; // weird offsets to center pre-zoomed canvas
+    var cWidth = 12544;
+    var cHeight = 1424;
+    var tHeight = cHeight * 32;
     var canvasZoom = 1; // multiplier
-    var canvasMinZoomRatio = 0.1;
-    var canvasMaxZoomRatio = 4.0;
-    var canvas = document.querySelector('canvas');
-        canvas.width = 8256;
-        canvas.height = 4800;
-        canvas.style.width = canvas.width * canvasZoom;
-        canvas.style.height = canvas.height * canvasZoom;
-    var ctx = canvas.getContext('2d', {antialias: false});
-        ctx.textBaseline = 'middle';
-        ctx.textAlign = 'center';
-        ctx.font = '16px sans-serif';
+
     var canvasController = document.getElementById('canvas-controller');
     var canvasMouse = Array.from({length: 3}, i => i = false);
-    $('#canvas-container').css({'width': '' + canvas.width * canvasZoom + 'px','height':'' + canvas.height * canvasZoom + 'px','transform': 'translate(' + deltaX + 'px,' + deltaY + 'px) scale(' + zoom + ')'});
+    $('#canvas-container').css({'width': '' + cWidth + 'px','height':'' + tHeight + 'px','transform': 'translate(' + deltaX + 'px,' + deltaY + 'px)'});
 
-    var map = new Image();
-    map.onload = function() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.drawImage(map, 0, 0);
-    };
-    map.src = "/img/map.webp";
+    var ctx = new Array();
+    var map = new Array();
+    var count = 0;
+    for(var i = 0; i < 32 ; ++i) {
+        var canvas = document.querySelector('.c'+i);
+            canvas.width = 12544;
+            canvas.height = 1424;
+        var ct = canvas.getContext('2d', {antialias: false});
+            ct.textBaseline = 'middle';
+            ct.textAlign = 'center';
+            ct.font = '16px sans-serif';
+        ctx[i] = ct;
+
+        map[i] = new Image();
+        map[i].src = "/img/map/map_" + i + ".webp";
+        map[i].onload = function() {
+            count++;
+            if(count == 32) {
+                // don't load map or connect to server unless entire map has loaded
+                load();
+                connect();
+            }
+        }
+    }
+
+    function load() {
+        for(var i = 0; i < 32 ; ++i) {
+            ctx[i].clearRect(0, 0, cWidth, cHeight);
+            ctx[i].drawImage(map[i], 0, 0);
+        }
+    }
 
     var playerPointer = new Image();
     playerPointer.src = "/img/map-pointer.webp"
@@ -51,11 +69,13 @@ $(document).ready(function() {
             // deltaX|Y is final translation value, where transX|Y is initial value
             deltaX = transX + (e.clientX - clickX);
             deltaY = transY + (e.clientY - clickY);
-            $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px) scale('+zoom+')', 'transition': ''});
+            $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': ''});
         }
     });
 
     canvasController.addEventListener('wheel', (e) => {
+        var canvasMinZoomRatio = 0.1;
+        var canvasMaxZoomRatio = 4.0;
         e.preventDefault();
         if(e.deltaY !== 0) {
             //var delta = (e.deltaY < 0) ? 0.1 : -0.1;
@@ -71,7 +91,7 @@ $(document).ready(function() {
         const ty = $(this).attr("aria-ty") * -1;
         deltaX = transX = tx + ($('.canvas-main').width()/2);
         deltaY = transY = ty + ($('.canvas-main').height()/2);
-        $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px) scale('+zoom+')', 'transition': 'all 2s'});
+        $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': 'all 2s'});
     });
 
     function connect() {
@@ -97,38 +117,33 @@ $(document).ready(function() {
 
             if(data.startsWith("fetchLatestData:")) {
                 const json = data.substring("fetchLatestData:".length, data.length);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(map, 0, 0);
+                load();
                 $.each(JSON.parse(json), function(username, player) {
-                        $.get("/player/"+player.username, function(data) {
+                    $.get("/player/"+player.username, function(data) {
                         data.includes("LOGGED_IN") ? $(".player-online").append(data) : $(".player-offline").append(data)
-                        const x = (Number(player.position.x)-baseX)*3;
-                        const y = canvas.height - ((Number(player.position.y)-baseY)*3);
+                        const x = (Number(player.position.x)-baseX)*4;
+                        const y = tHeight - ((Number(player.position.y)-baseY)*4);
                         const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
                         pn.attr("aria-tx", x);
                         pn.attr("aria-ty", y);
-                        ctx.drawImage(playerPointer, x, y);
-                        ctx.fillStyle = "#ffffff";
-                        ctx.fillText(player.username + "(level-" + player.combatLevel + ")", x + 16, y + 60);
+                        $("#"+player.username.split(" ").join("-")+"-position").remove();
+                        $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map-pointer.webp'/><span class='player-position-label'>" + player.username + "(level-" + player.combatLevel + ")</span></div>");
                     });
-
                 });
                 return;
             }
 
             if(data.startsWith("broadcastPlayerLocations:")) {
                 const json = data.substring("broadcastPlayerLocations:".length, data.length);
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(map, 0, 0);
+                load();
                 $.each(JSON.parse(json), function(username, player) {
-                    const x = (Number(player.position.x)-baseX)*3;
-                    const y = canvas.height - ((Number(player.position.y)-baseY)*3);
+                    const x = (Number(player.position.x)-baseX)*4;
+                    const y = tHeight - ((Number(player.position.y)-baseY)*4);
                     const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
                     pn.attr("aria-tx", x);
                     pn.attr("aria-ty", y);
-                    ctx.drawImage(playerPointer, x, y);
-                    ctx.fillStyle = "#ffffff";
-                    ctx.fillText(player.username + "(level-" + player.combatLevel + ")", x + 16, y + 60);
+                    $("#"+player.username.split(" ").join("-")+"-position").remove();
+                    $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map-pointer.webp'/><span class='player-position-label'>" + player.username + "(level-" + player.combatLevel + ")</span></div>");
                 });
                 return;
             }
@@ -138,14 +153,13 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username, function(data) {
                     data.includes("LOGGED_IN") ? $(".player-online").append(data) : $(".player-offline").append(data)
-                    const x = (Number(player.position.x)-baseX)*3;
-                    const y = canvas.height - ((Number(player.position.y)-baseY)*3);
+                    const x = (Number(player.position.x)-baseX)*4;
+                    const y = tHeight - ((Number(player.position.y)-baseY)*4);
                     const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
                     pn.attr("aria-tx", x);
                     pn.attr("aria-ty", y);
-                    ctx.drawImage(playerPointer, x, y);
-                    ctx.fillStyle = "#ffffff";
-                    ctx.fillText(player.username + "(level-" + player.combatLevel + ")", x + 16, y + 60);
+                    $("#"+player.username.split(" ").join("-")+"-position").remove();
+                    $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map-pointer.webp'/><span class='player-position-label'>" + player.username + "(level-" + player.combatLevel + ")</span></div>");
                 });
                 return;
             }
@@ -245,6 +259,4 @@ $(document).ready(function() {
             ws.send(data);
         }
     }
-
-    connect();
 })

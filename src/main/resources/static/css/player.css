@@ -20,11 +20,30 @@ canvas {
     image-rendering: crisp-edges;
 }
 
+.canvas {
+    display: block;
+    width: 12544px;
+    height: 1424px;
+}
+
 .canvas-main {
-    background-color: #687DAA;
+    background-color: #50628E;
     overflow: hidden;
     width: 100%;
     height: 800px;
+}
+
+.player-position {
+    position: absolute;
+    color: #ffff00;
+    padding: 4px;
+}
+
+.player-position-label {
+    background: rgba(0,0,0,0.8);
+    padding: 8px;
+    margin-left: 5px;
+    border-radius: 10px;
 }
 
 .thousand {
