@@ -101,11 +101,15 @@ canvas {
     position: absolute;
     top: 10px;
     left: 10px;
+    color: #ffff00;
+}
+
+.feed-item {
     background-color: rgba(0,0,0,0.5);
     padding: 20px;
     padding-bottom: 10px;
     padding-top: 10px;
-    color: #ffff00;
+    margin-bottom: 5px;
 }
 
 .feed-player, .feed-skill {
