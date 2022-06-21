@@ -44,6 +44,10 @@ canvas {
     padding: 8px;
     margin-left: 5px;
     border-radius: 10px;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
 }
 
 .thousand {
@@ -85,6 +89,7 @@ canvas {
     padding: 0px 0px 20px 0px;
     margin: 10px;
     font-size: 14px;
+    border-radius: 5px;
 }
 
 .player-header {
@@ -93,6 +98,8 @@ canvas {
     margin-bottom: 20px;
     padding: 10px;
     color: #ffffff;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
 }
 
 .locator {
@@ -124,12 +131,15 @@ canvas {
 }
 
 .feed-item {
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(59,50,38,0.8);
     padding: 20px;
     padding-bottom: 10px;
     padding-top: 10px;
     margin-bottom: 5px;
     width: fit-content;
+    border: solid;
+    border-radius: 5px;
+    border-color: #575040;
 }
 
 .feed-player, .feed-skill {
