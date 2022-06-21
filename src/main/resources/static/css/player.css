@@ -299,7 +299,7 @@ ul.inventory-ul {
 .inventory-ul li {
     display: inline-block;
     list-style-type: none;
-    margin-top: 6px;
+    margin-top: 3px;
     width: 20%;
 }
 

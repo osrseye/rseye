@@ -4,7 +4,7 @@
     <ul class="bank-ul">
         <li th:each="item: ${playerBank.slots}">
             <a th:href="@{https://oldschool.runescape.wiki/w/__${item.urlName}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}">
-                <img th:src="@{${item.icon}}" width="32"/>
+                <img th:src="@{${item.icon}}" width="36"/>
                 <span th:if="${item.quantity != 1}" th:class="${item.quantity > 99999} ? thousand : (${item.quantity > 9999999} ? million : shrapnel)" th:text="${item.quantityFormatted}"></span>
             </a>
         </li>
