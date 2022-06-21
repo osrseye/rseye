@@ -35,13 +35,13 @@ canvas {
     color: #00ff00!important;
 }
 
+/* PLAYER */
+
 .player-status {
     padding: 10px;
     background-color: rgba(0,0,0,0.8);
     line-height: 1em;
 }
-
-/* PLAYER */
 
 .bank-container, .equipment-container, .inventory-container, .quests-container, .stats-container {
     position: relative;
@@ -69,10 +69,19 @@ canvas {
 }
 
 .player-header {
+    position: relative;
     background-color: rgba(0,0,0,0.5);
     margin-bottom: 20px;
     padding: 10px;
     color: #ffffff;
+}
+
+.locator {
+    position: absolute;
+    top: 0px;
+    right: 5px;
+    font-size: 24px;
+    cursor: pointer;
 }
 
 .tooltip > .tooltip-inner {

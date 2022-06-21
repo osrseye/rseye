@@ -51,7 +51,7 @@ $(document).ready(function() {
             // deltaX|Y is final translation value, where transX|Y is initial value
             deltaX = transX + (e.clientX - clickX);
             deltaY = transY + (e.clientY - clickY);
-            $('#canvas-container').css('transform', 'translate('+deltaX+'px,'+deltaY+'px) scale('+zoom+')');
+            $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px) scale('+zoom+')', 'transition': ''});
         }
     });
 
@@ -64,6 +64,14 @@ $(document).ready(function() {
             //zoom = Math.round(temp * 10) / 10; // deal with strange non-precise math
             //$('#canvas-container').css('transform', 'translate('+deltaX+'px,'+deltaY+'px) scale('+zoom+')');
         }
+    });
+
+    $(document).on('click','[class^=locator]',function() {
+        const tx = $(this).attr("aria-tx") * -1;
+        const ty = $(this).attr("aria-ty") * -1;
+        deltaX = transX = tx + ($('.canvas-main').width()/2);
+        deltaY = transY = ty + ($('.canvas-main').height()/2);
+        $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px) scale('+zoom+')', 'transition': 'all 2s'});
     });
 
     function connect() {
@@ -92,18 +100,18 @@ $(document).ready(function() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(map, 0, 0);
                 $.each(JSON.parse(json), function(username, player) {
-                    var x = (Number(player.position.x)-baseX)*3;
-                    var y = canvas.height - ((Number(player.position.y)-baseY)*3);
-                    ctx.drawImage(playerPointer, x, y);
-                    ctx.fillStyle = "#ffffff";
-                    ctx.fillText(player.username + "(level-" + player.combatLevel + ")", x + 16, y + 60);
-                    $.get("/player/"+player.username, function(data) {
-                        if(data.includes("LOGGED_IN")) {
-                            $(".player-online").append(data);
-                            return;
-                        }
-                        $(".player-offline").append(data);
+                        $.get("/player/"+player.username, function(data) {
+                        data.includes("LOGGED_IN") ? $(".player-online").append(data) : $(".player-offline").append(data)
+                        const x = (Number(player.position.x)-baseX)*3;
+                        const y = canvas.height - ((Number(player.position.y)-baseY)*3);
+                        const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
+                        pn.attr("aria-tx", x);
+                        pn.attr("aria-ty", y);
+                        ctx.drawImage(playerPointer, x, y);
+                        ctx.fillStyle = "#ffffff";
+                        ctx.fillText(player.username + "(level-" + player.combatLevel + ")", x + 16, y + 60);
                     });
+
                 });
                 return;
             }
@@ -113,8 +121,11 @@ $(document).ready(function() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(map, 0, 0);
                 $.each(JSON.parse(json), function(username, player) {
-                    var x = (Number(player.position.x)-baseX)*3;
-                    var y = canvas.height - ((Number(player.position.y)-baseY)*3);
+                    const x = (Number(player.position.x)-baseX)*3;
+                    const y = canvas.height - ((Number(player.position.y)-baseY)*3);
+                    const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
+                    pn.attr("aria-tx", x);
+                    pn.attr("aria-ty", y);
                     ctx.drawImage(playerPointer, x, y);
                     ctx.fillStyle = "#ffffff";
                     ctx.fillText(player.username + "(level-" + player.combatLevel + ")", x + 16, y + 60);
@@ -126,11 +137,15 @@ $(document).ready(function() {
                 const json = data.substring("new_player:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username, function(data) {
-                    if(data.includes("LOGGED_IN")) {
-                        $(".player-online").append(data);
-                        return;
-                    }
-                    $(".player-offline").append(data);
+                    data.includes("LOGGED_IN") ? $(".player-online").append(data) : $(".player-offline").append(data)
+                    const x = (Number(player.position.x)-baseX)*3;
+                    const y = canvas.height - ((Number(player.position.y)-baseY)*3);
+                    const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
+                    pn.attr("aria-tx", x);
+                    pn.attr("aria-ty", y);
+                    ctx.drawImage(playerPointer, x, y);
+                    ctx.fillStyle = "#ffffff";
+                    ctx.fillText(player.username + "(level-" + player.combatLevel + ")", x + 16, y + 60);
                 });
                 return;
             }
@@ -139,15 +154,15 @@ $(document).ready(function() {
                 const json = data.substring("login_state:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/api/v1/player/"+player.username+"/login_state", function(data) {
-                    const playerNode = $("#"+player.username.split(" ").join("-"));
-                    const badge = playerNode.find(".badge");
+                    const pn = $("#"+player.username.split(" ").join("-"));
+                    const badge = pn.find(".badge");
                     if(data == "LOGGED_IN") {
                         badge.removeClass("badge-danger").addClass("badge-success").text("Online");
-                        playerNode.detach().appendTo(".player-online");
+                        pn.detach().appendTo(".player-online");
                         return;
                     }
                     badge.removeClass("badge-success").addClass("badge-danger").text("Offline");
-                    playerNode.detach().appendTo(".player-offline");
+                    pn.detach().appendTo(".player-offline");
                 });
                 return;
             }
