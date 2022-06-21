@@ -43,9 +43,6 @@ $(document).ready(function() {
         }
     }
 
-    var playerPointer = new Image();
-    playerPointer.src = "/img/map-pointer.webp"
-
     canvasController.addEventListener('mousedown', (e) => {
         if(e.button !== 0 && e.button !== 1 && e.button !== 2) { // middle click || right click
             return;
@@ -127,7 +124,7 @@ $(document).ready(function() {
                         pn.attr("aria-tx", x);
                         pn.attr("aria-ty", y);
                         $("#"+player.username.split(" ").join("-")+"-position").remove();
-                        $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map-pointer.webp'/><span class='player-position-label'>" + player.username + "(level-" + player.combatLevel + ")</span></div>");
+                        $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + "(level-" + player.combatLevel + ")</span></div>");
                     });
                 });
                 return;
@@ -143,7 +140,7 @@ $(document).ready(function() {
                     pn.attr("aria-tx", x);
                     pn.attr("aria-ty", y);
                     $("#"+player.username.split(" ").join("-")+"-position").remove();
-                    $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map-pointer.webp'/><span class='player-position-label'>" + player.username + "(level-" + player.combatLevel + ")</span></div>");
+                    $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + "(level-" + player.combatLevel + ")</span></div>");
                 });
                 return;
             }
