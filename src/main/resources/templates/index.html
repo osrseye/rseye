@@ -14,9 +14,9 @@
                 <canvas th:class="${'canvas c'+num}" th:each="num: ${#numbers.sequence(0,31)}"></canvas>
             </div>
         </div>
+        <div class="update-feed"></div>
+        <div id="followed-player"><span class='title-text'>NOT FOLLOWING</span></div>
     </div>
-
-    <div class="update-feed"></div>
 
     <div class="player-status">
         <span class="badge badge-success">Online</span>

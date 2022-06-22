@@ -20,6 +20,13 @@ canvas {
     image-rendering: crisp-edges;
 }
 
+#followed-player, .player-position-label {
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
 .canvas {
     display: block;
     width: 12544px;
@@ -27,6 +34,7 @@ canvas {
 }
 
 .canvas-main {
+    position: relative;
     background-color: #50628E;
     overflow: hidden;
     width: 100%;
@@ -44,10 +52,22 @@ canvas {
     padding: 8px;
     margin-left: 5px;
     border-radius: 10px;
-    user-select: none;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
+}
+
+#followed-player {
+    position: absolute;
+    background: rgba(0,0,0,0.8);
+    bottom: 10px;
+    left: 10px;
+    padding: 10px;
+    padding-top: 7px;
+    line-height: 1em;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+.title-text {
+    font-size: 10px;
 }
 
 .thousand {

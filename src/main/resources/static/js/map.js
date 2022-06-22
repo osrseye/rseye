@@ -6,10 +6,10 @@ $(document).ready(function() {
     var cHeight = 1424;
     var tHeight = cHeight * 32;
     var canvasZoom = 1; // multiplier
-
     var canvasController = document.getElementById('canvas-controller');
     var canvasMouse = Array.from({length: 3}, i => i = false);
     $('#canvas-container').css({'width': '' + cWidth + 'px','height':'' + tHeight + 'px','transform': 'translate(' + deltaX + 'px,' + deltaY + 'px)'});
+    var followedPlayer;
 
     var ctx = new Array();
     var map = new Array();
@@ -67,6 +67,11 @@ $(document).ready(function() {
             deltaX = transX + (e.clientX - clickX);
             deltaY = transY + (e.clientY - clickY);
             $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': ''});
+
+            if(followedPlayer != null) {
+                followedPlayer = null;
+                $('#followed-player').html("<span class='title-text'>NOT FOLLOWING</span>");
+            }
         }
     });
 
@@ -92,12 +97,22 @@ $(document).ready(function() {
 
         if(!$("#"+player.username.split(" ").join("-")+"-position").length) {
             $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + " (level-" + player.combatLevel + ")</span></div>");
-            return;
+        } else {
+            $("#"+player.username.split(" ").join("-")+"-position").css({"top": y, "left": x})
         }
-        $("#"+player.username.split(" ").join("-")+"-position").css({"top": y, "left": x})
+
+        if(followedPlayer != null && followedPlayer.attr("aria-username") === pn.attr("aria-username")) {
+            const tx = pn.attr("aria-tx") * -1;
+            const ty = pn.attr("aria-ty") * -1;
+            deltaX = transX = tx + ($('.canvas-main').width()/2);
+            deltaY = transY = ty + ($('.canvas-main').height()/2);
+            $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': 'all 2s'});
+        }
     }
 
     $(document).on('click','[class^=locator]',function() {
+        followedPlayer = $(this);
+        $('#followed-player').html("<span class='title-text'>FOLLOWING</span><br><span class='feed-player'>" + $(this).attr("aria-username") + "</span>");
         const tx = $(this).attr("aria-tx") * -1;
         const ty = $(this).attr("aria-ty") * -1;
         deltaX = transX = tx + ($('.canvas-main').width()/2);
