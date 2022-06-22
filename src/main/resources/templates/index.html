@@ -8,7 +8,7 @@
     <script src="/js/map.js"></script>
 </head>
 <body>
-    <div class="canvas-main">
+    <div id="map">
         <div id="canvas-controller">
             <div id="canvas-container" class="canvas-container text-center">
                 <canvas th:class="${'canvas c'+num}" th:each="num: ${#numbers.sequence(0,31)}"></canvas>

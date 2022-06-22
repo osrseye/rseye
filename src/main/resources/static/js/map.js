@@ -75,37 +75,37 @@ $(document).ready(function() {
         }
     });
 
-    canvasController.addEventListener('wheel', (e) => {
-        var canvasMinZoomRatio = 0.1;
-        var canvasMaxZoomRatio = 4.0;
-        e.preventDefault();
-        if(e.deltaY !== 0) {
+    //canvasController.addEventListener('wheel', (e) => {
+        //var canvasMinZoomRatio = 0.1;
+        //var canvasMaxZoomRatio = 4.0;
+        //e.preventDefault();
+        //if(e.deltaY !== 0) {
             //var delta = (e.deltaY < 0) ? 0.1 : -0.1;
             //var temp = zoom + delta;
             //temp = (temp < canvasMinZoomRatio) ? canvasMinZoomRatio : temp > canvasMaxZoomRatio ? canvasMaxZoomRatio : temp; // minimum 0.1, maximum 4
             //zoom = Math.round(temp * 10) / 10; // deal with strange non-precise math
             //$('#canvas-container').css('transform', 'translate('+deltaX+'px,'+deltaY+'px) scale('+zoom+')');
-        }
-    });
+        //}
+    //});
 
     function updatePosition(player) {
         const x = (Number(player.position.x)-baseX)*4;
         const y = tHeight - ((Number(player.position.y)-baseY)*4);
-        const pn = $("#"+player.username.split(" ").join("-")).find(".locator");
+        const pn = $("#"+player.urlUsername).find(".locator");
         pn.attr("aria-tx", x);
         pn.attr("aria-ty", y);
 
-        if(!$("#"+player.username.split(" ").join("-")+"-position").length) {
-            $("#canvas-container").append("<div id='"+ player.username.split(" ").join("-") + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + " (level-" + player.combatLevel + ")</span></div>");
+        if(!$("#"+player.urlUsername+"-position").length) {
+            $("#canvas-container").append("<div id='"+ player.urlUsername + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + " (level-" + player.combatLevel + ")</span></div>");
         } else {
-            $("#"+player.username.split(" ").join("-")+"-position").css({"top": y, "left": x})
+            $("#"+player.urlUsername+"-position").css({"top": y, "left": x})
         }
 
         if(followedPlayer != null && followedPlayer.attr("aria-username") === pn.attr("aria-username")) {
             const tx = pn.attr("aria-tx") * -1;
             const ty = pn.attr("aria-ty") * -1;
-            deltaX = transX = tx + ($('.canvas-main').width()/2);
-            deltaY = transY = ty + ($('.canvas-main').height()/2);
+            deltaX = transX = tx + ($('#map').width()/2);
+            deltaY = transY = ty + ($('#map').height()/2);
             $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': 'all 2s'});
         }
     }
@@ -115,13 +115,13 @@ $(document).ready(function() {
         $('#followed-player').html("<span class='title-text'>FOLLOWING</span><br><span class='feed-player'>" + $(this).attr("aria-username") + "</span>");
         const tx = $(this).attr("aria-tx") * -1;
         const ty = $(this).attr("aria-ty") * -1;
-        deltaX = transX = tx + ($('.canvas-main').width()/2);
-        deltaY = transY = ty + ($('.canvas-main').height()/2);
+        deltaX = transX = tx + ($('#map').width()/2);
+        deltaY = transY = ty + ($('#map').height()/2);
         $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': 'all 2s'});
     });
 
     function connect() {
-        ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
+        ws = new WebSocket('ws://' + location.host + ':' + location.port + '/map/events');
 
         ws.onopen = function(event) {
             ping = setInterval(function(){ send("ping"); }, 30000); // ping the server every 30 seconds to keep the connection alive
@@ -167,7 +167,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/api/v1/player/"+player.username+"/login_state", function(data) {
-                    const pn = $("#"+player.username.split(" ").join("-"));
+                    const pn = $("#"+player.urlUsername);
                     const badge = pn.find(".badge");
                     if(data == "LOGGED_IN") {
                         badge.removeClass("badge-danger").addClass("badge-success").text("Online");
@@ -207,7 +207,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/inventory", function(data) {
-                    $("#"+player.username.split(" ").join("-")).find(".inventory-container").replaceWith(data);
+                    $("#"+player.urlUsername).find(".inventory-container").replaceWith(data);
                 });
                 return;
             }
@@ -217,7 +217,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/bank", function(data) {
-                    $("#"+player.username.split(" ").join("-")).find(".bank-container").replaceWith(data);
+                    $("#"+player.urlUsername).find(".bank-container").replaceWith(data);
                 });
                 return;
             }
@@ -227,7 +227,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/stats", function(data) {
-                    $("#"+player.username.split(" ").join("-")).find(".stats-container").replaceWith(data);
+                    $("#"+player.urlUsername).find(".stats-container").replaceWith(data);
                 });
                 return;
             }
@@ -237,7 +237,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/quests", function(data) {
-                    $("#"+player.username.split(" ").join("-")).find(".quests-container").replaceWith(data);
+                    $("#"+player.urlUsername).find(".quests-container").replaceWith(data);
                 });
                 return;
             }
@@ -247,7 +247,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/equipment", function(data) {
-                    $("#"+player.username.split(" ").join("-")).find(".equipment-container").replaceWith(data);
+                    $("#"+player.urlUsername).find(".equipment-container").replaceWith(data);
                 });
                 return;
             }
