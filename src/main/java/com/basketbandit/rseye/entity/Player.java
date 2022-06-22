@@ -17,7 +17,7 @@ public class Player {
 
     public Player() {
         this.loginState = "LOGGED_OUT";
-        this.info = new PlayerInfo("", "", new HashMap<>());
+        this.info = new PlayerInfo("", "", "", new HashMap<>());
         this.stats = new PlayerStats(-1, new HashMap<>());
         this.quests = new PlayerQuests(-1, new ArrayList<>());
         this.equipment = new PlayerEquipment(new HashMap<>());

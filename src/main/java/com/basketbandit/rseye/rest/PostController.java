@@ -207,6 +207,7 @@ public class PostController {
         JsonObject position = info.get("position").getAsJsonObject();
         PlayerInfo playerInfo = new PlayerInfo(
                 info.get("username").getAsString(),
+                info.get("username").getAsString().replace(" ", "_"),
                 info.get("combatLevel").getAsString(),
                 new HashMap<>() {{
                     put("x", position.get("x").getAsString());
