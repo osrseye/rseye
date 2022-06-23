@@ -160,7 +160,7 @@ $(document).ready(function() {
         $('#followed-player-data').html("<div id='followed-player-" + $(this).attr("aria-username-sane") + "'></div>");
         const followedContainers = $('#followed-player-' + $(this).attr("aria-username-sane"));
         followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".equipment-container").clone(true).toggle());
-        followedContainers.append($('#'+$(this).attr("aria-username-sane-")).find(".inventory-container").clone(true));
+        followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".inventory-container").clone(true));
         followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".stats-container").clone(true).toggle());
         followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".quests-container").clone(true).toggle());
         followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".bank-container").clone(true).toggle());
