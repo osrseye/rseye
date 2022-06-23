@@ -150,13 +150,13 @@ $(document).ready(function() {
         $('#quests-button').removeClass("container-visible");
         $('#bank-button').removeClass("container-visible");
         $('#followed-player-ui').removeClass("ui-disabled");
-        $('#followed-player-data').html("<div id='followed-player-" + $(this).attr("aria-username") + "'></div>");
-        const followedContainers = $('#followed-player-' + $(this).attr("aria-username"));
-        followedContainers.append($('#'+$(this).attr("aria-username")).find(".equipment-container").clone(true).toggle());
-        followedContainers.append($('#'+$(this).attr("aria-username")).find(".inventory-container").clone(true));
-        followedContainers.append($('#'+$(this).attr("aria-username")).find(".stats-container").clone(true).toggle());
-        followedContainers.append($('#'+$(this).attr("aria-username")).find(".quests-container").clone(true).toggle());
-        followedContainers.append($('#'+$(this).attr("aria-username")).find(".bank-container").clone(true).toggle());
+        $('#followed-player-data').html("<div id='followed-player-" + $(this).attr("aria-username-sane") + "'></div>");
+        const followedContainers = $('#followed-player-' + $(this).attr("aria-username-sane"));
+        followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".equipment-container").clone(true).toggle());
+        followedContainers.append($('#'+$(this).attr("aria-username-sane-")).find(".inventory-container").clone(true));
+        followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".stats-container").clone(true).toggle());
+        followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".quests-container").clone(true).toggle());
+        followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".bank-container").clone(true).toggle());
     });
 
     /*******************************************************/
