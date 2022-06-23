@@ -4,7 +4,7 @@ body {
 }
 
 a, a:link, a:hover, a:active, a:visited {
-    all: unset!important;
+    all: unset;
     cursor: pointer!important;
 }
 
