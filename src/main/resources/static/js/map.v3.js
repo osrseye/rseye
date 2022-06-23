@@ -313,7 +313,7 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("quest_data:")) {
-                const json = data.substring("quest_change:".length, data.length);
+                const json = data.substring("quest_data:".length, data.length);
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/quests", function(data) {
