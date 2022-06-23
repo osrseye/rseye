@@ -164,7 +164,7 @@ $(document).ready(function() {
     /*******************************************************/
 
     function connect() {
-        ws = new WebSocket('ws://' + location.host + ':' + location.port + '/map/events');
+        ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
 
         ws.onopen = function(event) {
             ping = setInterval(function(){ send("ping"); }, 30000); // ping the server every 30 seconds to keep the connection alive
