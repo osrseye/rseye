@@ -71,6 +71,9 @@ $(document).ready(function() {
             if(followedPlayer != null) {
                 followedPlayer = null;
                 $('#followed-player').html("<span class='title-text'>NOT FOLLOWING</span>");
+                $('#followed-player-ui').addClass("ui-disabled");
+                $('#followed-player-data').html("");
+                $('#followed-player-ui > .container-visible').removeClass("container-visible");
             }
         }
     });
@@ -88,12 +91,23 @@ $(document).ready(function() {
         //}
     //});
 
+    $('.ui-button').click(function() {
+        if(followedPlayer == null) {
+            return;
+        }
+        const container = $('#followed-player-data').find($(this).attr("aria-container")).toggle();
+        container.is(':hidden') ? $(this).removeClass("container-visible") : $(this).addClass("container-visible");
+    });
+
     function updatePosition(player) {
         const x = (Number(player.position.x)-baseX)*4;
         const y = tHeight - ((Number(player.position.y)-baseY)*4);
         const pn = $("#"+player.urlUsername).find(".locator");
+        const map = $("#map-status-"+player.urlUsername);
         pn.attr("aria-tx", x);
         pn.attr("aria-ty", y);
+        map.attr("aria-tx", x);
+        map.attr("aria-ty", y);
 
         if(!$("#"+player.urlUsername+"-position").length) {
             $("#canvas-container").append("<div id='"+ player.urlUsername + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + " (level-" + player.combatLevel + ")</span></div>");
@@ -101,16 +115,26 @@ $(document).ready(function() {
             $("#"+player.urlUsername+"-position").css({"top": y, "left": x})
         }
 
-        if(followedPlayer != null && followedPlayer.attr("aria-username") === pn.attr("aria-username")) {
-            const tx = pn.attr("aria-tx") * -1;
-            const ty = pn.attr("aria-ty") * -1;
+        if(followedPlayer != null && followedPlayer.attr("aria-username") === map.attr("aria-username")) {
+            const tx = map.attr("aria-tx") * -1;
+            const ty = map.attr("aria-ty") * -1;
             deltaX = transX = tx + ($('#map').width()/2);
             deltaY = transY = ty + ($('#map').height()/2);
             $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': 'all 2s'});
         }
     }
 
-    $(document).on('click','[class^=locator]',function() {
+    function updatePlayerContainer(container, player, data) {
+        $("#"+player.urlUsername).find(container).replaceWith(data);
+        if(followedPlayer != null && followedPlayer.attr("aria-username") === player.urlUsername) {
+            const obj = $('#followed-player-' + player.urlUsername).find(container);
+            const style = obj.attr('style');
+            obj.replaceWith(data);
+            $('#followed-player-' + player.urlUsername).find(container).attr("style", style); // have to get dom again since obj will still contain old data even after .replaceWith()
+        }
+    }
+
+    $(document).on('click','[class~=locator]',function() {
         followedPlayer = $(this);
         $('#followed-player').html("<span class='title-text'>FOLLOWING</span><br><span class='feed-player'>" + $(this).attr("aria-username") + "</span>");
         const tx = $(this).attr("aria-tx") * -1;
@@ -118,7 +142,26 @@ $(document).ready(function() {
         deltaX = transX = tx + ($('#map').width()/2);
         deltaY = transY = ty + ($('#map').height()/2);
         $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': 'all 2s'});
+
+        // followed player
+        $('#inventory-button').addClass("container-visible");
+        $('#equipment-button').removeClass("container-visible");
+        $('#stats-button').removeClass("container-visible");
+        $('#quests-button').removeClass("container-visible");
+        $('#bank-button').removeClass("container-visible");
+        $('#followed-player-ui').removeClass("ui-disabled");
+        $('#followed-player-data').html("<div id='followed-player-" + $(this).attr("aria-username") + "'></div>");
+        const followedContainers = $('#followed-player-' + $(this).attr("aria-username"));
+        followedContainers.append($('#'+$(this).attr("aria-username")).find(".equipment-container").clone().toggle());
+        followedContainers.append($('#'+$(this).attr("aria-username")).find(".inventory-container").clone());
+        followedContainers.append($('#'+$(this).attr("aria-username")).find(".stats-container").clone().toggle());
+        followedContainers.append($('#'+$(this).attr("aria-username")).find(".quests-container").clone().toggle());
+        followedContainers.append($('#'+$(this).attr("aria-username")).find(".bank-container").clone().toggle());
     });
+
+    /*******************************************************/
+    /*******************************************************/
+    /*******************************************************/
 
     function connect() {
         ws = new WebSocket('ws://' + location.host + ':' + location.port + '/map/events');
@@ -145,7 +188,13 @@ $(document).ready(function() {
                 const json = data.substring("fetchLatestData:".length, data.length);
                 $.each(JSON.parse(json), function(username, player) {
                     $.get("/player/"+player.username, function(data) {
-                        data.includes("LOGGED_IN") ? $(".player-online").append(data) : $(".player-offline").append(data)
+                        if(data.includes("LOGGED_IN")) {
+                            $(".player-online").append(data);
+                            $("#map-status-"+player.urlUsername).detach().appendTo(".map-player-online");
+                        } else {
+                            $(".player-offline").append(data);
+                            $("#map-status-"+player.urlUsername).detach().appendTo(".map-player-offline");
+                        }
                         updatePosition(player);
                     });
                 });
@@ -157,7 +206,13 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username, function(data) {
-                    data.includes("LOGGED_IN") ? $(".player-online").append(data) : $(".player-offline").append(data)
+                    if(data.includes("LOGGED_IN")) {
+                        $(".player-online").append(data);
+                        $("#map-status-"+player.urlUsername).detach().appendTo(".map-player-online");
+                    } else {
+                        $(".player-offline").append(data);
+                        $("#map-status-"+player.urlUsername).detach().appendTo(".map-player-offline");
+                    }
                 });
                 return;
             }
@@ -168,14 +223,20 @@ $(document).ready(function() {
                 updatePosition(player);
                 $.get("/api/v1/player/"+player.username+"/login_state", function(data) {
                     const pn = $("#"+player.urlUsername);
+                    const map = $("#map-status-"+player.urlUsername);
                     const badge = pn.find(".badge");
+                    const mapBadge = map.find(".badge");
                     if(data == "LOGGED_IN") {
                         badge.removeClass("badge-danger").addClass("badge-success").text("Online");
                         pn.detach().appendTo(".player-online");
+                        mapBadge.removeClass("badge-danger").addClass("badge-success").text("Online");
+                        map.detach().appendTo(".map-player-online");
                         return;
                     }
                     badge.removeClass("badge-success").addClass("badge-danger").text("Offline");
                     pn.detach().appendTo(".player-offline");
+                    mapBadge.removeClass("badge-success").addClass("badge-danger").text("Offline");
+                    map.detach().appendTo(".map-player-offline");
                 });
                 return;
             }
@@ -207,7 +268,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/inventory", function(data) {
-                    $("#"+player.urlUsername).find(".inventory-container").replaceWith(data);
+                    updatePlayerContainer(".inventory-container", player, data);
                 });
                 return;
             }
@@ -217,7 +278,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/bank", function(data) {
-                    $("#"+player.urlUsername).find(".bank-container").replaceWith(data);
+                    updatePlayerContainer(".bank-container", player, data);
                 });
                 return;
             }
@@ -227,7 +288,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/stats", function(data) {
-                    $("#"+player.urlUsername).find(".stats-container").replaceWith(data);
+                    updatePlayerContainer(".stats-container", player, data);
                 });
                 return;
             }
@@ -237,7 +298,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/quests", function(data) {
-                    $("#"+player.urlUsername).find(".quests-container").replaceWith(data);
+                    updatePlayerContainer(".quests-container", player, data);
                 });
                 return;
             }
@@ -247,7 +308,7 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 updatePosition(player);
                 $.get("/player/"+player.username+"/equipment", function(data) {
-                    $("#"+player.urlUsername).find(".equipment-container").replaceWith(data);
+                    updatePlayerContainer(".equipment-container", player, data);
                 });
                 return;
             }

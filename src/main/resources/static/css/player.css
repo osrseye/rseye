@@ -20,6 +20,8 @@ canvas {
     image-rendering: crisp-edges;
 }
 
+/* MAP */
+
 #followed-player, .player-position-label {
     user-select: none;
     -webkit-user-select: none;
@@ -43,17 +45,28 @@ canvas {
     max-height: 100vh;
 }
 
-.player-position {
+#map-player-status {
     position: absolute;
-    color: #ffff00;
-    padding: 4px;
+    width: 400px;
+    top: 10px;
+    right: 0px;
+    padding: 10px;
+    padding-right: 0px;
+    color: #ffffff;
 }
 
-.player-position-label {
-    background: rgba(0,0,0,0.8);
-    padding: 8px;
-    margin-left: 5px;
-    border-radius: 10px;
+.map-player-status-player {
+    padding: 15px;
+    padding-left: 20px;
+    background: rgba(0,0,0,0.75);
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin-bottom: 5px;
+    line-height: 1em;
+}
+
+.map-player-status-player .badge {
+    margin-left: 10px;
 }
 
 #followed-player {
@@ -66,6 +79,48 @@ canvas {
     line-height: 1em;
     color: #ffffff;
     border-radius: 5px;
+}
+
+#followed-player-data {
+    position: absolute;
+    bottom: 54px;
+    right: 20px;
+}
+
+#followed-player-ui {
+    position: absolute;
+    display: inline-flex;
+    bottom: 10px;
+    right: 20px;
+}
+
+#followed-player-ui .btn {
+    height: 48px;
+    width: 62px;
+    background: #726451;
+    border: 2px solid #3C3121!important;
+}
+
+.ui-disabled {
+    filter: grayscale(1) opacity(0.5);
+    transition: all 1s;
+}
+
+.container-visible {
+    background-color: #8b0000!important;
+}
+
+.player-position {
+    position: absolute;
+    color: #ffff00;
+    padding: 4px;
+}
+
+.player-position-label {
+    background: rgba(0,0,0,0.8);
+    padding: 8px;
+    margin-left: 5px;
+    border-radius: 10px;
 }
 
 .title-text {
@@ -125,11 +180,14 @@ canvas {
 }
 
 .locator {
+    cursor: pointer;
+}
+
+.player-header .locator {
     position: absolute;
     top: 0px;
     right: 5px;
     font-size: 24px;
-    cursor: pointer;
 }
 
 .tooltip > .tooltip-inner {
