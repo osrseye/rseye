@@ -3,11 +3,12 @@ package com.basketbandit.rseye.rest;
 import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.AssetManager;
 import com.basketbandit.rseye.Utils;
-import com.basketbandit.rseye.entity.event.Combat;
+import com.basketbandit.rseye.entity.event.CombatEvent;
 import com.basketbandit.rseye.entity.Item;
 import com.basketbandit.rseye.entity.Monster;
 import com.basketbandit.rseye.entity.Player;
-import com.basketbandit.rseye.entity.event.Growth;
+import com.basketbandit.rseye.entity.event.GrowthEvent;
+import com.basketbandit.rseye.entity.event.QuestEvent;
 import com.basketbandit.rseye.entity.fragment.*;
 import com.basketbandit.rseye.socket.MapSocketHandler;
 import com.google.gson.JsonArray;
@@ -50,7 +51,7 @@ public class PostController {
 
             object = object.get("data").getAsJsonObject();
             if(object.has("updatedSkillName")) {
-                Application.growthFeed.add(new Growth(player.info().username(), object.get("updatedSkillName").getAsString(), object.get("updatedSkillLevel").getAsString()));
+                Application.growthFeed.add(new GrowthEvent(player.info().username(), object.get("updatedSkillName").getAsString(), object.get("updatedSkillLevel").getAsString()));
                 broadcastUpdate("level_change", player);
             }
 
@@ -149,17 +150,22 @@ public class PostController {
                 return;
             }
 
-            JsonObject obj = object.get("data").getAsJsonObject();
-            Integer questPoints = obj.get("qp").getAsInt();
+            object = object.get("data").getAsJsonObject();
+            if(object.has("quest")) {
+                Application.questFeed.add(new QuestEvent(player.info().username(), object.get("quest").getAsString(), object.get("state").getAsString()));
+                broadcastUpdate("quest_change", player);
+            }
+
+            Integer questPoints = object.get("qp").getAsInt();
             ArrayList<Quest> quests = new ArrayList<>();
-            JsonArray questArray = obj.get("quests").getAsJsonArray();
+            JsonArray questArray = object.get("quests").getAsJsonArray();
             questArray.forEach(q -> {
                 JsonObject quest = q.getAsJsonObject();
                 quests.add(new Quest(quest.get("id").getAsInt(), quest.get("name").getAsString(), quest.get("state").getAsString()));
             });
             player.setQuests(new PlayerQuests(questPoints, quests));
 
-            broadcastUpdate("quest_change", player);
+            broadcastUpdate("quest_data", player);
         }
     }
 
@@ -185,7 +191,7 @@ public class PostController {
                 loot.add(item);
             });
 
-            Application.combatFeed.add(new Combat(player.info().username() + " (level-" + player.info().combatLevel() + ")", weapon, monster, loot));
+            Application.combatFeed.add(new CombatEvent(player.info().username() + " (level-" + player.info().combatLevel() + ")", weapon, monster, loot));
             if(Application.combatFeed.size() > 100) {
                 Application.combatFeed.remove(0);
             }

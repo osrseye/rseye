@@ -226,7 +226,7 @@ canvas {
     color: #ffff00;
 }
 
-.combat-monster, .combat-loot, .growth-text {
+.combat-monster, .combat-loot, .growth-text, .quest-text {
     color: #ffffff;
 }
 

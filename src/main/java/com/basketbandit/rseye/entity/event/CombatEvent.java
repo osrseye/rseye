@@ -5,5 +5,5 @@ import com.basketbandit.rseye.entity.Monster;
 
 import java.util.ArrayList;
 
-public record Combat(String player, Item weapon, Monster monster, ArrayList<Item> loot) {
+public record CombatEvent(String player, Item weapon, Monster monster, ArrayList<Item> loot) {
 }

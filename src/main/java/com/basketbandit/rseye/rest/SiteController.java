@@ -1,9 +1,10 @@
 package com.basketbandit.rseye.rest;
 
 import com.basketbandit.rseye.Application;
-import com.basketbandit.rseye.entity.event.Combat;
 import com.basketbandit.rseye.entity.Player;
-import com.basketbandit.rseye.entity.event.Growth;
+import com.basketbandit.rseye.entity.event.CombatEvent;
+import com.basketbandit.rseye.entity.event.GrowthEvent;
+import com.basketbandit.rseye.entity.event.QuestEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -75,23 +76,35 @@ public class SiteController {
     public ModelAndView getCombatFeedLatest() {
         int feedSize = Application.combatFeed.size();
         if(feedSize > 0) {
-            Combat combat = Application.combatFeed.get(feedSize - 1);
-            ModelAndView mv = new ModelAndView("./combat/index");
-            mv.addObject("combat", combat);
+            CombatEvent combatEvent = Application.combatFeed.get(feedSize - 1);
+            ModelAndView mv = new ModelAndView("./event/combat/index");
+            mv.addObject("combat", combatEvent);
             return mv;
         }
-        return new ModelAndView("./combat/empty");
+        return new ModelAndView("./event/combat/empty");
     }
 
     @GetMapping("/growth/latest")
     public ModelAndView getGrowthFeedLatest() {
         int feedSize = Application.growthFeed.size();
         if(feedSize > 0) {
-            Growth growth = Application.growthFeed.get(feedSize - 1);
-            ModelAndView mv = new ModelAndView("./growth/index");
-            mv.addObject("growth", growth);
+            GrowthEvent growthEvent = Application.growthFeed.get(feedSize - 1);
+            ModelAndView mv = new ModelAndView("./event/growth/index");
+            mv.addObject("growth", growthEvent);
             return mv;
         }
-        return new ModelAndView("./growth/empty");
+        return new ModelAndView("./event/growth/empty");
+    }
+
+    @GetMapping("/quest/latest")
+    public ModelAndView getQuestFeedLatest() {
+        int feedSize = Application.questFeed.size();
+        if(feedSize > 0) {
+            QuestEvent questEvent = Application.questFeed.get(feedSize - 1);
+            ModelAndView mv = new ModelAndView("./event/quest/index");
+            mv.addObject("quest", questEvent);
+            return mv;
+        }
+        return new ModelAndView("./event/quest/empty");
     }
 }

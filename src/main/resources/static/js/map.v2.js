@@ -271,6 +271,17 @@ $(document).ready(function() {
                 return;
             }
 
+            if(data.startsWith("quest_change:")) {
+                updatePosition(JSON.parse(data.substring("quest_change:".length, data.length)));
+                $.get("/quest/latest", function(data) {
+                    $(".update-feed").prepend(data);
+                });
+                if($('.feed-item').length > 9) {
+                    $('.update-feed').find(".feed-item:last").remove();
+                }
+                return;
+            }
+
             if(data.startsWith("inventory_items:")) {
                 const json = data.substring("inventory_items:".length, data.length);
                 const player = JSON.parse(json);
@@ -301,7 +312,7 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("quest_change:")) {
+            if(data.startsWith("quest_data:")) {
                 const json = data.substring("quest_change:".length, data.length);
                 const player = JSON.parse(json);
                 updatePosition(player);
