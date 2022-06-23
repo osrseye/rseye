@@ -225,7 +225,7 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("login_state")) {
+            if(data.startsWith("login_state:")) {
                 const json = data.substring("login_state:".length, data.length);
                 const player = JSON.parse(json);
                 updatePosition(player);
@@ -249,7 +249,7 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("npc_kill")) {
+            if(data.startsWith("npc_kill:")) {
                 updatePosition(JSON.parse(data.substring("npc_kill:".length, data.length)));
                 $.get("/combat/latest", function(data) {
                     $(".update-feed").prepend(data);
