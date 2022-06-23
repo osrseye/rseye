@@ -99,6 +99,13 @@ $(document).ready(function() {
         container.is(':hidden') ? $(this).removeClass("container-visible") : $(this).addClass("container-visible");
     });
 
+    $(document).on('input','[class~=bank-input]',function() {
+        var value = $(this).val().toLowerCase();
+        $(this).next("ul").find("li").each(function() {
+            $(this).toggle($(this).attr('title').toLowerCase().includes(value));
+        });
+    });
+
     function updatePosition(player) {
         const x = (Number(player.position.x)-baseX)*4;
         const y = tHeight - ((Number(player.position.y)-baseY)*4);
@@ -157,6 +164,7 @@ $(document).ready(function() {
         followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".stats-container").clone(true).toggle());
         followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".quests-container").clone(true).toggle());
         followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".bank-container").clone(true).toggle());
+        followedContainers.find(".bank-container").find(":input").val("").trigger("input"); // stops search input being cloned and resets any toggles
     });
 
     /*******************************************************/

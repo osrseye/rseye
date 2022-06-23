@@ -18,12 +18,5 @@
                 trigger : 'hover'
             })
         })
-
-        $(".bank-input").on("input", function() {
-            var value = $(this).val().toLowerCase();
-            $([(${'"#bank-' + playerInfo.urlUsername + ' li"'})]).each(function() {
-                $(this).toggle($(this).attr('title').toLowerCase().includes(value));
-            });
-        });
     </script>
 </div>
