@@ -1,8 +1,9 @@
 <div class="bank-container">
     <img width="488px" height="311px" src="/img/bank_interface.webp">
     <span class="bank-spaces" th:text="${playerBank.slots.size}"></span>
-    <ul class="bank-ul">
-        <li th:each="item: ${playerBank.slots}">
+    <input class="bank-input" placeholder="Search...">
+    <ul th:id="${'bank-'+playerInfo.urlUsername}" class="bank-ul">
+        <li th:each="item: ${playerBank.slots}" th:title="${item.name}">
             <a th:href="@{https://oldschool.runescape.wiki/w/__${item.urlName}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}">
                 <img th:src="@{${item.icon}}" onError="this.onerror=null;this.src='/img/items/0.png';" width="36"/>
                 <span th:if="${item.quantity != 1}" th:class="${item.quantity > 99999} ? thousand : (${item.quantity > 9999999} ? million : shrapnel)" th:text="${item.quantityFormatted}"></span>
@@ -10,12 +11,19 @@
         </li>
     </ul>
 
-    <script>
+    <script th:inline="javascript">
         /* needs to go somewhere, makes tooltips work */
         $(function () {
             $('[data-toggle="tooltip"]').tooltip({
                 trigger : 'hover'
             })
         })
+
+        $(".bank-input").on("input", function() {
+            var value = $(this).val().toLowerCase();
+            $([(${'"#bank-' + playerInfo.urlUsername + ' li"'})]).each(function() {
+                $(this).toggle($(this).attr('title').toLowerCase().includes(value));
+            });
+        });
     </script>
 </div>

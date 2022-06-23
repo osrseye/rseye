@@ -58,6 +58,7 @@ public class SiteController {
     public ModelAndView getPlayerBank(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
         ModelAndView mv = new ModelAndView("./player/bank");
+        mv.addObject("playerInfo", player.info());
         mv.addObject("playerBank", player.bank());
         return mv;
     }

@@ -283,6 +283,13 @@ ul.bank-ul {
     text-shadow: 1px 1px 2px #000;
 }
 
+.bank-input {
+    position: absolute;
+    top: 38px;
+    left: 8px;
+    width: 472px;
+}
+
 /* EQUIPMENT */
 
 .equipment {

@@ -1,7 +1,7 @@
 $(document).ready(function() {
     var ping;
     var baseX = 1152, baseY = 1215;
-    var clickX = 0, clickY = 0, transX = -7120, transY = -37175, deltaX = -7120, deltaY = -37175, zoom = 1.0; // weird offsets to center pre-zoomed canvas
+    var clickX = 0, clickY = 0, transX = -6650, transY = -36125, deltaX = -6650, deltaY = -36125, zoom = 1.0; // weird offsets to center pre-zoomed canvas
     var cWidth = 12544;
     var cHeight = 1424;
     var tHeight = cHeight * 32;
@@ -152,11 +152,11 @@ $(document).ready(function() {
         $('#followed-player-ui').removeClass("ui-disabled");
         $('#followed-player-data').html("<div id='followed-player-" + $(this).attr("aria-username") + "'></div>");
         const followedContainers = $('#followed-player-' + $(this).attr("aria-username"));
-        followedContainers.append($('#'+$(this).attr("aria-username")).find(".equipment-container").clone().toggle());
-        followedContainers.append($('#'+$(this).attr("aria-username")).find(".inventory-container").clone());
-        followedContainers.append($('#'+$(this).attr("aria-username")).find(".stats-container").clone().toggle());
-        followedContainers.append($('#'+$(this).attr("aria-username")).find(".quests-container").clone().toggle());
-        followedContainers.append($('#'+$(this).attr("aria-username")).find(".bank-container").clone().toggle());
+        followedContainers.append($('#'+$(this).attr("aria-username")).find(".equipment-container").clone(true).toggle());
+        followedContainers.append($('#'+$(this).attr("aria-username")).find(".inventory-container").clone(true));
+        followedContainers.append($('#'+$(this).attr("aria-username")).find(".stats-container").clone(true).toggle());
+        followedContainers.append($('#'+$(this).attr("aria-username")).find(".quests-container").clone(true).toggle());
+        followedContainers.append($('#'+$(this).attr("aria-username")).find(".bank-container").clone(true).toggle());
     });
 
     /*******************************************************/
