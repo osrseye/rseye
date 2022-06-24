@@ -106,6 +106,13 @@ canvas {
     transition: all 1s;
 }
 
+.placeholder {
+
+    filter: opacity(0.5);
+    background-color: transparent;
+    cursor: pointer;
+}
+
 .container-visible {
     background-color: #8b0000!important;
 }

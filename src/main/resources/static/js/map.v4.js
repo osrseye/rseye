@@ -1,11 +1,16 @@
 $(document).ready(function() {
     var ping;
-    var baseX = 1152, baseY = 1215;
-    var clickX = 0, clickY = 0, transX = -6650, transY = -36125, deltaX = -6650, deltaY = -36125, zoom = 1.0; // weird offsets to center pre-zoomed canvas
+    var baseX = 1152;
+    var baseY = 1215;
+    var clickX = 0;
+    var clickY = 0;
+    var transX = -6650;
+    var transY = -36125;
+    var deltaX = -6650;
+    var deltaY = -36125;
     var cWidth = 12544;
     var cHeight = 1424;
     var tHeight = cHeight * 32;
-    var canvasZoom = 1; // multiplier
     var canvasController = document.getElementById('canvas-controller');
     var canvasMouse = Array.from({length: 3}, i => i = false);
     $('#canvas-container').css({'width': '' + cWidth + 'px','height':'' + tHeight + 'px','transform': 'translate(' + deltaX + 'px,' + deltaY + 'px)'});
@@ -27,10 +32,8 @@ $(document).ready(function() {
         map[i] = new Image();
         map[i].src = "/img/map/map_" + i + ".webp";
         map[i].onload = function() {
-            count++;
-            if(count == 32) {
-                // don't load map or connect to server unless entire map has loaded
-                load();
+            if(count++ == 31) {
+                load(); // don't load map or connect to server unless entire map has loaded
                 connect();
             }
         }
@@ -77,19 +80,6 @@ $(document).ready(function() {
             }
         }
     });
-
-    //canvasController.addEventListener('wheel', (e) => {
-        //var canvasMinZoomRatio = 0.1;
-        //var canvasMaxZoomRatio = 4.0;
-        //e.preventDefault();
-        //if(e.deltaY !== 0) {
-            //var delta = (e.deltaY < 0) ? 0.1 : -0.1;
-            //var temp = zoom + delta;
-            //temp = (temp < canvasMinZoomRatio) ? canvasMinZoomRatio : temp > canvasMaxZoomRatio ? canvasMaxZoomRatio : temp; // minimum 0.1, maximum 4
-            //zoom = Math.round(temp * 10) / 10; // deal with strange non-precise math
-            //$('#canvas-container').css('transform', 'translate('+deltaX+'px,'+deltaY+'px) scale('+zoom+')');
-        //}
-    //});
 
     $('.ui-button').click(function() {
         if(followedPlayer == null) {
@@ -144,18 +134,13 @@ $(document).ready(function() {
     $(document).on('click','[class~=locator]',function() {
         followedPlayer = $(this);
         $('#followed-player').html("<span class='title-text'>FOLLOWING</span><br><span class='feed-player'>" + $(this).attr("aria-username") + "</span>");
-        const tx = $(this).attr("aria-tx") * -1;
-        const ty = $(this).attr("aria-ty") * -1;
-        deltaX = transX = tx + ($('#map').width()/2);
-        deltaY = transY = ty + ($('#map').height()/2);
+        deltaX = transX = ($(this).attr("aria-tx")*-1) + ($('#map').width()/2);
+        deltaY = transY = ($(this).attr("aria-ty")*-1) + ($('#map').height()/2);
         $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': 'all 2s'});
 
         // followed player
         $('#inventory-button').addClass("container-visible");
-        $('#equipment-button').removeClass("container-visible");
-        $('#stats-button').removeClass("container-visible");
-        $('#quests-button').removeClass("container-visible");
-        $('#bank-button').removeClass("container-visible");
+        $('#equipment-button, #stats-button, #quests-button, #bank-button').removeClass("container-visible");
         $('#followed-player-ui').removeClass("ui-disabled");
         $('#followed-player-data').html("<div id='followed-player-" + $(this).attr("aria-username-sane") + "'></div>");
         const followedContainers = $('#followed-player-' + $(this).attr("aria-username-sane"));
@@ -172,11 +157,11 @@ $(document).ready(function() {
     /*******************************************************/
 
     function connect() {
-        ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
+        ws = new WebSocket('ws://' + location.host + ':' + location.port + '/map/events');
 
         ws.onopen = function(event) {
             ping = setInterval(function(){ send("ping"); }, 30000); // ping the server every 30 seconds to keep the connection alive
-            $(".player-data").empty(); // newZoom solution to disconnects (might flicker !BAD!)
+            $(".player-data").empty(); // solution to disconnects (might flicker !BAD!)
             send("fetchLatestData");
         };
 
