@@ -83,7 +83,7 @@ public class PostController {
                 JsonObject o = i.getAsJsonObject();
                 Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
                 item.quantity = item.isPlaceholder ? 0 : o.get("quantity").getAsInt();
-                item.quantityFormatted = Utils.formatNumber(o.get("quantity").getAsInt());
+                item.quantityFormatted = item.isPlaceholder ? "0" : Utils.formatNumber(o.get("quantity").getAsInt());
                 bank.add(item);
             });
             player.setBank(new PlayerBank(value, bank));
