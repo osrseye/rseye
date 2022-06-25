@@ -1,2 +1,1 @@
-Bearer: 9$qca#kX%4HQsAVs
-pkcs12: BX*wx/X:7H#^aMk/
+Bearer: token
