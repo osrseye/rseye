@@ -112,7 +112,7 @@ $(document).ready(function() {
             $("#"+player.urlUsername+"-position").css({"top": y, "left": x})
         }
 
-        if(followedPlayer != null && followedPlayer.attr("aria-username") === map.attr("aria-username")) {
+        if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === map.attr("aria-username-sane")) {
             const tx = map.attr("aria-tx") * -1;
             const ty = map.attr("aria-ty") * -1;
             deltaX = transX = tx + ($('#map').width()/2);
@@ -123,7 +123,7 @@ $(document).ready(function() {
 
     function updatePlayerContainer(container, player, data) {
         $("#"+player.urlUsername).find(container).replaceWith(data);
-        if(followedPlayer != null && followedPlayer.attr("aria-username") === player.urlUsername) {
+        if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === player.urlUsername) {
             const obj = $('#followed-player-' + player.urlUsername).find(container);
             const style = obj.attr('style');
             obj.replaceWith(data);
