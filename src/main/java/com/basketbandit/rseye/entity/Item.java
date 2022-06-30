@@ -2,6 +2,7 @@ package com.basketbandit.rseye.entity;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 public class Item {
     public String id;
@@ -34,5 +35,18 @@ public class Item {
         this.quantity = item.quantity;
         this.highAlchValue = item.highAlchValue;
         this.isPlaceholder = item.isPlaceholder;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Item item = (Item) o;
+        return highAlchValue == item.highAlchValue && quantity == item.quantity && isPlaceholder == item.isPlaceholder && Objects.equals(id, item.id) && Objects.equals(name, item.name) && Objects.equals(urlName, item.urlName) && Objects.equals(icon, item.icon) && Objects.equals(quantityFormatted, item.quantityFormatted);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, urlName, icon, highAlchValue, quantity, quantityFormatted, isPlaceholder);
     }
 }
