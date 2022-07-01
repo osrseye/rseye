@@ -14,7 +14,7 @@ public class PlayerStateCheckTask implements Task {
         try {
             Application.players.forEach((s, player) -> {
                 if(player.loginStateChanged()) {
-                    MapSocketHandler.broadcastUpdate("login_state", player.info());
+                    MapSocketHandler.broadcastUpdate("login_update", player);
                 }
             });
         } catch(Exception e) {
