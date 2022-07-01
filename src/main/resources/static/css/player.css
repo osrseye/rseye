@@ -212,6 +212,23 @@ canvas {
     display: none !important;
 }
 
+.hitpoints-container .progress, .prayer-container .progress {
+    position: relative;
+    width: 90%;
+    height: 30px;
+    margin: auto;
+    margin-bottom: 2px;
+}
+
+.current-hitpoints, .current-prayer {
+    position: absolute;
+    width: 100%;
+    line-height: 30px;
+    text-shadow: 1px 1px 2px #000;
+    text-align: center;
+    color: #ffffff;
+}
+
 /* UPDATE FEED */
 
 .update-feed {
