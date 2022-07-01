@@ -4,7 +4,7 @@
         <img th:src="@{${combat.weapon.icon}}" onError="this.onerror=null;this.src='/img/items/0.png';" width="36" />
     </a>
     <span th:if="${combat.weapon == null}"> 💀 </span>
-    <span class="combat-monster" th:text="${combat.monster.name}"></span>
+    <span class="combat-monster" th:text="${combat.monster.name + ' (level-' + combat.monster.combatLevel + ')'}"></span>
     <span th:if="${combat.loot.size > 0}" class="combat-loot">
         [
             <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.urlName}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}" th:each="item: ${combat.loot}">
