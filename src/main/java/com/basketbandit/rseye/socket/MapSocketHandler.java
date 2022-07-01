@@ -2,7 +2,7 @@ package com.basketbandit.rseye.socket;
 
 import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.entity.Player;
-import com.basketbandit.rseye.entity.fragment.PlayerInfo;
+import com.basketbandit.rseye.entity.fragment.PlayerInformation;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +21,10 @@ public class MapSocketHandler extends TextWebSocketHandler {
     private static final Logger log = LoggerFactory.getLogger(MapSocketHandler.class);
     private static final CopyOnWriteArrayList<WebSocketSession> clients = new CopyOnWriteArrayList<>();
     private static final Gson gson = new Gson();
-    private record Username(String username, String urlUsername){}; // using records facilitates the creation of serializable objects without any boilerplate
+    private record Username(String username, String usernameEncoded){}; // using records facilitates the creation of serializable objects without any boilerplate
 
     public synchronized static void broadcastUpdate(String updateType, Player player) {
-        String payload = updateType.equals("position_update") ? gson.toJson(player.info()) : gson.toJson(new Username(player.info().username(), player.info().urlUsername()));
+        String payload = updateType.equals("position_update") ? gson.toJson(player.information()) : gson.toJson(new Username(player.information().username(), player.information().usernameEncoded()));
         clients.forEach(client -> {
             try {
                 client.sendMessage(new TextMessage(updateType + ":" + payload));
@@ -43,10 +43,10 @@ public class MapSocketHandler extends TextWebSocketHandler {
             }
 
             if(message.getPayload().equals("fetchLatestData")) {
-                HashMap<String, PlayerInfo> hashMap = new HashMap<>();
+                HashMap<String, PlayerInformation> hashMap = new HashMap<>();
                 Application.players.keySet().forEach(username -> {
                     Player player = Application.players.get(username);
-                    hashMap.put(username, player.info());
+                    hashMap.put(username, player.information());
                 });
                 session.sendMessage(new TextMessage("fetchLatestData:" + gson.toJson(hashMap)));
                 return;

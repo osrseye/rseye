@@ -55,7 +55,7 @@ public class PostController {
                 put("plane", p.get("plane").getAsString());
             }};
 
-            player.setInfo(new PlayerInfo(player.info().username(), player.info().urlUsername(), player.info().combatLevel(), position));
+            player.setInformation(new PlayerInformation(player.information().username(), player.information().usernameEncoded(), player.information().combatLevel(), position));
             broadcastUpdate("position_update", player);
         }
     }
@@ -75,7 +75,7 @@ public class PostController {
 
                 int currentLevel = skills.get(stat.get("skill").getAsString()).get("level");
                 if(currentLevel != 0 && currentLevel < stat.get("level").getAsInt()) {
-                    Application.growthFeed.add(new GrowthEvent(player.info().username(), Utils.toPascal(stat.get("skill").getAsString()), stat.get("level").getAsString()));
+                    Application.growthFeed.add(new GrowthEvent(player.information().username(), Utils.toPascal(stat.get("skill").getAsString()), stat.get("level").getAsString()));
                     broadcastUpdate("stat_update", player);
                 }
 
@@ -91,7 +91,7 @@ public class PostController {
                 totalLevel += skill.get("level");
             }
 
-            player.setInfo(new PlayerInfo(player.info().username(), player.info().urlUsername(), object.get("combatLevel").getAsString(), player.info().position()));
+            player.setInformation(new PlayerInformation(player.information().username(), player.information().usernameEncoded(), object.get("combatLevel").getAsString(), player.information().position()));
             player.setStats(new PlayerStats(totalLevel, skills));
 
             broadcastUpdate("stat_data", player);
@@ -187,7 +187,7 @@ public class PostController {
             if(questArray.size() < 3) {
                 for(int i = 0; i < questArray.size(); i++) {
                     JsonObject quest = questArray.get(i).getAsJsonObject();
-                    Application.questFeed.add(new QuestEvent(player.info().username(), quest.get("name").getAsString(), quest.get("state").getAsString()));
+                    Application.questFeed.add(new QuestEvent(player.information().username(), quest.get("name").getAsString(), quest.get("state").getAsString()));
                     broadcastUpdate("quest_update", player);
                 }
             }
@@ -224,7 +224,7 @@ public class PostController {
                 loot.add(item);
             });
 
-            Application.combatFeed.add(new CombatEvent(player.info().username() + " (level-" + player.info().combatLevel() + ")", weapon, monster, loot));
+            Application.combatFeed.add(new CombatEvent(player.information().username() + " (level-" + player.information().combatLevel() + ")", weapon, monster, loot));
             if(Application.combatFeed.size() > 100) {
                 Application.combatFeed.remove(0);
             }
@@ -244,8 +244,8 @@ public class PostController {
 
         String username = object.get("username").getAsString();
         Player player = Application.players.containsKey(username) ? Application.players.get(username) : new Player();
-        if(!player.info().username().equals(username)) {
-            player.setInfo(new PlayerInfo(username, username.replace(" ", "_"), "3", new HashMap<>()));
+        if(!player.information().username().equals(username)) {
+            player.setInformation(new PlayerInformation(username, username.replace(" ", "_"), "3", new HashMap<>()));
             Application.players.put(username, player);
             broadcastUpdate("new_player", player);
         }

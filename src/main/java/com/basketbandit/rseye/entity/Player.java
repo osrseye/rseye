@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class Player {
     private String loginState;
-    private PlayerInfo info;
+    private PlayerInformation information;
     private PlayerStats stats;
     private PlayerQuests quests;
     private PlayerEquipment equipment;
@@ -17,7 +17,7 @@ public class Player {
 
     public Player() {
         this.loginState = "LOGGED_OUT";
-        this.info = new PlayerInfo("", "", "", new HashMap<>());
+        this.information = new PlayerInformation("", "", "", new HashMap<>());
         this.stats = new PlayerStats(32, new HashMap<>(){{
             // initialising this map makes life easier
             put("ATTACK", new HashMap<>(){{
@@ -163,8 +163,8 @@ public class Player {
         return loginState;
     }
 
-    public PlayerInfo info() {
-        return info;
+    public PlayerInformation information() {
+        return information;
     }
 
     public PlayerStats stats() {
@@ -192,8 +192,8 @@ public class Player {
         this.lastUpdate = loginState.equals("LOGGED_IN") ? System.currentTimeMillis() : System.currentTimeMillis() - 600000; // make the time 10 minutes in the past so not logged back in
     }
 
-    public void setInfo(PlayerInfo info) {
-        this.info = info;
+    public void setInformation(PlayerInformation information) {
+        this.information = information;
         this.lastUpdate = System.currentTimeMillis();
     }
 

@@ -23,8 +23,8 @@ public class GetController {
     }
 
     @GetMapping("/api/v1/player/{username}/information")
-    public PlayerInfo getPlayerInformation(@PathVariable("username") String username) {
-        return Application.players.getOrDefault(username, new Player()).info();
+    public PlayerInformation getPlayerInformation(@PathVariable("username") String username) {
+        return Application.players.getOrDefault(username, new Player()).information();
     }
 
     @GetMapping("/api/v1/player/{username}/inventory")
@@ -58,11 +58,11 @@ public class GetController {
     }
 
     @GetMapping("/api/v1/position/all")
-    public HashMap<String, PlayerInfo> getPositions() {
-        HashMap<String, PlayerInfo> hashMap = new HashMap<>();
+    public HashMap<String, PlayerInformation> getPositions() {
+        HashMap<String, PlayerInformation> hashMap = new HashMap<>();
         Application.players.keySet().forEach(username -> {
             Player player = Application.players.get(username);
-            hashMap.put(username, player.info());
+            hashMap.put(username, player.information());
         });
         return hashMap;
     }
