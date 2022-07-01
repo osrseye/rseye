@@ -21,17 +21,17 @@ public class MapSocketHandler extends TextWebSocketHandler {
     private static final Logger log = LoggerFactory.getLogger(MapSocketHandler.class);
     private static final CopyOnWriteArrayList<WebSocketSession> clients = new CopyOnWriteArrayList<>();
     private static final Gson gson = new Gson();
+    private record Username(String username, String urlUsername){}; // using records facilitates the creation of serializable objects without any boilerplate
 
-    public static void broadcastUpdate(String updateType, PlayerInfo player) {
-        synchronized(clients) {
-            clients.forEach(client -> {
-                try {
-                    client.sendMessage(new TextMessage(updateType + ":" + gson.toJson(player)));
-                } catch(IOException e) {
-                    log.warn("There was a problem contacting client, reason: {}", e.getMessage(), e);
-                }
-            });
-        }
+    public synchronized static void broadcastUpdate(String updateType, Player player) {
+        String payload = updateType.equals("position_update") ? gson.toJson(player.info()) : gson.toJson(new Username(player.info().username(), player.info().urlUsername()));
+        clients.forEach(client -> {
+            try {
+                client.sendMessage(new TextMessage(updateType + ":" + payload));
+            } catch(IOException e) {
+                log.warn("There was a problem contacting client, reason: {}", e.getMessage(), e);
+            }
+        });
     }
 
     @Override
@@ -54,7 +54,6 @@ public class MapSocketHandler extends TextWebSocketHandler {
 
             if(message.getPayload().equals("ping")) {
                 session.sendMessage(new TextMessage("pong"));
-                return;
             }
         } catch(Exception e) {
             log.error("There was an error handling message: {}", e.getMessage(), e);
@@ -64,24 +63,10 @@ public class MapSocketHandler extends TextWebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         clients.add(session);
-        clients.forEach(client -> {
-            try {
-                client.sendMessage(new TextMessage("clients:" + clients.size()));
-            } catch(Exception e) {
-                log.warn("There was a problem contacting client, reason: {}", e.getMessage(), e);
-            }
-        });
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
         clients.remove(session);
-        clients.forEach(client -> {
-            try {
-                client.sendMessage(new TextMessage("clients:" + clients.size()));
-            } catch(Exception e) {
-                log.warn("There was a problem contacting client, reason: {}", e.getMessage(), e);
-            }
-        });
     }
 }
