@@ -33,7 +33,7 @@ public class AssetManager {
         try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/monsters-cache-data.json"), StandardCharsets.UTF_8))) {
             Gson gson = new Gson();
             JsonObject obj = gson.fromJson(r, JsonObject.class);
-            obj.keySet().forEach(key -> monsters.put(key, new Monster(key, obj.get(key).getAsJsonObject().get("name").getAsString())));
+            obj.keySet().forEach(key -> monsters.put(key, new Monster(key, obj.get(key).getAsJsonObject().get("name").getAsString(), obj.get(key).getAsJsonObject().get("combatLevel").getAsInt())));
             log.info("Successfully parsed " + monsters.keySet().size() + " monsters");
         } catch(Exception e) {
             log.error("There was an issue loading assets: {}", e.getMessage(), e);
