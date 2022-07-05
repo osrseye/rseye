@@ -206,7 +206,7 @@ $(document).ready(function() {
             if(data.startsWith("login_update:")) {
                 const json = data.substring("login_update:".length, data.length);
                 const player = JSON.parse(json);
-                $.get("/api/v1/player/"+player.username+"/login_state", function(data) {
+                $.get("/api/v2/player/"+player.username+"/login_state", function(data) {
                     const pn = $("#"+player.usernameEncoded);
                     const map = $("#map-status-"+player.usernameEncoded);
                     const badge = pn.find(".badge");
