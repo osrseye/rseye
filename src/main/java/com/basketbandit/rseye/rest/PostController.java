@@ -6,6 +6,7 @@ import com.basketbandit.rseye.Utils;
 import com.basketbandit.rseye.entity.Item;
 import com.basketbandit.rseye.entity.Monster;
 import com.basketbandit.rseye.entity.Player;
+import com.basketbandit.rseye.entity.Quest;
 import com.basketbandit.rseye.entity.event.CombatEvent;
 import com.basketbandit.rseye.entity.event.GrowthEvent;
 import com.basketbandit.rseye.entity.event.QuestEvent;
