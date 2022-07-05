@@ -3,6 +3,7 @@ package com.basketbandit.rseye.socket;
 import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.fragment.PlayerInformation;
+import com.basketbandit.rseye.rest.UpdateType;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +24,11 @@ public class MapSocketHandler extends TextWebSocketHandler {
     private static final Gson gson = new Gson();
     private record Username(String username, String usernameEncoded){}; // using records facilitates the creation of serializable objects without any boilerplate
 
-    public synchronized static void broadcastUpdate(String updateType, Player player) {
-        String payload = updateType.equals("position_update") ? gson.toJson(player.information()) : gson.toJson(new Username(player.information().username(), player.information().usernameEncoded()));
+    public synchronized static void broadcastUpdate(UpdateType updateType, Player player) {
+        String payload = updateType.value.equals("position_update") ? gson.toJson(player.information()) : gson.toJson(new Username(player.information().username(), player.information().usernameEncoded()));
         clients.forEach(client -> {
             try {
-                client.sendMessage(new TextMessage(updateType + ":" + payload));
+                client.sendMessage(new TextMessage(updateType.value + ":" + payload));
             } catch(IOException e) {
                 log.warn("There was a problem contacting client, reason: {}", e.getMessage(), e);
             }
