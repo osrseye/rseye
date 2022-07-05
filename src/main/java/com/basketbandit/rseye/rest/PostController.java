@@ -71,18 +71,25 @@ public class PostController {
 
             HashMap<String, HashMap<String, Integer>> skills = player.stats().stats();
             object.get("statChanges").getAsJsonArray().forEach(s -> {
-                JsonObject stat = s.getAsJsonObject();
+                JsonObject statUpdate = s.getAsJsonObject();
+                String skill = statUpdate.get("skill").getAsString();
+                HashMap<String, Integer> statCurrent = skills.get(skill);
 
-                int currentLevel = skills.get(stat.get("skill").getAsString()).get("level");
-                if(currentLevel != 0 && currentLevel < stat.get("level").getAsInt()) {
-                    Application.growthFeed.add(new GrowthEvent(player.information().username(), Utils.toPascal(stat.get("skill").getAsString()), stat.get("level").getAsString()));
+                // determine if the player has leveled-up a stat
+                if(statCurrent.get("level") != 0 && statCurrent.get("level") < statUpdate.get("level").getAsInt()) {
+                    Application.growthFeed.add(new GrowthEvent(player.information().username(), Utils.toPascal(statUpdate.get("skill").getAsString()), statUpdate.get("level").getAsString()));
                     broadcastUpdate("stat_update", player);
                 }
 
-                skills.put(stat.get("skill").getAsString(), new HashMap<>(){{
-                    put("level", stat.get("level").getAsInt());
-                    put("xp", stat.get("xp").getAsInt());
-                    put("boostedLevel", stat.get("boostedLevel").getAsInt());
+                // determine if the players current prayer or hitpoints have changed
+                if((skill.equals("HITPOINTS") || skill.equals("PRAYER")) && statCurrent.get("boostedLevel") != statUpdate.get("boostedLevel").getAsInt()) {
+                    broadcastUpdate("status_update", player);
+                }
+
+                skills.put(statUpdate.get("skill").getAsString(), new HashMap<>(){{
+                    put("level", statUpdate.get("level").getAsInt());
+                    put("xp", statUpdate.get("xp").getAsInt());
+                    put("boostedLevel", statUpdate.get("boostedLevel").getAsInt());
                 }});
             });
 

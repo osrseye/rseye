@@ -39,6 +39,14 @@ public class SiteController {
         return mv;
     }
 
+    @GetMapping("/player/{username}/status")
+    public ModelAndView getPlayerStatus(@PathVariable("username") String username) {
+        Player player = Application.players.getOrDefault(username, new Player());
+        ModelAndView mv = new ModelAndView("./player/status");
+        mv.addObject("stats", player.stats());
+        return mv;
+    }
+
     @GetMapping("/player/{username}/equipment")
     public ModelAndView getPlayerEquipment(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());

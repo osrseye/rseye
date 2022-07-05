@@ -106,11 +106,8 @@ $(document).ready(function() {
         map.attr("aria-tx", x);
         map.attr("aria-ty", y);
 
-        if(!$("#"+player.usernameEncoded+"-position").length) {
-            $("#canvas-container").append("<div id='"+ player.usernameEncoded + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + " (level-" + player.combatLevel + ")</span></div>");
-        } else {
-            $("#"+player.usernameEncoded+"-position").css({"top": y, "left": x})
-        }
+        // update marker on the map
+        $("#"+player.usernameEncoded+"-position").css({"top": y, "left": x})
 
         if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === map.attr("aria-username-sane")) {
             const tx = map.attr("aria-tx") * -1;
@@ -188,6 +185,7 @@ $(document).ready(function() {
                             $(".player-offline").append(data);
                             $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-offline");
                         }
+                        $("#"+player.usernameEncoded+"-position").detach().appendTo('#canvas-container');
                         updatePosition(player);
                     });
                 });
@@ -198,13 +196,9 @@ $(document).ready(function() {
                 const json = data.substring("new_player:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username, function(data) {
-                    if(data.includes("LOGGED_IN")) {
-                        $(".player-online").append(data);
-                        $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-online");
-                    } else {
-                        $(".player-offline").append(data);
-                        $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-offline");
-                    }
+                    $(".player-offline").append(data);
+                    $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-offline");
+                    $("#"+player.usernameEncoded+"-position").detach().appendTo('#canvas-container');
                 });
                 return;
             }
@@ -290,6 +284,17 @@ $(document).ready(function() {
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username+"/equipment", function(data) {
                     updatePlayerContainer(".equipment-container", player, data);
+                });
+                return;
+            }
+
+            if(data.startsWith("status_update")) {
+                // loads the player current hitpoints/prayer
+                const json = data.substring("status_update:".length, data.length);
+                const player = JSON.parse(json);
+                $.get("/player/"+player.username+"/status", function(data) {
+                    $("#"+player.usernameEncoded).find(".player-current-state").replaceWith(data);
+                    $("#"+player.usernameEncoded+"-position").find(".player-current-state").replaceWith(data);
                 });
                 return;
             }

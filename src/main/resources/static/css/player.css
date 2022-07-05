@@ -22,7 +22,7 @@ canvas {
 
 /* MAP */
 
-#followed-player, .player-position-label {
+#followed-player, .player-position {
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -107,7 +107,6 @@ canvas {
 }
 
 .placeholder {
-
     filter: opacity(0.5);
     background-color: transparent;
     cursor: pointer;
@@ -120,14 +119,55 @@ canvas {
 .player-position {
     position: absolute;
     color: #ffff00;
-    padding: 4px;
+    width: 275px;
+    background: rgba(0,0,0,0.8);
+    margin-left: 4px;
+    margin-top: 4px;
+    border-radius: 5px;
 }
 
-.player-position-label {
-    background: rgba(0,0,0,0.8);
-    padding: 8px;
-    margin-left: 5px;
-    border-radius: 10px;
+.player-position .progress {
+    width: 130px !important;
+}
+
+.player-position .hitpoints-container, .player-position .prayer-container {
+    display: inline-block !important;
+    margin-bottom: 0px !important;
+}
+
+.player-position .mb-2 {
+    margin: 0!important;
+}
+
+.player-position-marker {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    margin: -4px;
+    background-color: white;
+    top: 0;
+    left: 0;
+    border-radius: 3px;
+}
+
+.player-position-information {
+    width: 200px;
+    height: 60px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: space-around;
+    vertical-align: middle;
+}
+
+.player-position-image {
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    padding: 5px;
+    background: rgba(50,50,50,0.4);
+    border-radius: 5px;
 }
 
 .title-text {
