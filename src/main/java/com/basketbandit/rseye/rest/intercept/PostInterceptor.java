@@ -42,8 +42,7 @@ public class PostInterceptor implements HandlerInterceptor {
         }
 
         request.setAttribute("player", player);
-        request.setAttribute("data", object);
-
+        request.setAttribute("object", object);
         return true;
     }
 }
