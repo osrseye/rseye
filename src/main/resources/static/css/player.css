@@ -130,6 +130,15 @@ canvas {
     width: 130px !important;
 }
 
+
+.hitpoints-container .progress {
+    background-color: #dc3545;
+}
+
+.prayer-container .progress {
+    background-color: #004085;
+}
+
 .player-position .hitpoints-container, .player-position .prayer-container {
     display: inline-block !important;
     margin-bottom: 0px !important;

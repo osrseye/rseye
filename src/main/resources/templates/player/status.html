@@ -1,14 +1,14 @@
 <div class="player-current-state mb-2">
     <div class="hitpoints-container">
         <div class="progress">
-            <div class="progress-bar bg-danger" role="progressbar" th:style="${'width: ' + (stats.stats.HITPOINTS.boostedLevel * 100) / (stats.stats.HITPOINTS.level > 0 ? stats.stats.HITPOINTS.level : 1) + '%'}" aria-valuenow="${stats.stats.HITPOINTS.boostedLevel}" aria-valuemin="0" th:aria-valuemax="${stats.stats.HITPOINTS.level}"></div>
+            <div class="progress-bar progress-hitpoints bg-success" role="progressbar" th:style="${'width: ' + (stats.stats.HITPOINTS.boostedLevel * 100) / (stats.stats.HITPOINTS.level > 0 ? stats.stats.HITPOINTS.level : 1) + '%'}" aria-valuenow="${stats.stats.HITPOINTS.boostedLevel}" aria-valuemin="0" th:aria-valuemax="${stats.stats.HITPOINTS.level}"></div>
             <span class="current-hitpoints" th:text="${stats.stats.HITPOINTS.boostedLevel + '/' + stats.stats.HITPOINTS.level}"></span>
         </div>
     </div>
 
     <div class="prayer-container">
         <div class="progress">
-            <div class="progress-bar bg-info" role="progressbar" th:style="${'width: ' + (stats.stats.PRAYER.boostedLevel * 100) / (stats.stats.PRAYER.level > 0 ? stats.stats.PRAYER.level : 1)  + '%'}" aria-valuenow="${stats.stats.PRAYER.boostedLevel}" aria-valuemin="0" th:aria-valuemax="${stats.stats.PRAYER.level}"></div>
+            <div class="progress-bar progress-prayer bg-info" role="progressbar" th:style="${'width: ' + (stats.stats.PRAYER.boostedLevel * 100) / (stats.stats.PRAYER.level > 0 ? stats.stats.PRAYER.level : 1)  + '%'}" aria-valuenow="${stats.stats.PRAYER.boostedLevel}" aria-valuemin="0" th:aria-valuemax="${stats.stats.PRAYER.level}"></div>
             <span class="current-prayer" th:text="${stats.stats.PRAYER.boostedLevel + '/' + stats.stats.PRAYER.level}"></span>
         </div>
     </div>
