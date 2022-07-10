@@ -136,7 +136,7 @@ public class Player {
                 put("boostedLevel", 0);
             }});
         }});
-        this.quests = new PlayerQuests(0, new ArrayList<>());
+        this.quests = new PlayerQuests(0, new HashMap<>());
         this.equipment = new PlayerEquipment(new HashMap<>());
         this.inventory = new PlayerInventory(new ArrayList<>());
         this.bank = new PlayerBank(0, new ArrayList<>());

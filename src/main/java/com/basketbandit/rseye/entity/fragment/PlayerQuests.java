@@ -2,7 +2,7 @@ package com.basketbandit.rseye.entity.fragment;
 
 import com.basketbandit.rseye.entity.Quest;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
-public record PlayerQuests(Integer questPoints, ArrayList<Quest> quests) {
+public record PlayerQuests(Integer questPoints, HashMap<Integer, Quest> quests) {
 }

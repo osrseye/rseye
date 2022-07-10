@@ -143,10 +143,10 @@ public class PostController {
             }
         }
 
-        ArrayList<Quest> quests = new ArrayList<>();
+        HashMap<Integer, Quest> quests = player.quests().quests();
         questArray.forEach(q -> {
             JsonObject quest = q.getAsJsonObject();
-            quests.add(new Quest(quest.get("id").getAsInt(), quest.get("name").getAsString(), quest.get("state").getAsString()));
+            quests.put(quest.get("id").getAsInt(), new Quest(quest.get("id").getAsInt(), quest.get("name").getAsString(), quest.get("state").getAsString()));
         });
         player.setQuests(new PlayerQuests(data.get("questPoints").getAsInt(), quests));
 

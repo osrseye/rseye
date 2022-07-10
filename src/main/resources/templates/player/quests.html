@@ -2,7 +2,7 @@
     <img width="204px" height="275px" src="/img/quest_tab.webp">
     <span class="quest-points" th:text="${quests.questPoints}"></span>
     <ul class="quest-ul">
-        <li th:class="${quest.state}" th:each="quest : ${quests.quests}">
+        <li th:class="${quest.state}" th:each="quest : ${quests.quests.values}">
             <a th:href="@{https://oldschool.runescape.wiki/w/__${quest.name}__}" target="_blank"><span th:text="${quest.name}"></span></a>
         </li>
     </ul>
