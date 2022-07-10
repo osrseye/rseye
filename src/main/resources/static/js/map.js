@@ -99,18 +99,15 @@ $(document).ready(function() {
     function updatePosition(player) {
         const x = (Number(player.position.x)-baseX)*4;
         const y = tHeight - ((Number(player.position.y)-baseY)*4);
-        const pn = $("#"+player.urlUsername).find(".locator");
-        const map = $("#map-status-"+player.urlUsername);
+        const pn = $("#"+player.usernameEncoded).find(".locator");
+        const map = $("#map-status-"+player.usernameEncoded);
         pn.attr("aria-tx", x);
         pn.attr("aria-ty", y);
         map.attr("aria-tx", x);
         map.attr("aria-ty", y);
 
-        if(!$("#"+player.urlUsername+"-position").length) {
-            $("#canvas-container").append("<div id='"+ player.urlUsername + "-position' class='player-position' style='top:"+y+"px; left:"+x+"px'><img src='/img/map/map-pointer.webp'/><span class='player-position-label'>" + player.username + " (level-" + player.combatLevel + ")</span></div>");
-        } else {
-            $("#"+player.urlUsername+"-position").css({"top": y, "left": x})
-        }
+        // update marker on the map
+        $("#"+player.usernameEncoded+"-position").css({"top": y, "left": x})
 
         if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === map.attr("aria-username-sane")) {
             const tx = map.attr("aria-tx") * -1;
@@ -122,12 +119,12 @@ $(document).ready(function() {
     }
 
     function updatePlayerContainer(container, player, data) {
-        $("#"+player.urlUsername).find(container).replaceWith(data);
-        if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === player.urlUsername) {
-            const obj = $('#followed-player-' + player.urlUsername).find(container);
+        $("#"+player.usernameEncoded).find(container).replaceWith(data);
+        if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === player.usernameEncoded) {
+            const obj = $('#followed-player-' + player.usernameEncoded).find(container);
             const style = obj.attr('style');
             obj.replaceWith(data);
-            $('#followed-player-' + player.urlUsername).find(container).attr("style", style); // have to get dom again since obj will still contain old data even after .replaceWith()
+            $('#followed-player-' + player.usernameEncoded).find(container).attr("style", style); // have to get dom again since obj will still contain old data even after .replaceWith()
         }
     }
 
@@ -157,7 +154,7 @@ $(document).ready(function() {
     /*******************************************************/
 
     function connect() {
-        ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
+        ws = new WebSocket('ws://' + location.host + ':' + location.port + '/map/events');
 
         ws.onopen = function(event) {
             ping = setInterval(function(){ send("ping"); }, 30000); // ping the server every 30 seconds to keep the connection alive
@@ -183,11 +180,12 @@ $(document).ready(function() {
                     $.get("/player/"+player.username, function(data) {
                         if(data.includes("LOGGED_IN")) {
                             $(".player-online").append(data);
-                            $("#map-status-"+player.urlUsername).detach().appendTo(".map-player-online");
+                            $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-online");
                         } else {
                             $(".player-offline").append(data);
-                            $("#map-status-"+player.urlUsername).detach().appendTo(".map-player-offline");
+                            $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-offline");
                         }
+                        $("#"+player.usernameEncoded+"-position").detach().appendTo('#canvas-container');
                         updatePosition(player);
                     });
                 });
@@ -197,26 +195,20 @@ $(document).ready(function() {
             if(data.startsWith("new_player:")) {
                 const json = data.substring("new_player:".length, data.length);
                 const player = JSON.parse(json);
-                updatePosition(player);
                 $.get("/player/"+player.username, function(data) {
-                    if(data.includes("LOGGED_IN")) {
-                        $(".player-online").append(data);
-                        $("#map-status-"+player.urlUsername).detach().appendTo(".map-player-online");
-                    } else {
-                        $(".player-offline").append(data);
-                        $("#map-status-"+player.urlUsername).detach().appendTo(".map-player-offline");
-                    }
+                    $(".player-offline").append(data);
+                    $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-offline");
+                    $("#"+player.usernameEncoded+"-position").detach().appendTo('#canvas-container');
                 });
                 return;
             }
 
-            if(data.startsWith("login_state:")) {
-                const json = data.substring("login_state:".length, data.length);
+            if(data.startsWith("login_update:")) {
+                const json = data.substring("login_update:".length, data.length);
                 const player = JSON.parse(json);
-                updatePosition(player);
-                $.get("/api/v1/player/"+player.username+"/login_state", function(data) {
-                    const pn = $("#"+player.urlUsername);
-                    const map = $("#map-status-"+player.urlUsername);
+                $.get("/api/v2/player/"+player.username+"/login_state", function(data) {
+                    const pn = $("#"+player.usernameEncoded);
+                    const map = $("#map-status-"+player.usernameEncoded);
                     const badge = pn.find(".badge");
                     const mapBadge = map.find(".badge");
                     if(data == "LOGGED_IN") {
@@ -234,8 +226,12 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("npc_kill:")) {
-                updatePosition(JSON.parse(data.substring("npc_kill:".length, data.length)));
+            if(data.startsWith("position_update:")) {
+                updatePosition(JSON.parse(data.substring("position_update:".length, data.length)));
+                return;
+            }
+
+            if(data.startsWith("loot_update:")) {
                 $.get("/combat/latest", function(data) {
                     $(".update-feed").prepend(data);
                 });
@@ -245,8 +241,7 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("level_change:")) {
-                updatePosition(JSON.parse(data.substring("level_change:".length, data.length)));
+            if(data.startsWith("stat_update:")) {
                 $.get("/growth/latest", function(data) {
                     $(".update-feed").prepend(data);
                 });
@@ -256,8 +251,7 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("quest_change:")) {
-                updatePosition(JSON.parse(data.substring("quest_change:".length, data.length)));
+            if(data.startsWith("quest_update:")) {
                 $.get("/quest/latest", function(data) {
                     $(".update-feed").prepend(data);
                 });
@@ -267,30 +261,47 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("inventory_items:")) {
-                const json = data.substring("inventory_items:".length, data.length);
+            if(data.startsWith("inventory_update:")) {
+                const json = data.substring("inventory_update:".length, data.length);
                 const player = JSON.parse(json);
-                updatePosition(player);
                 $.get("/player/"+player.username+"/inventory", function(data) {
                     updatePlayerContainer(".inventory-container", player, data);
                 });
                 return;
             }
 
-            if(data.startsWith("bank:")) {
-                const json = data.substring("bank:".length, data.length);
+            if(data.startsWith("bank_update:")) {
+                const json = data.substring("bank_update:".length, data.length);
                 const player = JSON.parse(json);
-                updatePosition(player);
                 $.get("/player/"+player.username+"/bank", function(data) {
                     updatePlayerContainer(".bank-container", player, data);
                 });
                 return;
             }
 
-            if(data.startsWith("level_data:")) {
-                const json = data.substring("level_data:".length, data.length);
+            if(data.startsWith("equipment_update:")) {
+                const json = data.substring("equipment_update:".length, data.length);
                 const player = JSON.parse(json);
-                updatePosition(player);
+                $.get("/player/"+player.username+"/equipment", function(data) {
+                    updatePlayerContainer(".equipment-container", player, data);
+                });
+                return;
+            }
+
+            if(data.startsWith("status_update")) {
+                // loads the player current hitpoints/prayer
+                const json = data.substring("status_update:".length, data.length);
+                const player = JSON.parse(json);
+                $.get("/player/"+player.username+"/status", function(data) {
+                    $("#"+player.usernameEncoded).find(".player-current-state").replaceWith(data);
+                    $("#"+player.usernameEncoded+"-position").find(".player-current-state").replaceWith(data);
+                });
+                return;
+            }
+
+            if(data.startsWith("stat_data:")) {
+                const json = data.substring("stat_data:".length, data.length);
+                const player = JSON.parse(json);
                 $.get("/player/"+player.username+"/stats", function(data) {
                     updatePlayerContainer(".stats-container", player, data);
                 });
@@ -300,19 +311,8 @@ $(document).ready(function() {
             if(data.startsWith("quest_data:")) {
                 const json = data.substring("quest_data:".length, data.length);
                 const player = JSON.parse(json);
-                updatePosition(player);
                 $.get("/player/"+player.username+"/quests", function(data) {
                     updatePlayerContainer(".quests-container", player, data);
-                });
-                return;
-            }
-
-            if(data.startsWith("equipped_items:")) {
-                const json = data.substring("equipped_items:".length, data.length);
-                const player = JSON.parse(json);
-                updatePosition(player);
-                $.get("/player/"+player.username+"/equipment", function(data) {
-                    updatePlayerContainer(".equipment-container", player, data);
                 });
                 return;
             }

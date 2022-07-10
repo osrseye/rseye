@@ -1,10 +1,13 @@
-<div th:id="${playerInfo.urlUsername}" th:class="${loginState + ' player'}">
+<div th:id="${information.usernameEncoded}" th:class="${loginState + ' player'}">
     <div class="player-header">
-        <span th:text="${playerInfo.username + ' (level-' + playerInfo.combatLevel + ')'}"></span>
+        <span th:text="${information.username + ' (level-' + information.combatLevel + ')'}"></span>
         <span th:if="${loginState == 'LOGGED_IN'}" class="badge badge-success">Online</span>
         <span th:if="${loginState != 'LOGGED_IN'}" class="badge badge-danger">Offline</span>
-        <div class="locator" th:aria-username-sane="${playerInfo.urlUsername}" th:aria-username="${playerInfo.username}" aria-tx="0" aria-ty="0">🗺️</div>
+        <div class="locator" th:aria-username-sane="${information.usernameEncoded}" th:aria-username="${information.username}" aria-tx="0" aria-ty="0">🗺️</div>
     </div>
+
+    <fragment th:replace="./player/status"></fragment>
+
     <fragment th:replace="./player/equipment"></fragment>
     <fragment th:replace="./player/inventory"></fragment>
     <fragment th:replace="./player/stats"></fragment>
@@ -12,8 +15,7 @@
     <fragment th:replace="./player/bank"></fragment>
 </div>
 
-<div th:id="${'map-status-' + playerInfo.urlUsername}" th:class="${loginState + ' locator map-player-status-player'}" th:aria-username-sane="${playerInfo.urlUsername}" th:aria-username="${playerInfo.username}" aria-tx="0" aria-ty="0">
-    <span th:text="${playerInfo.username + ' (level-' + playerInfo.combatLevel + ')'}"></span>
-    <span th:if="${loginState == 'LOGGED_IN'}" class="badge badge-success">Online</span>
-    <span th:if="${loginState != 'LOGGED_IN'}" class="badge badge-danger">Offline</span>
-</div>
+<!-- map sidebar label -->
+<fragment th:replace="./player/map-sidebar"></fragment>
+<!-- map position label -->
+<fragment th:replace="./player/map-position"></fragment>

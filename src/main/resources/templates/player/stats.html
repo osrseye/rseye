@@ -1,45 +1,45 @@
 <div class="stats-container">
     <img width="204px" height="275px" src="/img/skills_tab.webp">
-    <table th:if="${!playerStats.stats.isEmpty}" class="stat-table">
+    <table th:if="${!stats.stats.isEmpty}" class="stat-table">
         <tr>
-            <td class="stat-td" th:text="${playerStats.stats.Attack}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Hitpoints}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Mining}"></td>
+            <td class="stat-td" th:text="${stats.stats.ATTACK.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.HITPOINTS.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.MINING.level}"></td>
         </tr>
         <tr>
-            <td class="stat-td" th:text="${playerStats.stats.Strength}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Agility}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Smithing}"></td>
+            <td class="stat-td" th:text="${stats.stats.STRENGTH.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.AGILITY.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.SMITHING.level}"></td>
         </tr>
         <tr>
-            <td class="stat-td" th:text="${playerStats.stats.Defence}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Herblore}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Fishing}"></td>
+            <td class="stat-td" th:text="${stats.stats.DEFENCE.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.HERBLORE.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.FISHING.level}"></td>
         </tr>
         <tr>
-            <td class="stat-td" th:text="${playerStats.stats.Ranged}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Thieving}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Cooking}"></td>
+            <td class="stat-td" th:text="${stats.stats.RANGED.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.THIEVING.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.COOKING.level}"></td>
         </tr>
         <tr>
-            <td class="stat-td" th:text="${playerStats.stats.Prayer}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Crafting}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Firemaking}"></td>
+            <td class="stat-td" th:text="${stats.stats.PRAYER.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.CRAFTING.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.FIREMAKING.level}"></td>
         </tr>
         <tr>
-            <td class="stat-td" th:text="${playerStats.stats.Magic}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Fletching}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Woodcutting}"></td>
+            <td class="stat-td" th:text="${stats.stats.MAGIC.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.FLETCHING.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.WOODCUTTING.level}"></td>
         </tr>
         <tr>
-            <td class="stat-td" th:text="${playerStats.stats.Runecraft}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Slayer}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Farming}"></td>
+            <td class="stat-td" th:text="${stats.stats.RUNECRAFT.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.SLAYER.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.FARMING.level}"></td>
         </tr>
         <tr>
-            <td class="stat-td" th:text="${playerStats.stats.Construction}"></td>
-            <td class="stat-td" th:text="${playerStats.stats.Hunter}"></td>
-            <td class="stat-td stat-total" th:text="${playerStats.totalLevel}"></td>
+            <td class="stat-td" th:text="${stats.stats.CONSTRUCTION.level}"></td>
+            <td class="stat-td" th:text="${stats.stats.HUNTER.level}"></td>
+            <td class="stat-td stat-total" th:text="${stats.totalLevel}"></td>
         </tr>
     </table>
 </div>
