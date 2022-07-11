@@ -197,6 +197,10 @@ canvas {
 
 /* PLAYER */
 
+.player-data {
+    display: content;
+}
+
 .player-status {
     padding: 10px;
     background-color: rgba(0,0,0,0.8);
