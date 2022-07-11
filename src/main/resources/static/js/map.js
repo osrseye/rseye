@@ -235,8 +235,10 @@ $(document).ready(function() {
                 $.get("/combat/latest", function(data) {
                     $(".update-feed").prepend(data);
                 });
-                if($('.feed-item').length > 9) {
-                    $('.update-feed').find(".feed-item:last").remove();
+                if($('.feed-item').length > 4) {
+                    $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
+                      $(this).remove();
+                    });
                 }
                 return;
             }
@@ -245,8 +247,10 @@ $(document).ready(function() {
                 $.get("/growth/latest", function(data) {
                     $(".update-feed").prepend(data);
                 });
-                if($('.feed-item').length > 9) {
-                    $('.update-feed').find(".feed-item:last").remove();
+                if($('.feed-item').length > 4) {
+                    $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
+                         $(this).remove();
+                    });
                 }
                 return;
             }
@@ -255,8 +259,10 @@ $(document).ready(function() {
                 $.get("/quest/latest", function(data) {
                     $(".update-feed").prepend(data);
                 });
-                if($('.feed-item').length > 9) {
-                    $('.update-feed').find(".feed-item:last").remove();
+                if($('.feed-item').length > 4) {
+                    $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
+                        $(this).remove();
+                    });
                 }
                 return;
             }
