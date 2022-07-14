@@ -171,7 +171,7 @@ canvas {
     width: 60px;
     height: 60px;
     padding: 5px;
-    background: rgba(50,50,50,0.8);
+    background: rgba(0,0,0,0.8);
     border-radius: 5px;
 }
 
@@ -180,6 +180,32 @@ canvas {
     width: 250px;
     left: -95px;
     text-align: center;
+}
+
+.player-overheads {
+    position: absolute;
+    top: 12px;
+    padding: 8px;
+    left: -40px;
+    width: 42px;
+    height: 42px;
+    border-radius: 30px;
+    background: rgba(0,0,0,0.7);
+}
+
+.player-skulls {
+    position: absolute;
+    top: 58px;
+    padding: 8px;
+    left: -40px;
+    width: 42px;
+    height: 42px;
+    border-radius: 30px;
+    background: rgba(0,0,0,0.7);
+}
+
+.MELEE, .RANGED, .MAGIC, .REDEMPTION, .RETRIBUTION, .SMITE, .SKULL {
+    display: none;
 }
 
 .title-text {

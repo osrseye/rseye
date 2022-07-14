@@ -28,6 +28,8 @@ public class SiteController {
         mv.addObject("equipment", player.equipment());
         mv.addObject("inventory", player.inventory());
         mv.addObject("bank", player.bank());
+        mv.addObject("overhead", player.overhead());
+        mv.addObject("skull", player.skull());
         return mv;
     }
 

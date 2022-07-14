@@ -7,9 +7,7 @@ import com.basketbandit.rseye.entity.Item;
 import com.basketbandit.rseye.entity.Monster;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.Quest;
-import com.basketbandit.rseye.entity.event.CombatEvent;
-import com.basketbandit.rseye.entity.event.GrowthEvent;
-import com.basketbandit.rseye.entity.event.QuestEvent;
+import com.basketbandit.rseye.entity.event.*;
 import com.basketbandit.rseye.entity.fragment.*;
 import com.basketbandit.rseye.socket.MapSocketHandler;
 import com.basketbandit.rseye.socket.UpdateType;
@@ -61,7 +59,10 @@ public class PostController {
 
             // calculate exp differences
             if(statCurrent.get("level") != 0) {
-                diff.put(skill, statUpdate.get("xp").getAsInt() - statCurrent.get("xp"));
+                int diffInt = statUpdate.get("xp").getAsInt() - statCurrent.get("xp");
+                if(diffInt > 0) {
+                    diff.put(skill, statUpdate.get("xp").getAsInt() - statCurrent.get("xp"));
+                }
             }
 
             // determine if the players current prayer or hitpoints have changed
@@ -78,7 +79,7 @@ public class PostController {
 
         // submit exp update
         if(!diff.isEmpty()) {
-            MapSocketHandler.broadcastUpdate(UpdateType.EXP_UPDATE, player, diff);
+            MapSocketHandler.broadcastUpdate(UpdateType.EXP_UPDATE, new ExperienceEvent(player.information().username(), player.information().usernameEncoded(), diff));
         }
 
         int totalLevel = 0;
@@ -185,5 +186,24 @@ public class PostController {
         }
 
         MapSocketHandler.broadcastUpdate(UpdateType.LOOT_UPDATE, player);
+    }
+
+    @PostMapping("/api/v1/overhead_update/")
+    public void overheadUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
+        String overhead = data.has("overhead") ? data.get("overhead").getAsString() : "null";
+        player.setOverhead(new PlayerOverhead(overhead));
+        MapSocketHandler.broadcastUpdate(UpdateType.OVERHEAD_UPDATE, new OverheadEvent(player.information().username(), player.information().usernameEncoded(), player.overhead().overhead()));
+    }
+
+    @PostMapping("/api/v1/skull_update/")
+    public void skullUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
+        String skull = data.has("skull") ? data.get("skull").getAsString() : "null";
+        player.setSkull(new PlayerSkull(skull));
+        MapSocketHandler.broadcastUpdate(UpdateType.SKULL_UPDATE, new SkullEvent(player.information().username(), player.information().usernameEncoded(), player.skull().skull()));
+    }
+
+    @PostMapping("/api/v1/death_update/")
+    public void deathUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
+        MapSocketHandler.broadcastUpdate(UpdateType.DEATH_UPDATE, player);
     }
 }

@@ -340,6 +340,22 @@ $(document).ready(function() {
                 });
                 return;
             }
+
+            if(data.startsWith("overhead_update:")) {
+                const json = data.substring("overhead_update:".length, data.length);
+                const player = JSON.parse(json);
+                $("#map-status-"+player.usernameEncoded).find(".player-overheads").children().hide();
+                $("#map-status-"+player.usernameEncoded).find("."+player.overhead).show();
+                return;
+            }
+
+            if(data.startsWith("skull_update:")) {
+                const json = data.substring("skull_update:".length, data.length);
+                const player = JSON.parse(json);
+                $("#map-status-"+player.usernameEncoded).find(".player-skulls").children().hide();
+                $("#map-status-"+player.usernameEncoded).find("."+player.skull).show();
+                return;
+            }
         };
     }
 

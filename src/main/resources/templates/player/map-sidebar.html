@@ -4,4 +4,16 @@
     <span th:if="${loginState != 'LOGGED_IN'}" class="badge badge-danger">Offline</span>
 
     <fragment th:replace="./player/status"></fragment>
+
+    <div class="player-overheads">
+        <img class="overhead MELEE" th:style="${overhead.overhead == 'MELEE' ? 'display: inline' : ''}" src="/img/icons/overhead/melee.png"/>
+        <img class="overhead RANGED" th:style="${overhead.overhead == 'RANGED' ? 'display: inline' : ''}" src="/img/icons/overhead/ranged.png"/>
+        <img class="overhead MAGIC" th:style="${overhead.overhead == 'MAGIC' ? 'display: inline' : ''}" src="/img/icons/overhead/magic.png"/>
+        <img class="overhead REDEMPTION" th:style="${overhead.overhead == 'REDEMPTION' ? 'display: inline' : ''}" src="/img/icons/overhead/redemption.png"/>
+        <img class="overhead RETRIBUTION" th:style="${overhead.overhead == 'RETRIBUTION' ? 'display: inline' : ''}" src="/img/icons/overhead/retribution.png"/>
+        <img class="overhead SMITE" th:style="${overhead.overhead == 'SMITE' ? 'display: inline' : ''}" src="/img/icons/overhead/smite.png"/>
+    </div>
+    <div class="player-skulls">
+        <img class="skull SKULL" th:style="${skull.skull == 'SKULL' ? 'display: inline' : ''}" src="/img/icons/overhead/skull.png"/>
+    </div>
 </div>

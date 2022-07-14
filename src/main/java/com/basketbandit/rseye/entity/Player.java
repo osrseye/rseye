@@ -13,6 +13,8 @@ public class Player {
     private PlayerEquipment equipment;
     private PlayerInventory inventory;
     private PlayerBank bank;
+    private PlayerOverhead overhead;
+    private PlayerSkull skull;
     private long lastUpdate;
 
     public Player() {
@@ -141,6 +143,8 @@ public class Player {
         this.inventory = new PlayerInventory(new ArrayList<>());
         this.bank = new PlayerBank(0, new ArrayList<>());
         this.lastUpdate = System.currentTimeMillis();
+        this.overhead = new PlayerOverhead("null");
+        this.skull = new PlayerSkull("null");
     }
 
     /**
@@ -187,6 +191,14 @@ public class Player {
         return bank;
     }
 
+    public PlayerOverhead overhead() {
+        return overhead;
+    }
+
+    public PlayerSkull skull() {
+        return skull;
+    }
+
     public void setLoginState(String loginState) {
         this.loginState = loginState;
         this.lastUpdate = loginState.equals("LOGGED_IN") ? System.currentTimeMillis() : System.currentTimeMillis() - 600000; // make the time 10 minutes in the past so not logged back in
@@ -219,6 +231,16 @@ public class Player {
 
     public void setBank(PlayerBank bank) {
         this.bank = bank;
+        this.lastUpdate = System.currentTimeMillis();
+    }
+
+    public void setOverhead(PlayerOverhead overhead) {
+        this.overhead = overhead;
+        this.lastUpdate = System.currentTimeMillis();
+    }
+
+    public void setSkull(PlayerSkull skull) {
+        this.skull = skull;
         this.lastUpdate = System.currentTimeMillis();
     }
 }

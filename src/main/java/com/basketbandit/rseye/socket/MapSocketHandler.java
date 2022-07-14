@@ -2,7 +2,7 @@ package com.basketbandit.rseye.socket;
 
 import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.entity.Player;
-import com.basketbandit.rseye.entity.event.ExperienceEvent;
+import com.basketbandit.rseye.entity.event.Event;
 import com.basketbandit.rseye.entity.fragment.PlayerInformation;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
@@ -35,8 +35,8 @@ public class MapSocketHandler extends TextWebSocketHandler {
         });
     }
 
-    public synchronized static void broadcastUpdate(UpdateType updateType, Player player, HashMap<String, Integer> data) {
-        String payload = gson.toJson(new ExperienceEvent(player.information().username(), player.information().usernameEncoded(), data));
+    public synchronized static void broadcastUpdate(UpdateType updateType, Event event) {
+        String payload = gson.toJson(event);
         clients.forEach(client -> {
             try {
                 client.sendMessage(new TextMessage(updateType.value + ":" + payload));
