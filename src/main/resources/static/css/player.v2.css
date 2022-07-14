@@ -228,7 +228,7 @@ canvas {
 /* PLAYER */
 
 .player-data {
-    display: content;
+    display: contents;
 }
 
 .player-status {
