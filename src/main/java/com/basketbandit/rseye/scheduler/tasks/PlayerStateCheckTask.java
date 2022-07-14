@@ -2,7 +2,7 @@ package com.basketbandit.rseye.scheduler.tasks;
 
 
 import com.basketbandit.rseye.Application;
-import com.basketbandit.rseye.rest.UpdateType;
+import com.basketbandit.rseye.socket.UpdateType;
 import com.basketbandit.rseye.scheduler.Task;
 import com.basketbandit.rseye.socket.MapSocketHandler;
 

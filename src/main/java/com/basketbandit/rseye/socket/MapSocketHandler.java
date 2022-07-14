@@ -2,8 +2,8 @@ package com.basketbandit.rseye.socket;
 
 import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.entity.Player;
+import com.basketbandit.rseye.entity.event.ExperienceEvent;
 import com.basketbandit.rseye.entity.fragment.PlayerInformation;
-import com.basketbandit.rseye.rest.UpdateType;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +26,17 @@ public class MapSocketHandler extends TextWebSocketHandler {
 
     public synchronized static void broadcastUpdate(UpdateType updateType, Player player) {
         String payload = updateType.value.equals("position_update") ? gson.toJson(player.information()) : gson.toJson(new Username(player.information().username(), player.information().usernameEncoded()));
+        clients.forEach(client -> {
+            try {
+                client.sendMessage(new TextMessage(updateType.value + ":" + payload));
+            } catch(IOException e) {
+                log.warn("There was a problem contacting client, reason: {}", e.getMessage(), e);
+            }
+        });
+    }
+
+    public synchronized static void broadcastUpdate(UpdateType updateType, Player player, HashMap<String, Integer> data) {
+        String payload = gson.toJson(new ExperienceEvent(player.information().username(), player.information().usernameEncoded(), data));
         clients.forEach(client -> {
             try {
                 client.sendMessage(new TextMessage(updateType.value + ":" + payload));

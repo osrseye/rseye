@@ -4,7 +4,7 @@ import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.AssetManager;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.fragment.PlayerInformation;
-import com.basketbandit.rseye.rest.UpdateType;
+import com.basketbandit.rseye.socket.UpdateType;
 import com.basketbandit.rseye.socket.MapSocketHandler;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

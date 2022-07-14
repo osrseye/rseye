@@ -1,4 +1,4 @@
-package com.basketbandit.rseye.rest;
+package com.basketbandit.rseye.socket;
 
 public enum UpdateType {
     NEW_PLAYER("new_player"),
@@ -7,6 +7,7 @@ public enum UpdateType {
     STATUS_UPDATE("status_update"),
     STAT_UPDATE("stat_update"),
     STAT_DATA("stat_data"),
+    EXP_UPDATE("exp_update"),
     BANK_UPDATE("bank_update"),
     EQUIPMENT_UPDATE("equipment_update"),
     INVENTORY_UPDATE("inventory_update"),

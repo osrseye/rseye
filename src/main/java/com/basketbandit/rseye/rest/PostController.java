@@ -12,6 +12,7 @@ import com.basketbandit.rseye.entity.event.GrowthEvent;
 import com.basketbandit.rseye.entity.event.QuestEvent;
 import com.basketbandit.rseye.entity.fragment.*;
 import com.basketbandit.rseye.socket.MapSocketHandler;
+import com.basketbandit.rseye.socket.UpdateType;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +47,7 @@ public class PostController {
     @PostMapping("/api/v1/stat_update/")
     public void statUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         HashMap<String, HashMap<String, Integer>> skills = player.stats().stats();
+        HashMap<String, Integer> diff = new HashMap<>();
         data.get("statChanges").getAsJsonArray().forEach(s -> {
             JsonObject statUpdate = s.getAsJsonObject();
             String skill = statUpdate.get("skill").getAsString();
@@ -55,6 +57,11 @@ public class PostController {
             if(statCurrent.get("level") != 0 && statCurrent.get("level") < statUpdate.get("level").getAsInt()) {
                 Application.growthFeed.add(new GrowthEvent(player.information().username(), Utils.toPascal(statUpdate.get("skill").getAsString()), statUpdate.get("level").getAsString()));
                 MapSocketHandler.broadcastUpdate(UpdateType.STAT_UPDATE, player);
+            }
+
+            // calculate exp differences
+            if(statCurrent.get("level") != 0) {
+                diff.put(skill, statUpdate.get("xp").getAsInt() - statCurrent.get("xp"));
             }
 
             // determine if the players current prayer or hitpoints have changed
@@ -68,6 +75,11 @@ public class PostController {
                 put("boostedLevel", statUpdate.get("boostedLevel").getAsInt());
             }});
         });
+
+        // submit exp update
+        if(!diff.isEmpty()) {
+            MapSocketHandler.broadcastUpdate(UpdateType.EXP_UPDATE, player, diff);
+        }
 
         int totalLevel = 0;
         for(HashMap<String, Integer> skill: skills.values()) {

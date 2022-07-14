@@ -255,6 +255,25 @@ $(document).ready(function() {
                 return;
             }
 
+            if(data.startsWith("exp_update")) {
+                const json = data.substring("exp_update:".length, data.length);
+                const player = JSON.parse(json);
+                var updateString = "";
+                for(const [key, value] of Object.entries(player.data)) {
+                    updateString += "<img class='xp-drop-icon' src='/img/icons/skill/"+key+".png'/><span>"+value+"</span><br>";
+                }
+                var update = $("<span class='xp-drop'>" + updateString + "</span>");
+                $("#"+player.usernameEncoded+"-position").append(update);
+                update.animate({
+                    opacity: '0',
+                    top: '-300px',
+                    margin: '0px'
+                }, 3500, function(){
+                  update.remove();
+                });
+                return;
+            }
+
             if(data.startsWith("quest_update:")) {
                 $.get("/quest/latest", function(data) {
                     $(".update-feed").prepend(data);
