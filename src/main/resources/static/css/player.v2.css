@@ -56,6 +56,7 @@ canvas {
 }
 
 .map-player-status-player {
+    position: relative;
     padding: 15px;
     padding-left: 20px;
     background: rgba(0,0,0,0.75);
@@ -184,9 +185,9 @@ canvas {
 
 .player-overheads {
     position: absolute;
-    top: 12px;
+    top: 2px;
     padding: 8px;
-    left: -40px;
+    left: -48px;
     width: 42px;
     height: 42px;
     border-radius: 30px;
@@ -195,9 +196,9 @@ canvas {
 
 .player-skulls {
     position: absolute;
-    top: 58px;
+    top: 48px;
     padding: 8px;
-    left: -40px;
+    left: -48px;
     width: 42px;
     height: 42px;
     border-radius: 30px;
@@ -296,6 +297,8 @@ canvas {
 
 .hitpoints-container, .prayer-container {
     width: 50%;
+    padding-right: 2px;
+    padding-left: 2px;
 }
 
 .hitpoints-container .progress, .prayer-container .progress {
