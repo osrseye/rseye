@@ -266,7 +266,7 @@ $(document).ready(function() {
                 $("#"+player.usernameEncoded+"-position").append(update);
                 update.animate({
                     opacity: '0',
-                    top: '-300px',
+                    top: '-200px',
                     margin: '0px'
                 }, 3500, function(){
                   update.remove();
@@ -318,8 +318,7 @@ $(document).ready(function() {
                 const json = data.substring("status_update:".length, data.length);
                 const player = JSON.parse(json);
                 $.get("/player/"+player.username+"/status", function(data) {
-                    $("#"+player.usernameEncoded).find(".player-current-state").replaceWith(data);
-                    $("#"+player.usernameEncoded+"-position").find(".player-current-state").replaceWith(data);
+                    $("#map-status-"+player.usernameEncoded).find(".player-current-state").replaceWith(data);
                 });
                 return;
             }

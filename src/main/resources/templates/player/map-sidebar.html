@@ -2,4 +2,6 @@
     <span th:text="${information.username + ' (level-' + information.combatLevel + ')'}"></span>
     <span th:if="${loginState == 'LOGGED_IN'}" class="badge badge-success">Online</span>
     <span th:if="${loginState != 'LOGGED_IN'}" class="badge badge-danger">Offline</span>
+
+    <fragment th:replace="./player/status"></fragment>
 </div>
