@@ -7,9 +7,6 @@ import com.basketbandit.rseye.scheduler.Task;
 import com.basketbandit.rseye.socket.MapSocketHandler;
 
 public class PlayerStateCheckTask implements Task {
-    public PlayerStateCheckTask() {
-    }
-
     @Override
     public void run() {
         try {
@@ -22,5 +19,4 @@ public class PlayerStateCheckTask implements Task {
             log.error("Unable to broadcast update, reason: {}", e.getMessage(), e);
         }
     }
-
 }
