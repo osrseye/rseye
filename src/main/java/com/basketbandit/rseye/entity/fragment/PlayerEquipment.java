@@ -5,4 +5,7 @@ import com.basketbandit.rseye.entity.Item;
 import java.util.HashMap;
 
 public record PlayerEquipment(HashMap<String, Item> equipped) {
+    public PlayerEquipment() {
+        this(new HashMap<>());
+    }
 }

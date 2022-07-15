@@ -5,4 +5,7 @@ import com.basketbandit.rseye.entity.Quest;
 import java.util.HashMap;
 
 public record PlayerQuests(Integer questPoints, HashMap<Integer, Quest> quests) {
+    public PlayerQuests() {
+        this(0, new HashMap<>());
+    }
 }
