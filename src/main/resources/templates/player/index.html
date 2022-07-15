@@ -1,6 +1,6 @@
 <div th:id="${information.usernameEncoded}" th:class="${loginState + ' player'}">
     <div class="player-header">
-        <span th:text="${information.username + ' (level-' + information.combatLevel + ')'}"></span>
+        <span th:text="${information.username + ' (level-' + stats.combatLevel + ')'}"></span>
         <span th:if="${loginState == 'LOGGED_IN'}" class="badge badge-success">Online</span>
         <span th:if="${loginState != 'LOGGED_IN'}" class="badge badge-danger">Offline</span>
         <div class="locator" th:aria-username-sane="${information.usernameEncoded}" th:aria-username="${information.username}" aria-tx="0" aria-ty="0">🗺️</div>
