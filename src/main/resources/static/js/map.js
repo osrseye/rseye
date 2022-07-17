@@ -150,9 +150,10 @@ $(document).ready(function() {
     });
 
     function clearFeed() {
-        while($('.feed-item').length > 4) {
+        if($('.feed-item').length > 5) {
             $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
                 $(this).remove();
+                clearFeed(); // calls function recursively AFTER the element has been removed
             });
         }
     }
