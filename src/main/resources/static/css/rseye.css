@@ -371,10 +371,18 @@ canvas {
     left: 0px;
     top: -35px;
     color: #ffffff;
+    text-align: left;
+    line-height: 20px;
+}
+
+.xp-drop span {
+    vertical-align: middle;
 }
 
 .xp-drop-icon {
     margin-right: 5px;
+    width: 18px;
+    height: 18px;
 }
 
 /* BANK */

@@ -272,9 +272,8 @@ $(document).ready(function() {
                 update.css({top:(-25+-update.height())});
                 update.animate({
                     opacity: '0',
-                    top: '-200px',
-                    margin: '0px'
-                }, 3500, function(){
+                    top: -225+-update.height()
+                }, 3000, function(){
                   update.remove();
                 });
                 return;
