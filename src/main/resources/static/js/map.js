@@ -149,6 +149,14 @@ $(document).ready(function() {
         followedContainers.find(".bank-container").find(":input").val("").trigger("input"); // stops search input being cloned and resets any toggles
     });
 
+    function clearFeed() {
+        while($('.feed-item').length > 4) {
+            $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
+                $(this).remove();
+            });
+        }
+    }
+
     /*******************************************************/
     /*******************************************************/
     /*******************************************************/
@@ -211,7 +219,7 @@ $(document).ready(function() {
                     const map = $("#map-status-"+player.usernameEncoded);
                     const badge = pn.find(".badge");
                     const mapBadge = map.find(".badge");
-                    if(data == "LOGGED_IN") {
+                    if((data == "LOGGED_IN" || data == "HOPPING") && badge.hasClass("badge-danger")) {
                         badge.removeClass("badge-danger").addClass("badge-success").text("Online");
                         pn.detach().appendTo(".player-online");
                         mapBadge.removeClass("badge-danger").addClass("badge-success").text("Online");
@@ -235,11 +243,7 @@ $(document).ready(function() {
                 $.get("/combat/latest", function(data) {
                     $(".update-feed").prepend(data);
                 });
-                if($('.feed-item').length > 4) {
-                    $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
-                      $(this).remove();
-                    });
-                }
+                clearFeed();
                 return;
             }
 
@@ -247,11 +251,15 @@ $(document).ready(function() {
                 $.get("/growth/latest", function(data) {
                     $(".update-feed").prepend(data);
                 });
-                if($('.feed-item').length > 4) {
-                    $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
-                         $(this).remove();
-                    });
-                }
+                clearFeed();
+                return;
+            }
+
+            if(data.startsWith("quest_update:")) {
+                $.get("/quest/latest", function(data) {
+                    $(".update-feed").prepend(data);
+                });
+                clearFeed();
                 return;
             }
 
@@ -271,18 +279,6 @@ $(document).ready(function() {
                 }, 3500, function(){
                   update.remove();
                 });
-                return;
-            }
-
-            if(data.startsWith("quest_update:")) {
-                $.get("/quest/latest", function(data) {
-                    $(".update-feed").prepend(data);
-                });
-                if($('.feed-item').length > 4) {
-                    $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
-                        $(this).remove();
-                    });
-                }
                 return;
             }
 
