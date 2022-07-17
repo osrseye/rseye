@@ -150,7 +150,7 @@ $(document).ready(function() {
     });
 
     function clearFeed() {
-        if($('.feed-item').length > 5) {
+        if($('.feed-item').length > 4) {
             $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
                 $(this).remove();
                 clearFeed(); // calls function recursively AFTER the element has been removed
@@ -184,8 +184,7 @@ $(document).ready(function() {
             const data = event.data;
 
             if(data.startsWith("fetchLatestData:")) {
-                const json = data.substring("fetchLatestData:".length, data.length);
-                $.each(JSON.parse(json), function(username, player) {
+                $.each(JSON.parse(data.substring("fetchLatestData:".length, data.length)), function(username, player) {
                     $.get("/player/"+player.username, function(data) {
                         if(data.includes("LOGGED_IN")) {
                             $(".player-online").append(data);
@@ -202,8 +201,7 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("new_player:")) {
-                const json = data.substring("new_player:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("new_player:".length, data.length));
                 $.get("/player/"+player.username, function(data) {
                     $(".player-offline").append(data);
                     $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-offline");
@@ -213,8 +211,7 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("login_update:")) {
-                const json = data.substring("login_update:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("login_update:".length, data.length));
                 $.get("/api/v2/player/"+player.username+"/login_state", function(data) {
                     const pn = $("#"+player.usernameEncoded);
                     const map = $("#map-status-"+player.usernameEncoded);
@@ -265,14 +262,14 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("exp_update")) {
-                const json = data.substring("exp_update:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("exp_update:".length, data.length));
                 var updateString = "";
                 for(const [key, value] of Object.entries(player.data)) {
                     updateString += "<img class='xp-drop-icon' src='/img/icons/skill/"+key+".png'/><span>"+value+"</span><br>";
                 }
                 var update = $("<span class='xp-drop'>" + updateString + "</span>");
                 $("#"+player.usernameEncoded+"-position").append(update);
+                update.css({top:(-25+-update.height())});
                 update.animate({
                     opacity: '0',
                     top: '-200px',
@@ -284,8 +281,7 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("inventory_update:")) {
-                const json = data.substring("inventory_update:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("inventory_update:".length, data.length));
                 $.get("/player/"+player.username+"/inventory", function(data) {
                     updatePlayerContainer(".inventory-container", player, data);
                 });
@@ -293,8 +289,7 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("bank_update:")) {
-                const json = data.substring("bank_update:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("bank_update:".length, data.length));
                 $.get("/player/"+player.username+"/bank", function(data) {
                     updatePlayerContainer(".bank-container", player, data);
                 });
@@ -302,8 +297,7 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("equipment_update:")) {
-                const json = data.substring("equipment_update:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("equipment_update:".length, data.length));
                 $.get("/player/"+player.username+"/equipment", function(data) {
                     updatePlayerContainer(".equipment-container", player, data);
                 });
@@ -312,8 +306,7 @@ $(document).ready(function() {
 
             if(data.startsWith("status_update")) {
                 // loads the player current hitpoints/prayer
-                const json = data.substring("status_update:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("status_update:".length, data.length));
                 $.get("/player/"+player.username+"/status", function(data) {
                     $("#map-status-"+player.usernameEncoded).find(".player-current-state").replaceWith(data);
                 });
@@ -321,8 +314,7 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("stat_data:")) {
-                const json = data.substring("stat_data:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("stat_data:".length, data.length));
                 $.get("/player/"+player.username+"/stats", function(data) {
                     updatePlayerContainer(".stats-container", player, data);
                 });
@@ -330,8 +322,7 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("quest_data:")) {
-                const json = data.substring("quest_data:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("quest_data:".length, data.length));
                 $.get("/player/"+player.username+"/quests", function(data) {
                     updatePlayerContainer(".quests-container", player, data);
                 });
@@ -339,16 +330,14 @@ $(document).ready(function() {
             }
 
             if(data.startsWith("overhead_update:")) {
-                const json = data.substring("overhead_update:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("overhead_update:".length, data.length));
                 $("#map-status-"+player.usernameEncoded).find(".player-overheads").children().hide();
                 $("#map-status-"+player.usernameEncoded).find("."+player.overhead).show();
                 return;
             }
 
             if(data.startsWith("skull_update:")) {
-                const json = data.substring("skull_update:".length, data.length);
-                const player = JSON.parse(json);
+                const player = JSON.parse(data.substring("skull_update:".length, data.length));
                 $("#map-status-"+player.usernameEncoded).find(".player-skulls").children().hide();
                 $("#map-status-"+player.usernameEncoded).find("."+player.skull).show();
                 return;
