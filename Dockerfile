@@ -7,4 +7,4 @@ RUN chmod +x rseye-0.0.1-SNAPSHOT.jar
 
 EXPOSE 8443
 
-ENTRYPOINT ["java", "-jar", "rseye-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-Xms1G", "-Xmx2G", "-jar", "rseye-0.0.1-SNAPSHOT.jar"]
