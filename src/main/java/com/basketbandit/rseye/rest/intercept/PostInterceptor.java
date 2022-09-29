@@ -22,7 +22,8 @@ public class PostInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
         // If "Authorization" is null, doesn't start with "Bearer: ", or isn't a valid token.
-        if(request.getHeader("Authorization") == null || !request.getHeader("Authorization").startsWith("Bearer: ") || !AssetManager.tokens.contains(request.getHeader("Authorization").substring("Bearer: ".length()))) {
+        if(request.getHeader("Authorization") == null || !request.getHeader("Authorization").startsWith("Bearer: ")
+                || !AssetManager.tokens.contains(request.getHeader("Authorization").substring(8))) {
             return false;
         }
 

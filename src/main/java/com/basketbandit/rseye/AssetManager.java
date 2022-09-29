@@ -25,7 +25,7 @@ public class AssetManager {
             Gson gson = new Gson();
             JsonObject obj = gson.fromJson(r, JsonObject.class);
             obj.keySet().forEach(key -> items.put(key, new Item(key, obj.get(key).getAsJsonObject().get("name").getAsString(), "/img/items/" + key + ".png", obj.get(key).getAsJsonObject().get("highalch").getAsInt(), obj.get(key).getAsJsonObject().get("placeholder").getAsBoolean())));
-            log.info("Successfully parsed " + items.keySet().size() + " items");
+            log.info("Found " + items.keySet().size() + " item(s)");
         } catch(Exception e) {
             log.error("There was an issue loading assets: {}", e.getMessage(), e);
         }
@@ -34,16 +34,13 @@ public class AssetManager {
             Gson gson = new Gson();
             JsonObject obj = gson.fromJson(r, JsonObject.class);
             obj.keySet().forEach(key -> monsters.put(key, new Monster(key, obj.get(key).getAsJsonObject().get("name").getAsString(), obj.get(key).getAsJsonObject().get("combatLevel").getAsInt())));
-            log.info("Successfully parsed " + monsters.keySet().size() + " monsters");
+            log.info("Found " + monsters.keySet().size() + " monster(s)");
         } catch(Exception e) {
             log.error("There was an issue loading assets: {}", e.getMessage(), e);
         }
 
         try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/token.txt"), StandardCharsets.UTF_8))) {
-            log.info("Parsing whitelist from ./data/token.txt");
-            r.lines().forEach(token -> {
-                tokens.add(token);
-            });
+            r.lines().forEach(token -> tokens.add(token));
             log.info("Found " + tokens.size() + " token(s)");
         } catch(Exception e) {
             log.warn("There was an issue while reading the token data file, reason: {}", e.getMessage(), e);
