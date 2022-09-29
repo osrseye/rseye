@@ -11,7 +11,7 @@ public class UpdateJob extends Job {
     private final EventLogClearTask eventLogClearTask;
 
     public UpdateJob(PlayerStateCheckTask playerStateCheckTask, EventLogClearTask eventLogClearTask) {
-        super(0, 5, TimeUnit.SECONDS);
+        super(0, 1, TimeUnit.SECONDS);
         this.playerStateCheckTask = playerStateCheckTask;
         this.eventLogClearTask = eventLogClearTask;
     }
