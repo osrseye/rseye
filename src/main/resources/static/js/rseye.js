@@ -39,7 +39,7 @@ $(document).ready(function() {
         }
     }
 
-    function load() {
+    async function load() {
         for(var i = 0; i < 32 ; ++i) {
             ctx[i].clearRect(0, 0, cWidth, cHeight);
             ctx[i].drawImage(map[i], 0, 0);
