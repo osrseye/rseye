@@ -35,6 +35,7 @@ $(document).ready(function() {
             if(count++ == 31) {
                 load(); // don't load map or connect to server unless entire map has loaded
                 connect();
+                display();
             }
         }
     }
@@ -161,6 +162,11 @@ $(document).ready(function() {
     /*******************************************************/
     /*******************************************************/
     /*******************************************************/
+
+    function display() {
+        $('.loading-screen').remove();
+        $('.content').toggle();
+    }
 
     function connect() {
         ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
