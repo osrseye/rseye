@@ -180,8 +180,6 @@ public class PostController {
     @PostMapping("/api/v1/loot_update/")
     public void lootUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         JsonArray lootArray = data.get("items").getAsJsonArray();
-        Item weapon = player.equipment().equipped().getOrDefault("WEAPON", null);
-        Monster monster = AssetManager.monsters.get(data.get("npcId").getAsString());
         ArrayList<Item> loot = new ArrayList<>();
         lootArray.forEach(slot -> {
             JsonObject o = slot.getAsJsonObject();
@@ -191,8 +189,17 @@ public class PostController {
             loot.add(item);
         });
 
-        Application.combatFeed.add(new CombatEvent(player.information().username() + " (level-" + player.stats().combatLevel() + ")", weapon, monster, loot));
-        MapSocketHandler.broadcastUpdate(UpdateType.LOOT_UPDATE, player);
+        switch(data.get("lootType").getAsString()) {
+            case "NPC", "Player" -> {
+                Item weapon = player.equipment().equipped().getOrDefault("WEAPON", null);
+                Monster monster = AssetManager.monsters.get(data.get("entityId").getAsString());
+                Application.combatFeed.add(new CombatEvent(player.information().username() + " (level-" + player.stats().combatLevel() + ")", weapon, monster, loot));
+                MapSocketHandler.broadcastUpdate(UpdateType.LOOT_UPDATE, player);
+            }
+            case "Barrows", "Theatre of Blood", "Tombs of Amascut" -> {
+                //
+            }
+        }
     }
 
     @PostMapping("/api/v1/overhead_update/")
