@@ -193,7 +193,7 @@ public class PostController {
             case "NPC", "Player" -> {
                 Item weapon = player.equipment().equipped().getOrDefault("WEAPON", null);
                 Monster monster = AssetManager.monsters.get(data.get("entityId").getAsString());
-                Application.combatFeed.add(new CombatEvent(player.information().username() + " (level-" + player.stats().combatLevel() + ")", weapon, monster, loot));
+                Application.combatFeed.add(new CombatEvent(player, weapon, monster, loot));
                 MapSocketHandler.broadcastUpdate(UpdateType.LOOT_UPDATE, player);
             }
             case "Barrows", "Theatre of Blood", "Tombs of Amascut" -> {

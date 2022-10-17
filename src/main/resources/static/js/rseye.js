@@ -1,5 +1,4 @@
 $(document).ready(function() {
-    var ping;
     var baseX = 1152;
     var baseY = 1215;
     var clickX = 0;
@@ -151,7 +150,7 @@ $(document).ready(function() {
     });
 
     function clearFeed() {
-        if($('.feed-item').length > 4) {
+        if($('.feed-item').length > 5) {
             $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
                 $(this).remove();
                 clearFeed(); // calls function recursively AFTER the element has been removed
@@ -172,7 +171,6 @@ $(document).ready(function() {
         ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
 
         ws.onopen = function(event) {
-            ping = setInterval(function(){ send("ping"); }, 30000); // ping the server every 30 seconds to keep the connection alive
             $(".player-data").empty(); // solution to disconnects (might flicker !BAD!)
             send("fetchLatestData");
         };
@@ -182,7 +180,6 @@ $(document).ready(function() {
         };
 
         ws.onclose = function(event) {
-            clearInterval(ping); // clear the ping interval to stop pinging the server after it has closed
             connect();
         };
 
@@ -245,25 +242,27 @@ $(document).ready(function() {
 
             if(data.startsWith("loot_update:")) {
                 $.get("/combat/latest", function(data) {
+                    $(".update-feed").css({top:-150});
                     $(".update-feed").prepend(data);
+                    $(".update-feed").animate({top: 5}, 1000);
+                    clearFeed();
                 });
-                clearFeed();
                 return;
             }
 
             if(data.startsWith("stat_update:")) {
                 $.get("/growth/latest", function(data) {
                     $(".update-feed").prepend(data);
+                    clearFeed();
                 });
-                clearFeed();
                 return;
             }
 
             if(data.startsWith("quest_update:")) {
                 $.get("/quest/latest", function(data) {
                     $(".update-feed").prepend(data);
+                    clearFeed();
                 });
-                clearFeed();
                 return;
             }
 
