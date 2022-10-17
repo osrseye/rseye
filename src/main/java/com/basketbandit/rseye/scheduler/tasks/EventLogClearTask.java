@@ -9,6 +9,9 @@ public class EventLogClearTask implements Task {
         if(Application.combatFeed.size() > 10) {
             Application.combatFeed.remove(0);
         }
+        if(Application.raidFeed.size() > 10) {
+            Application.raidFeed.remove(0);
+        }
         if(Application.questFeed.size() > 10) {
             Application.questFeed.remove(0);
         }

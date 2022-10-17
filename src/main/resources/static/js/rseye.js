@@ -240,8 +240,18 @@ $(document).ready(function() {
                 return;
             }
 
-            if(data.startsWith("loot_update:")) {
+            if(data.startsWith("combat_loot_update:")) {
                 $.get("/combat/latest", function(data) {
+                    $(".update-feed").css({top:-150});
+                    $(".update-feed").prepend(data);
+                    $(".update-feed").animate({top: 5}, 1000);
+                    clearFeed();
+                });
+                return;
+            }
+
+            if(data.startsWith("raid_loot_update:")) {
+                $.get("/raid/latest", function(data) {
                     $(".update-feed").css({top:-150});
                     $(".update-feed").prepend(data);
                     $(".update-feed").animate({top: 5}, 1000);

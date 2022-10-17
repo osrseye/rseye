@@ -13,7 +13,8 @@ public enum UpdateType {
     INVENTORY_UPDATE("inventory_update"),
     QUEST_UPDATE("quest_update"),
     QUEST_DATA("quest_data"),
-    LOOT_UPDATE("loot_update"),
+    COMBAT_LOOT_UPDATE("combat_loot_update"),
+    RAID_LOOT_UPDATE("raid_loot_update"),
     OVERHEAD_UPDATE("overhead_update"),
     SKULL_UPDATE("skull_update"),
     DEATH_UPDATE("death_update");

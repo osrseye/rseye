@@ -5,6 +5,7 @@ import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.event.CombatEvent;
 import com.basketbandit.rseye.entity.event.GrowthEvent;
 import com.basketbandit.rseye.entity.event.QuestEvent;
+import com.basketbandit.rseye.entity.event.RaidEvent;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -80,6 +81,18 @@ public class SiteController {
         ModelAndView mv = new ModelAndView("./player/quests");
         mv.addObject("quests", player.quests());
         return mv;
+    }
+
+    @GetMapping("/raid/latest")
+    public ModelAndView getRaidFeedLatest() {
+        int feedSize = Application.raidFeed.size();
+        if(feedSize > 0) {
+            RaidEvent raidEvent = Application.raidFeed.get(feedSize - 1);
+            ModelAndView mv = new ModelAndView("./event/raid/index");
+            mv.addObject("raid", raidEvent);
+            return mv;
+        }
+        return new ModelAndView("./event/raid/empty");
     }
 
     @GetMapping("/combat/latest")
