@@ -1,11 +1,11 @@
 <div class="bank-container">
-    <img width="488px" height="331px" src="/img/bank_interface.webp">
+    <img width="488px" height="331px" src="/data/ui/bank_interface.webp">
     <span class="bank-spaces" th:text="${bank.slots.size}"></span>
     <input class="bank-input" placeholder="Search...">
     <ul th:id="${'bank-'+information.usernameEncoded}" class="bank-ul">
         <li th:each="item: ${bank.slots}" th:title="${item.name}">
             <a th:href="@{https://oldschool.runescape.wiki/w/__${item.nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}">
-                <img th:class="${item.isPlaceholder ? 'placeholder' : ''}" th:src="@{${item.icon}}" onError="this.onerror=null;this.src='/img/items/0.png';" width="36"/>
+                <img th:class="${item.isPlaceholder ? 'placeholder' : ''}" th:src="@{${item.icon}}" onError="this.onerror=null;this.src='/data/icons/items/0.png';" width="36"/>
                 <span th:if="${item.quantity != 1}" th:class="${item.quantity > 99999} ? thousand : (${item.quantity > 9999999} ? million : shrapnel)" th:text="${item.quantityFormatted}"></span>
             </a>
         </li>

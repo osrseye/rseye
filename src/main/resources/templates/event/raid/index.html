@@ -8,7 +8,7 @@
     <span th:if="${raid.loot.size > 0}" class="combat-loot">
         <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}" th:each="item: ${raid.loot}">
             <div class="loot-item">
-                <img th:src="@{${item.icon}}" onError="this.onerror=null;this.src='/img/items/0.png';" width="36"/>
+                <img th:src="@{${item.icon}}" onError="this.onerror=null;this.src='/data/items/0.png';" width="36"/>
                 <span th:if="${item.quantity > 1}" th:text="${item.quantity}"></span>
             </div>
         </a>

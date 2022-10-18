@@ -24,7 +24,7 @@ public class AssetManager {
         try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/items-cache-data.json"), StandardCharsets.UTF_8))) {
             Gson gson = new Gson();
             JsonObject obj = gson.fromJson(r, JsonObject.class);
-            obj.keySet().forEach(key -> items.put(key, new Item(key, obj.get(key).getAsJsonObject().get("name").getAsString(), "/img/items/" + key + ".png", obj.get(key).getAsJsonObject().get("highalch").getAsInt(), obj.get(key).getAsJsonObject().get("placeholder").getAsBoolean())));
+            obj.keySet().forEach(key -> items.put(key, new Item(key, obj.get(key).getAsJsonObject().get("name").getAsString(), "/data/icons/items/" + key + ".png", obj.get(key).getAsJsonObject().get("highalch").getAsInt(), obj.get(key).getAsJsonObject().get("placeholder").getAsBoolean())));
             log.info("Found " + items.keySet().size() + " item(s)");
         } catch(Exception e) {
             log.error("There was an issue loading assets: {}", e.getMessage(), e);

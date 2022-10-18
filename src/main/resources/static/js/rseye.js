@@ -29,7 +29,7 @@ $(document).ready(function() {
         ctx[i] = ct;
 
         map[i] = new Image();
-        map[i].src = "/img/map/map_" + i + ".webp";
+        map[i].src = "/data/map/map_" + i + ".webp";
         map[i].onload = function() {
             if(count++ == 31) {
                 load(); // don't load map or connect to server unless entire map has loaded
@@ -280,7 +280,7 @@ $(document).ready(function() {
                 const player = JSON.parse(data.substring("exp_update:".length, data.length));
                 var updateString = "";
                 for(const [key, value] of Object.entries(player.data)) {
-                    updateString += "<img class='xp-drop-icon' src='/img/icons/skill/"+key+".png'/><span>"+value+"</span><br>";
+                    updateString += "<img class='xp-drop-icon' src='/data/icons/skill/"+key+".png'/><span>"+value+"</span><br>";
                 }
                 var update = $("<span class='xp-drop'>" + updateString + "</span>");
                 $("#"+player.usernameEncoded+"-position").append(update);
