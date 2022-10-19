@@ -2,17 +2,11 @@
     <img width="204px" height="275px" src="/data/ui/inventory_tab.webp">
     <ul class="inventory-ul">
         <li th:each="item: ${inventory.slots}">
-            <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${item.name}">
+            <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" data-container=".inventory-container" th:title="${item.name}">
                 <img th:alt="${item.name}" th:src="@{${item.icon}}" onError="this.onerror=null;this.src='/data/icons/items/0.png';" width="36"/>
                 <span th:if="${item.quantity > 1}" th:class="${item.quantity > 99999} ? thousand : (${item.quantity > 9999999} ? million : shrapnel)" th:text="${item.quantityFormatted}"></span>
             </a>
             <img th:if="${item.quantity} == 0" src="/data/icons/items/blank.png"/>
         </li>
     </ul>
-
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
 </div>

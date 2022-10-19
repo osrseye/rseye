@@ -1,15 +1,9 @@
 <div class="equipment-container">
     <img width="204px" height="275px" src="/data/ui/worn_equipment_tab.webp">
     <div th:class="${'equipment ' + slot}" th:if="${!equipment.equipped.isEmpty}" th:each="slot: ${equipment.equipped.keySet}">
-        <a th:href="@{https://oldschool.runescape.wiki/w/__${equipment.equipped.get(slot).nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" th:title="${equipment.equipped.get(slot).name}">
+        <a th:href="@{https://oldschool.runescape.wiki/w/__${equipment.equipped.get(slot).nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" data-container=".equipment-container" th:title="${equipment.equipped.get(slot).name}">
             <img th:src="@{${equipment.equipped.get(slot).icon}}" onError="this.onerror=null;this.src='/data/icons/items/0.png';" width="36"/>
             <span th:if="${equipment.equipped.get(slot).quantity} > 1" th:class="${equipment.equipped.get(slot).quantity > 99999} ? thousand : (${equipment.equipped.get(slot).quantity > 9999999} ? million : shrapnel)" th:text="${equipment.equipped.get(slot).quantityFormatted}"></span>
         </a>
     </div>
-
-    <script>
-        $(function () {
-            $('[data-toggle="tooltip"]').tooltip()
-        })
-    </script>
 </div>

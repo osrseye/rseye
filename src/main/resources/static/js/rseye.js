@@ -12,7 +12,7 @@ $(document).ready(function() {
     var tHeight = cHeight * 32;
     var canvasController = document.getElementById('canvas-controller');
     var canvasMouse = Array.from({length: 3}, i => i = false);
-    $('#canvas-container').css({'width': '' + cWidth + 'px','height':'' + tHeight + 'px','transform': 'translate(' + deltaX + 'px,' + deltaY + 'px)'});
+    $('#canvas-container').css({'width':'' + cWidth + 'px','height':'' + tHeight + 'px','transform': 'translate(' + deltaX + 'px,' + deltaY + 'px)'});
     var followedPlayer;
 
     var ctx = new Array();
@@ -119,13 +119,15 @@ $(document).ready(function() {
     }
 
     function updatePlayerContainer(container, player, data) {
-        $("#"+player.usernameEncoded).find(container).replaceWith(data);
+        $("#"+player.usernameEncoded).find('[data-container="'+container+'"]').tooltip('dispose'); // removes tooltip before replacing dom (or it'll stick)
+        $("#"+player.usernameEncoded).find(container).replaceWith(data); // replace dom
         if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === player.usernameEncoded) {
             const obj = $('#followed-player-' + player.usernameEncoded).find(container);
             const style = obj.attr('style');
             obj.replaceWith(data);
             $('#followed-player-' + player.usernameEncoded).find(container).attr("style", style); // have to get dom again since obj will still contain old data even after .replaceWith()
         }
+        $('[data-toggle="tooltip"]').tooltip()
     }
 
     $(document).on('click','[class~=locator]',function() {
@@ -150,8 +152,10 @@ $(document).ready(function() {
     });
 
     function clearFeed() {
+        $('[data-toggle="tooltip"]').tooltip();
         if($('.feed-item').length > 5) {
             $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
+                $('[data-container=".feed-item"]').tooltip('dispose');
                 $(this).remove();
                 clearFeed(); // calls function recursively AFTER the element has been removed
             });
@@ -197,6 +201,7 @@ $(document).ready(function() {
                             $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-offline");
                         }
                         $("#"+player.usernameEncoded+"-position").detach().appendTo('#canvas-container');
+                        $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
                         updatePosition(player);
                     });
                 });
