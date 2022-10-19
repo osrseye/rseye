@@ -6,9 +6,10 @@ RUN apk add --no-cache wget && \
     apk add --no-cache unzip && \
     wget https://github.com/osrseye/rseye/archive/refs/heads/main.zip && \
     unzip main.zip && \
+    rm main.zip && \
     rm rseye-main/data/token.txt && \
-    mv rseye-main/data . && \
-    rm -rf rseye-main
+    cp -r rseye-main/data/ . && \
+    rm -r rseye-main &&
 
 COPY build/libs/rseye-1.0.0.jar .
 RUN chmod +x rseye-1.0.0.jar
