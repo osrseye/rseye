@@ -149,6 +149,7 @@ $(document).ready(function() {
         followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".quests-container").clone(true).toggle());
         followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".bank-container").clone(true).toggle());
         followedContainers.find(".bank-container").find(":input").val("").trigger("input"); // stops search input being cloned and resets any toggles
+        $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
     });
 
     function clearFeed() {
@@ -175,8 +176,7 @@ $(document).ready(function() {
         ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
 
         ws.onopen = function(event) {
-            $(".player-data").empty(); // solution to disconnects (might flicker !BAD!)
-            send("fetchLatestData");
+            send("fetch");
         };
 
         ws.onerror = function(event) {
@@ -190,16 +190,19 @@ $(document).ready(function() {
         ws.onmessage = function(event) {
             const data = event.data;
 
-            if(data.startsWith("fetchLatestData:")) {
-                $.each(JSON.parse(data.substring("fetchLatestData:".length, data.length)), function(username, player) {
+            if(data.startsWith("fetch:")) {
+                // in case websocket connection is lost, clear old data
+                $(".player-online").empty();
+                $(".player-offline").empty();
+                $(".map-player-online").empty();
+                $(".map-player-offline").empty();
+                $('#canvas-container').children(".player-position").remove();
+
+                // load each player
+                $.each(JSON.parse(data.substring("fetch:".length, data.length)), function(username, player) {
                     $.get("/player/"+player.username, function(data) {
-                        if(data.includes("LOGGED_IN")) {
-                            $(".player-online").append(data);
-                            $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-online");
-                        } else {
-                            $(".player-offline").append(data);
-                            $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-offline");
-                        }
+                        $(data.includes("LOGGED_IN") ? ".player-online" : ".player-offline").append(data);
+                        $("#map-status-"+player.usernameEncoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
                         $("#"+player.usernameEncoded+"-position").detach().appendTo('#canvas-container');
                         $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
                         updatePosition(player);
@@ -211,8 +214,8 @@ $(document).ready(function() {
             if(data.startsWith("new_player:")) {
                 const player = JSON.parse(data.substring("new_player:".length, data.length));
                 $.get("/player/"+player.username, function(data) {
-                    $(".player-offline").append(data);
-                    $("#map-status-"+player.usernameEncoded).detach().appendTo(".map-player-offline");
+                    $(data.includes("LOGGED_IN") ? ".player-online" : ".player-offline").append(data);
+                    $("#map-status-"+player.usernameEncoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
                     $("#"+player.usernameEncoded+"-position").detach().appendTo('#canvas-container');
                 });
                 return;

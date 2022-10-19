@@ -54,18 +54,13 @@ public class MapSocketHandler extends TextWebSocketHandler {
                 return;
             }
 
-            if(message.getPayload().equals("fetchLatestData")) {
+            if(message.getPayload().equals("fetch")) {
                 HashMap<String, PlayerInformation> hashMap = new HashMap<>();
                 Application.players.keySet().forEach(username -> {
                     Player player = Application.players.get(username);
                     hashMap.put(username, player.information());
                 });
-                session.sendMessage(new TextMessage("fetchLatestData:" + gson.toJson(hashMap)));
-                return;
-            }
-
-            if(message.getPayload().equals("ping")) {
-                session.sendMessage(new TextMessage("pong"));
+                session.sendMessage(new TextMessage("fetch:" + gson.toJson(hashMap)));
             }
         } catch(Exception e) {
             log.error("There was an error handling message: {}", e.getMessage(), e);
