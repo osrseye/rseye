@@ -9,7 +9,7 @@ RUN apk add --no-cache wget && \
     rm main.zip && \
     rm rseye-main/data/token.txt && \
     cp -r rseye-main/data/ . && \
-    rm -r rseye-main &&
+    rm -r rseye-main
 
 COPY build/libs/rseye-1.0.0.jar .
 RUN chmod +x rseye-1.0.0.jar
