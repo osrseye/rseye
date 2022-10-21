@@ -58,6 +58,14 @@ canvas {
 
 /* MAP */
 
+.player-map {
+    margin: auto;
+    margin-bottom: 15px;
+    width: 500px;
+    height: 500px;
+    overflow: hidden;
+}
+
 #followed-player, .player-position {
     user-select: none;
     -webkit-user-select: none;
@@ -306,7 +314,7 @@ canvas {
 .player-header {
     position: relative;
     background-color: rgba(0,0,0,0.5);
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     padding: 10px;
     color: #ffffff;
     border-top-left-radius: 5px;

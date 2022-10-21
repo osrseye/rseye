@@ -6,6 +6,37 @@
         <div class="locator" th:aria-username-sane="${information.usernameEncoded}" th:aria-username="${information.username}" aria-tx="0" aria-ty="0">🗺️</div>
     </div>
 
+    <div class="player-map">
+        <div th:id="${information.usernameEncoded + '-minimap-container'}" class="map-container">
+            <canvas th:class="${'canvas ' + information.usernameEncoded + '-minimap-' +num}" th:each="num: ${#numbers.sequence(0,31)}"></canvas>
+            <fragment th:replace="./player/minimap-position"></fragment>
+        </div>
+        <script th:inline="javascript">
+            $(document).ready(async function() {
+                var ctx = new Array();
+                for(var i = 0; i < 32 ; ++i) {
+                    var canvas = document.querySelector([[${'.' + information.usernameEncoded + '-minimap-'}]] + i);
+                        canvas.width = 12544;
+                        canvas.height = 1424;
+                    var ct = canvas.getContext('2d', {antialias: false});
+                        ct.textBaseline = 'middle';
+                        ct.textAlign = 'center';
+                        ct.font = '16px sans-serif';
+                    ctx[i] = ct;
+                }
+
+                while(!ready) {
+                    await new Promise(r => setTimeout(r, 100));
+                }
+
+                for(var i = 0; i < 32 ; ++i) {
+                    ctx[i].clearRect(0, 0, cWidth, cHeight);
+                    ctx[i].drawImage(map[i], 0, 0);
+                }
+            });
+        </script>
+    </div>
+
     <fragment th:replace="./player/equipment"></fragment>
     <fragment th:replace="./player/inventory"></fragment>
     <fragment th:replace="./player/stats"></fragment>
