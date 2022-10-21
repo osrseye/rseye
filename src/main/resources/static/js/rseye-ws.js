@@ -1,5 +1,5 @@
 function connect() {
-    ws = new WebSocket('ws://' + location.host + ':' + location.port + '/map/events');
+    ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
 
     ws.onopen = function(event) {
         send("fetch");
