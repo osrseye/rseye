@@ -1,9 +1,3 @@
-var baseX = 1152;
-var baseY = 1215;
-var clickX = 0;
-var clickY = 0;
-var transX = -6650;
-var transY = -36125;
 var mapController = document.getElementById('map');
 var mapMouse = Array.from({length: 3}, i => i = false);
 var followedPlayer;
@@ -50,8 +44,11 @@ $(document).on('input','[class~=bank-input]',function() {
 });
 
 function updatePosition(player) {
+    const baseHeight = 256*178 // height of the map image (pixels)
+    const baseX = 1152;
+    const baseY = 1215;
     const x = (Number(player.position.x)-baseX)*4;
-    const y = tHeight - ((Number(player.position.y)-baseY)*4);
+    const y = baseHeight - ((Number(player.position.y)-baseY)*4);
 
     // update world map
     const smap = $("#map-status-"+player.usernameEncoded)
@@ -84,9 +81,6 @@ function updatePlayerContainer(container, player, data) {
 $(document).on('click','[class~=locator]',function() {
     followedPlayer = $(this);
     $('#followed-player').html("<span class='title-text'>FOLLOWING</span><br><span class='feed-player'>" + $(this).attr("aria-username") + "</span>");
-    deltaX = transX = ($(this).attr("aria-tx")*-1) + ($('#map').width()/2);
-    deltaY = transY = ($(this).attr("aria-ty")*-1) + ($('#map').height()/2);
-    $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': 'all 2s'});
 
     // followed player
     $('#inventory-button').addClass("container-visible");

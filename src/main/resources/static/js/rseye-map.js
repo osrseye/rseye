@@ -1,9 +1,3 @@
-var deltaX = -6650;
-var deltaY = -36125;
-var cWidth = 12544;
-var cHeight = 1424;
-var tHeight = cHeight * 32;
-
 var marker = L.icon({
     iconUrl: './data/map/marker.png',
     iconSize: [4, 4], // size of the icon
