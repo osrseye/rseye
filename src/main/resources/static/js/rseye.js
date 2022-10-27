@@ -5,25 +5,25 @@ var clickY = 0;
 var transX = -6650;
 var transY = -36125;
 var mapController = document.getElementById('map');
-var canvasMouse = Array.from({length: 3}, i => i = false);
+var mapMouse = Array.from({length: 3}, i => i = false);
 var followedPlayer;
 
 mapController.addEventListener('mousedown', (e) => {
     if(e.button !== 0 && e.button !== 1 && e.button !== 2) { // middle click || right click
         return;
     }
-    canvasMouse[e.button] = true;
+    mapMouse[e.button] = true;
 });
 
 mapController.addEventListener('mouseup', (e) => {
     if(e.button !== 0 && e.button !== 1 && e.button !== 2) { // middle click || right click
         return;
     }
-    canvasMouse[e.button] = false;
+    mapMouse[e.button] = false;
 });
 
 mapController.addEventListener('mousemove', (e) => {
-    if(canvasMouse[0] || canvasMouse[1] || canvasMouse[2]) {
+    if(mapMouse[0] || mapMouse[1] || mapMouse[2]) {
         if(followedPlayer != null) {
             followedPlayer = null;
             $('#followed-player').html("<span class='title-text'>NOT FOLLOWING</span>");
