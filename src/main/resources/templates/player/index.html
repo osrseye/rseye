@@ -30,15 +30,13 @@
                 html: [[${information.username}]]
             });
 
-            var [(${information.usernameEncoded + 'WorldmapMarker'})] = L.marker([(${information.usernameEncoded + 'Minimap'})].unproject(L.point(8276, 37552)), {title: [[${information.usernameEncoded + '-position'}]], icon: [(${information.username + 'MarkerIcon'})]}).addTo(map);
+            var [(${information.usernameEncoded + 'WorldmapMarker'})] = L.marker([(${information.usernameEncoded + 'Minimap'})].unproject(L.point(8276, 37552)), {title: [[${information.usernameEncoded + '-position'}]], icon: [(${information.usernameEncoded + 'MarkerIcon'})]}).addTo(map);
             var [(${information.usernameEncoded + 'MinimapMarker'})] = L.marker([(${information.usernameEncoded + 'Minimap'})].unproject(L.point(8276, 37552)), {icon: marker}).addTo([(${information.usernameEncoded + 'Minimap'})]);
 
             setTimeout(function () {
                 [(${information.usernameEncoded + 'Minimap'})].invalidateSize(true);
                 [(${information.usernameEncoded + 'Minimap'})].setView([(${information.usernameEncoded + 'Minimap'})].unproject(L.point(8276, 37552))); // lumbridge castle
             }, 100);
-
-            var myIcon = L.divIcon({className: 'my-div-icon'});
 
             function [(${information.usernameEncoded + 'MinimapPan'})](x, y) {
                 [(${information.usernameEncoded + 'Minimap'})].panTo([(${information.usernameEncoded + 'Minimap'})].unproject(L.point(x, y)));
