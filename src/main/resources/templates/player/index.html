@@ -24,16 +24,14 @@
                 tms: true
             }).addTo([(${information.usernameEncoded + 'Minimap'})]);
 
-            var [(${information.username + 'markericon'})] = L.divIcon({
+            var [(${information.usernameEncoded + 'MarkerIcon'})] = L.divIcon({
                 iconSize: [4, 4], // size of the icon
                 iconAnchor: [0, 0], // remove any offset
                 html: [[${information.username}]]
             });
 
-            var [(${information.usernameEncoded + 'WorldmapMarker'})] = L.marker([(${information.usernameEncoded + 'Minimap'})].unproject(L.point(8276, 37552)), {title: [[${information.usernameEncoded + '-position'}]], icon: [(${information.username + 'markericon'})]}).addTo(map);
+            var [(${information.usernameEncoded + 'WorldmapMarker'})] = L.marker([(${information.usernameEncoded + 'Minimap'})].unproject(L.point(8276, 37552)), {title: [[${information.usernameEncoded + '-position'}]], icon: [(${information.username + 'MarkerIcon'})]}).addTo(map);
             var [(${information.usernameEncoded + 'MinimapMarker'})] = L.marker([(${information.usernameEncoded + 'Minimap'})].unproject(L.point(8276, 37552)), {icon: marker}).addTo([(${information.usernameEncoded + 'Minimap'})]);
-
-
 
             setTimeout(function () {
                 [(${information.usernameEncoded + 'Minimap'})].invalidateSize(true);
