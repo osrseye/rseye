@@ -29,7 +29,6 @@ function connect() {
                 $.get("/player/"+player.username, function(data) {
                     $(data.includes("LOGGED_IN") ? ".player-online" : ".player-offline").append(data);
                     $("#map-status-"+player.usernameEncoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
-                    $("#"+player.usernameEncoded+"-position").detach().appendTo('#canvas-container');
                     $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
                     updatePosition(player);
                 });
@@ -117,8 +116,8 @@ function connect() {
                 updateString += "<img class='xp-drop-icon' src='/data/icons/skill/"+key+".png'/><span>"+value+"</span><br>";
             }
             var update = $("<span class='xp-drop'>" + updateString + "</span>");
-            $("#"+player.usernameEncoded+"-position").append(update);
-            update.css({top:(-25+-update.height())});
+            $("div[title='"+player.usernameEncoded+"-position']").append(update);
+            update.css({top:(-15+-update.height())});
             update.animate({
                 opacity: '0',
                 top: -225+-update.height()

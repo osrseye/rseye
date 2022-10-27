@@ -58,7 +58,12 @@ canvas {
 
 /* MAP */
 
+.leaflet-marker-icon {
+    color: yellow!important;
+}
+
 .player-map {
+    background-color: #50628E;
     margin: auto;
     margin-bottom: 15px;
     width: 500px;
@@ -73,10 +78,8 @@ canvas {
     -ms-user-select: none;
 }
 
-.canvas {
-    display: block;
-    width: 12544px;
-    height: 1424px;
+#followed-player-data, #followed-player-ui, #followed-player, #map-player-status, .update-feed {
+    z-index: 1000;
 }
 
 #map {
@@ -86,6 +89,7 @@ canvas {
     width: 100%;
     min-height: 100vh;
     min-height: -webkit-fill-available;
+    height: 100vh;
     max-height: 100vh;
 }
 
@@ -125,6 +129,7 @@ canvas {
     left: 10px;
     padding: 10px;
     padding-top: 5px;
+    padding-bottom: 5px;
     line-height: 1em;
     color: #ffffff;
     border-radius: 5px;

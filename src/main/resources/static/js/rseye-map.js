@@ -4,48 +4,57 @@ var cWidth = 12544;
 var cHeight = 1424;
 var tHeight = cHeight * 32;
 
-// load the map globally
-var count = 0;
-var ready = false;
-var map = new Array();
-for(var x = 0; x < 32; ++x) {
-    map[x] = new Image();
-    map[x].src = "/data/map/map_" + x + ".webp";
-    map[x].onload = function() {
-        if(count++ == 31) {
-            ready = true;
-        }
+var marker = L.icon({
+    iconUrl: './data/map/marker.png',
+    iconSize: [4, 4], // size of the icon
+    iconAnchor: [0, 0] // remove any offset
+});
+
+var yx = L.latLng;
+var xy = function(x, y) {
+    if (L.Util.isArray(x)) { // When doing xy([x, y]);
+    return yx(x[1], x[0]);
     }
+    return yx(y, x); // When doing xy(x, y);
+};
+
+var bounds = L.latLngBounds([
+    xy(0, 0),
+    xy(256*49, 256*178)
+]);
+
+L.CRS.OSRS = L.extend({}, L.CRS.Simple, {
+    transformation: new L.Transformation(1 / 178, 0, 1 / 49, 0) // Compute a and c coefficients so that  tile 0/0/0 is from [0, 0] to [4096, 4096]
+});
+
+var map = L.map("map", {
+    crs: L.CRS.OSRS, // http://leafletjs.com/reference-1.0.3.html#map-crs
+    minZoom: 8,
+    maxZoom: 8,
+    zoomControl: false,
+    scrollWheelZoom: false,
+    renderer: L.canvas()
+}).setView([0,0], 8);
+
+L.tileLayer('./data/map/{x}/{y}.png', {
+    bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
+    noWrap: true,
+    tms: true
+}).addTo(map);
+
+setTimeout(function () {
+    map.invalidateSize(true);
+    map.setView(map.unproject(L.point(8276, 37552))); // lumbridge castle
+}, 100);
+
+display();
+connect();
+
+function panWorldMap(x, y) {
+    map.panTo(map.unproject(L.point(x, y)));
 }
 
-$(document).ready(async function() {
-    $('#canvas-container').css({'width':'' + cWidth + 'px','height':'' + tHeight + 'px','transform': 'translate(' + deltaX + 'px,' + deltaY + 'px)'});
-
-    var ctx = new Array();
-    for(var i = 0; i < 32 ; ++i) {
-        var canvas = document.querySelector('.c'+i);
-            canvas.width = 12544;
-            canvas.height = 1424;
-        var ct = canvas.getContext('2d', {antialias: false});
-            ct.textBaseline = 'middle';
-            ct.textAlign = 'center';
-            ct.font = '16px sans-serif';
-        ctx[i] = ct;
-    }
-
-    while(!ready) {
-        await new Promise(r => setTimeout(r, 100));
-    }
-
-    for(var i = 0; i < 32 ; ++i) {
-        ctx[i].clearRect(0, 0, cWidth, cHeight);
-        ctx[i].drawImage(map[i], 0, 0);
-    }
-    display();
-    connect();
-
-    function display() {
-        $('.loading-screen').remove();
-        $('.content').toggle();
-    }
-});
+function display() {
+    $('.loading-screen').remove();
+    $('.content').toggle();
+}

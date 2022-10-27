@@ -12,11 +12,6 @@
 
     <div class="content">
         <div id="map">
-            <div id="canvas-controller">
-                <div id="canvas-container" class="canvas-container text-center">
-                    <canvas th:class="${'canvas c'+num}" th:each="num: ${#numbers.sequence(0,31)}"></canvas>
-                </div>
-            </div>
             <div class="update-feed"></div>
             <div id="map-player-status">
                 <div class="map-player-online"></div>

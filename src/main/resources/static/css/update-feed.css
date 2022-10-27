@@ -30,7 +30,9 @@
 }
 
 .xp-drop {
+    z-index: 1000;
     position: absolute;
+    width: 100px;
     left: 0px;
     top: -35px;
     color: #ffffff;
@@ -44,8 +46,8 @@
 
 .xp-drop-icon {
     margin-right: 5px;
-    width: 18px;
-    height: 18px;
+    width: 18px!important;
+    height: 18px!important;
 }
 .combat {
     padding: 0px!important;

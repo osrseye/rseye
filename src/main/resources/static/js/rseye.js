@@ -4,35 +4,26 @@ var clickX = 0;
 var clickY = 0;
 var transX = -6650;
 var transY = -36125;
-var canvasController = document.getElementById('canvas-controller');
+var mapController = document.getElementById('map');
 var canvasMouse = Array.from({length: 3}, i => i = false);
 var followedPlayer;
 
-canvasController.addEventListener('mousedown', (e) => {
+mapController.addEventListener('mousedown', (e) => {
     if(e.button !== 0 && e.button !== 1 && e.button !== 2) { // middle click || right click
         return;
     }
     canvasMouse[e.button] = true;
-    clickX = e.clientX; // store initial mouse location when translation begins
-    clickY = e.clientY;
-    transX = deltaX; // set origin of translation to final value of previous translation
-    transY = deltaY;
 });
 
-canvasController.addEventListener('mouseup', (e) => {
+mapController.addEventListener('mouseup', (e) => {
     if(e.button !== 0 && e.button !== 1 && e.button !== 2) { // middle click || right click
         return;
     }
     canvasMouse[e.button] = false;
 });
 
-canvasController.addEventListener('mousemove', (e) => {
+mapController.addEventListener('mousemove', (e) => {
     if(canvasMouse[0] || canvasMouse[1] || canvasMouse[2]) {
-        // deltaX|Y is final translation value, where transX|Y is initial value
-        deltaX = transX + (e.clientX - clickX);
-        deltaY = transY + (e.clientY - clickY);
-        $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': ''});
-
         if(followedPlayer != null) {
             followedPlayer = null;
             $('#followed-player').html("<span class='title-text'>NOT FOLLOWING</span>");
@@ -61,30 +52,21 @@ $(document).on('input','[class~=bank-input]',function() {
 function updatePosition(player) {
     const x = (Number(player.position.x)-baseX)*4;
     const y = tHeight - ((Number(player.position.y)-baseY)*4);
-    const pn = $("#"+player.usernameEncoded).find(".locator");
-    const map = $("#map-status-"+player.usernameEncoded);
-    pn.attr("aria-tx", x);
-    pn.attr("aria-ty", y);
-    map.attr("aria-tx", x);
-    map.attr("aria-ty", y);
 
-    // calculate center of the map
-    const tx = map.attr("aria-tx") * -1;
-    const ty = map.attr("aria-ty") * -1;
-    deltaX = transX = tx + ($('#map').width()/2);
-    deltaY = transY = ty + ($('#map').height()/2);
-    miniX = transX = tx + (500/2);
-    miniY = transY = ty + (500/2);
-
-    // update main map - player marker & map position (if followed)
-    $("#"+player.usernameEncoded+"-position").css({"top": y, "left": x})
-    if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === map.attr("aria-username-sane")) {
-        $('#canvas-container').css({'transform': 'translate('+deltaX+'px,'+deltaY+'px)', 'transition': 'all 2s'});
+    // update world map
+    const smap = $("#map-status-"+player.usernameEncoded)
+    if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === smap.attr("aria-username-sane")) {
+        panWorldMap(x, y)
     }
+    var marker = player.usernameEncoded + "WorldmapMarker";
+    window[marker].setLatLng(map.unproject(L.point(x, y)));
 
     // update player minimap
-    $("#"+player.usernameEncoded+"-minimap-position").css({"top": y, "left": x})
-    $('#' + player.usernameEncoded + '-minimap-container').css({'transform': 'translate('+miniX+'px,'+miniY+'px)', 'transition': 'all 2s'});
+    var minimap = player.usernameEncoded + "Minimap";
+    var pan = player.usernameEncoded + "MinimapPan";
+    var minimarker = player.usernameEncoded + "MinimapMarker";
+    window[pan](x, y);
+    window[minimarker].setLatLng(window[minimap].unproject(L.point(x, y)));
 }
 
 function updatePlayerContainer(container, player, data) {
