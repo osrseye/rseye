@@ -45,15 +45,19 @@ $(document).on('input','[class~=bank-input]',function() {
 
 function updatePosition(player) {
     const baseHeight = 256*178 // height of the map image (pixels)
-    const baseX = 1152;
-    const baseY = 1215;
+    const baseX = 1152; // map x position offset (in game and full map)
+    const baseY = 1215; // map y position offset
     const x = (Number(player.position.x)-baseX)*4;
     const y = baseHeight - ((Number(player.position.y)-baseY)*4);
+
+    // store player position on their div
+    $("#"+player.usernameEncoded).attr("x", x);
+    $("#"+player.usernameEncoded).attr("y", y);
 
     // update world map
     const smap = $("#map-status-"+player.usernameEncoded)
     if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === smap.attr("aria-username-sane")) {
-        panWorldMap(x, y)
+        panWorldMap(x, y);
     }
     var marker = player.usernameEncoded + "WorldmapMarker";
     window[marker].setLatLng(map.unproject(L.point(x, y)));
@@ -83,18 +87,22 @@ $(document).on('click','[class~=locator]',function() {
     $('#followed-player').html("<span class='title-text'>FOLLOWING</span><br><span class='feed-player'>" + $(this).attr("aria-username") + "</span>");
 
     // followed player
+    const playerDiv = $('#'+$(this).attr("aria-username-sane"));
     $('#inventory-button').addClass("container-visible");
     $('#equipment-button, #stats-button, #quests-button, #bank-button').removeClass("container-visible");
     $('#followed-player-ui').removeClass("ui-disabled");
     $('#followed-player-data').html("<div id='followed-player-" + $(this).attr("aria-username-sane") + "'></div>");
-    const followedContainers = $('#followed-player-' + $(this).attr("aria-username-sane"));
-    followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".equipment-container").clone(true).toggle());
-    followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".inventory-container").clone(true));
-    followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".stats-container").clone(true).toggle());
-    followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".quests-container").clone(true).toggle());
-    followedContainers.append($('#'+$(this).attr("aria-username-sane")).find(".bank-container").clone(true).toggle());
-    followedContainers.find(".bank-container").find(":input").val("").trigger("input"); // stops search input being cloned and resets any toggles
+    const followDiv = $('#followed-player-' + $(this).attr("aria-username-sane"));
+    followDiv.append(playerDiv.find(".equipment-container").clone(true).toggle());
+    followDiv.append(playerDiv.find(".inventory-container").clone(true));
+    followDiv.append(playerDiv.find(".stats-container").clone(true).toggle());
+    followDiv.append(playerDiv.find(".quests-container").clone(true).toggle());
+    followDiv.append(playerDiv.find(".bank-container").clone(true).toggle());
+    followDiv.find(".bank-container").find(":input").val("").trigger("input"); // stops search input being cloned and resets any toggles
     $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
+
+    // pan map to followed player
+    panWorldMap(playerDiv.attr("x"), playerDiv.attr("y"));
 });
 
 function clearFeed() {

@@ -1,4 +1,4 @@
-<div th:id="${information.usernameEncoded}" th:class="${loginState + ' player'}">
+<div th:id="${information.usernameEncoded}" th:class="${loginState + ' player'}" x="0" y="0">
     <div class="player-header">
         <span th:text="${information.username + ' (level-' + stats.combatLevel + ')'}"></span>
         <span th:if="${loginState == 'LOGGED_IN'}" class="badge badge-success">Online</span>
@@ -55,5 +55,3 @@
 
 <!-- map sidebar label -->
 <fragment th:replace="./player/map-sidebar"></fragment>
-<!-- map position label -->
-<fragment th:replace="./player/map-position"></fragment>
