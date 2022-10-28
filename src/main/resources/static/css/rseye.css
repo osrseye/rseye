@@ -65,6 +65,7 @@ canvas {
 .marker-name {
     display: flex;
     width: max-content;
+    filter: drop-shadow(1px 1px 1px black);
 }
 
 .player-map {
