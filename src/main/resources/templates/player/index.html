@@ -27,7 +27,7 @@
             var [(${information.usernameEncoded + 'MarkerIcon'})] = L.divIcon({
                 iconSize: [4, 4], // size of the icon
                 iconAnchor: [0, 0], // remove any offset
-                html: [[${information.username}]]
+                html: [[${"<span class='marker-name'>" + information.username + "</span>"}]]
             });
 
             var [(${information.usernameEncoded + 'WorldmapMarker'})] = L.marker([(${information.usernameEncoded + 'Minimap'})].unproject(L.point(8276, 37552)), {title: [[${information.usernameEncoded + '-position'}]], icon: [(${information.usernameEncoded + 'MarkerIcon'})]}).addTo(map);

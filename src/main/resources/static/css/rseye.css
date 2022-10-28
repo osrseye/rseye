@@ -62,6 +62,11 @@ canvas {
     color: yellow!important;
 }
 
+.marker-name {
+    display: flex;
+    width: max-content;
+}
+
 .player-map {
     background-color: #50628E!important;
     margin: auto;
