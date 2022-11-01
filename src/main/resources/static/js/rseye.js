@@ -44,15 +44,12 @@ $(document).on('input','[class~=bank-input]',function() {
 });
 
 function updatePosition(player) {
-    const baseHeight = 256*178 // height of the map image (pixels)
-    const baseX = 1152; // map x position offset (in game and full map)
-    const baseY = 1215; // map y position offset
-    const x = (Number(player.position.x)-baseX)*4;
-    const y = baseHeight - ((Number(player.position.y)-baseY)*4);
+    var x = player.offsetPosition.x;
+    var y = player.offsetPosition.y;
 
     // store player position on their div
-    $("#"+player.usernameEncoded).attr("x", x);
-    $("#"+player.usernameEncoded).attr("y", y);
+    $("#"+player.usernameEncoded).attr("aria-x", x);
+    $("#"+player.usernameEncoded).attr("aria-y", y);
 
     // update world map
     const smap = $("#map-status-"+player.usernameEncoded)
@@ -102,7 +99,7 @@ $(document).on('click','[class~=locator]',function() {
     $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
 
     // pan map to followed player
-    panWorldMap(playerDiv.attr("x"), playerDiv.attr("y"));
+    panWorldMap(playerDiv.attr("aria-x"), playerDiv.attr("aria-y"));
 });
 
 function clearFeed() {

@@ -22,7 +22,6 @@ function connect() {
             $(".player-offline").empty();
             $(".map-player-online").empty();
             $(".map-player-offline").empty();
-            $('#canvas-container').children(".player-position").remove();
 
             // load each player
             $.each(JSON.parse(data.substring("fetch:".length, data.length)), function(username, player) {
@@ -69,7 +68,8 @@ function connect() {
         }
 
         if(data.startsWith("position_update:")) {
-            updatePosition(JSON.parse(data.substring("position_update:".length, data.length)));
+            const player = JSON.parse(data.substring("position_update:".length, data.length));
+            updatePosition(player);
             return;
         }
 

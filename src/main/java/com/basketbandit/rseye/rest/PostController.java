@@ -33,13 +33,25 @@ public class PostController {
     @PostMapping("/api/v1/position_update/")
     public void positionUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         JsonObject p = data.get("position").getAsJsonObject();
+
+        // raw x,y position data
         HashMap<String, String> position = new HashMap<>() {{
             put("x", p.get("x").getAsString());
             put("y", p.get("y").getAsString());
             put("plane", p.get("plane").getAsString());
         }};
 
-        player.setInformation(new PlayerInformation(player.information().username(), player.information().usernameEncoded(), position));
+        // offset x,y position data based on world map
+        int mapPixelHeight = 256*178;
+        int mapOffsetX = 1152;
+        int mapOffsetY = 1215;
+        HashMap<String, String> offsetPosition = new HashMap<>() {{
+            put("x", "" + (p.get("x").getAsInt()-mapOffsetX)*4);
+            put("y", "" + (mapPixelHeight - ((p.get("y").getAsInt()-mapOffsetY)*4)));
+            put("plane", p.get("plane").getAsString());
+        }};
+
+        player.setInformation(new PlayerInformation(player.information().username(), player.information().usernameEncoded(), position, offsetPosition));
         MapSocketHandler.broadcastUpdate(UpdateType.POSITION_UPDATE, player);
     }
 

@@ -37,7 +37,20 @@ public class PostInterceptor implements HandlerInterceptor {
         String username = object.get("username").getAsString();
         Player player = Application.players.containsKey(username) ? Application.players.get(username) : new Player();
         if(!player.information().username().equals(username)) {
-            player.setInformation(new PlayerInformation(username, username.replace(" ", "_"), new HashMap<>()));
+            player.setInformation(
+                new PlayerInformation(username, username.replace(" ", "_"),
+                        new HashMap<>(){{
+                            // set xy to varrock square
+                            put("x", "3213");
+                            put("y", "3428");
+                        }},
+                        new HashMap<>(){{
+                            // set offset xy to varrock square
+                            put("x", "8244");
+                            put("y", "36716");
+                        }}
+                )
+            );
             Application.players.put(username, player);
             MapSocketHandler.broadcastUpdate(UpdateType.NEW_PLAYER, player);
         }

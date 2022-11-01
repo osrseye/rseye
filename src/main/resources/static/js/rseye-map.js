@@ -38,7 +38,7 @@ L.tileLayer('./data/map/{x}/{y}.png', {
 
 setTimeout(function () {
     map.invalidateSize(true);
-    map.setView(map.unproject(L.point(8276, 37552))); // lumbridge castle
+    map.setView(map.unproject(L.point(8244, 36716))); // lumbridge castle
 }, 100);
 
 display();
