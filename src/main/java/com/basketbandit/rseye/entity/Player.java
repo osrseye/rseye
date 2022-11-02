@@ -1,31 +1,184 @@
 package com.basketbandit.rseye.entity;
 
-import com.basketbandit.rseye.entity.fragment.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Player {
-    private String loginState;
-    private PlayerInformation information;
-    private PlayerStats stats;
-    private PlayerQuests quests;
-    private PlayerEquipment equipment;
-    private PlayerInventory inventory;
-    private PlayerBank bank;
-    private PlayerOverhead overhead;
-    private PlayerSkull skull;
-    private long lastUpdate;
-
-    public Player() {
-        this.loginState = "LOGGED_OUT";
-        this.information = new PlayerInformation();
-        this.stats = new PlayerStats();
-        this.quests = new PlayerQuests();
-        this.equipment = new PlayerEquipment();
-        this.inventory = new PlayerInventory();
-        this.bank = new PlayerBank();
-        this.overhead = new PlayerOverhead();
-        this.skull = new PlayerSkull();
-        this.lastUpdate = System.currentTimeMillis();
+    public record Information(String username, String usernameEncoded, HashMap<String, Integer> position, HashMap<String, Integer> offsetPosition) {
+        public Information() {
+            this("", "", new HashMap<>(), new HashMap<>());
+        }
+        public Information(String username, HashMap<String, Integer> position) {
+            this(username, username.replace(" ", "_"), position, new HashMap<>() {{
+                put("x", (position.get("x")-1152)*4); // mapOffsetX = 1152
+                put("y", (256*178 - ((position.get("y")-1215)*4))); // mapPixelHeight = 256*178, mapOffsetY = 1215
+                put("plane", position.get("plane"));
+            }});
+        }
     }
+    public record Stats(Integer totalLevel, Integer combatLevel, HashMap<String, HashMap<String, Integer>> stats) {
+        public Stats() {
+            this(38,3, new HashMap<>(){{
+                // initialising this map makes life easier
+                put("ATTACK", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("HITPOINTS", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("MINING", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("STRENGTH", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("AGILITY", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("SMITHING", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("DEFENCE", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("HERBLORE", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("FISHING", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("RANGED", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("THIEVING", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("COOKING", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("PRAYER", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("CRAFTING", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("FIREMAKING", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("MAGIC", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("FLETCHING", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("WOODCUTTING", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("RUNECRAFT", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("SLAYER", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("FARMING", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("CONSTRUCTION", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+                put("HUNTER", new HashMap<>(){{
+                    put("level", 0);
+                    put("xp", 0);
+                    put("boostedLevel", 0);
+                }});
+            }});
+        }
+    }
+    public record Quests(Integer questPoints, HashMap<Integer, Quest> quests) {
+        public Quests() {
+            this(0, new HashMap<>());
+        }
+    }
+    public record Equipment(HashMap<String, Item> equipped) {
+        public Equipment() {
+            this(new HashMap<>());
+        }
+    }
+    public record Inventory(ArrayList<Item> slots) {
+        public Inventory() {
+            this(new ArrayList<>());
+        }
+    }
+    public record Bank(Integer value, ArrayList<Item> slots) {
+        public Bank() {
+            this(0, new ArrayList<>());
+        }
+    }
+    public record Skull(String skull) {
+        public Skull() {
+            this("null");
+        }
+    }
+    public record Overhead(String overhead) {
+        public Overhead() {
+            this("null");
+        }
+    }
+
+    private String loginState = "LOGGED_OUT";
+    private Information information = new Information();
+    private Stats stats = new Stats();
+    private Quests quests = new Quests();
+    private Equipment equipment = new Equipment();
+    private Inventory inventory = new Inventory();
+    private Bank bank = new Bank();
+    private Skull skull = new Skull();
+    private Overhead overhead = new Overhead();
+    private long lastUpdate = System.currentTimeMillis();
 
     /**
      * Logs out players who haven't been updated in the last 5 minutes. (xlogging doesn't send event)
@@ -47,35 +200,35 @@ public class Player {
         return loginState;
     }
 
-    public PlayerInformation information() {
+    public Information information() {
         return information;
     }
 
-    public PlayerStats stats() {
+    public Stats stats() {
         return stats;
     }
 
-    public PlayerQuests quests() {
+    public Quests quests() {
         return quests;
     }
 
-    public PlayerEquipment equipment() {
+    public Equipment equipment() {
         return equipment;
     }
 
-    public PlayerInventory inventory() {
+    public Inventory inventory() {
         return inventory;
     }
 
-    public PlayerBank bank() {
+    public Bank bank() {
         return bank;
     }
 
-    public PlayerOverhead overhead() {
+    public Overhead overhead() {
         return overhead;
     }
 
-    public PlayerSkull skull() {
+    public Skull skull() {
         return skull;
     }
 
@@ -84,42 +237,42 @@ public class Player {
         this.lastUpdate = (loginState.equals("LOGGED_IN") || loginState.equals("HOPPING")) ? System.currentTimeMillis() : System.currentTimeMillis() - 600000; // make the time 10 minutes in the past so not logged back in
     }
 
-    public void setInformation(PlayerInformation information) {
+    public void setInformation(Information information) {
         this.information = information;
         this.lastUpdate = System.currentTimeMillis();
     }
 
-    public void setStats(PlayerStats stats) {
+    public void setStats(Stats stats) {
         this.stats = stats;
         this.lastUpdate = System.currentTimeMillis();
     }
 
-    public void setQuests(PlayerQuests quests) {
+    public void setQuests(Quests quests) {
         this.quests = quests;
         this.lastUpdate = System.currentTimeMillis();
     }
 
-    public void setEquipment(PlayerEquipment equipment) {
+    public void setEquipment(Equipment equipment) {
         this.equipment = equipment;
         this.lastUpdate = System.currentTimeMillis();
     }
 
-    public void setInventory(PlayerInventory inventory) {
+    public void setInventory(Inventory inventory) {
         this.inventory = inventory;
         this.lastUpdate = System.currentTimeMillis();
     }
 
-    public void setBank(PlayerBank bank) {
+    public void setBank(Bank bank) {
         this.bank = bank;
         this.lastUpdate = System.currentTimeMillis();
     }
 
-    public void setOverhead(PlayerOverhead overhead) {
+    public void setOverhead(Overhead overhead) {
         this.overhead = overhead;
         this.lastUpdate = System.currentTimeMillis();
     }
 
-    public void setSkull(PlayerSkull skull) {
+    public void setSkull(Skull skull) {
         this.skull = skull;
         this.lastUpdate = System.currentTimeMillis();
     }

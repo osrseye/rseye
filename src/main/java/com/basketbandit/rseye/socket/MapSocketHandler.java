@@ -3,7 +3,6 @@ package com.basketbandit.rseye.socket;
 import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.event.Event;
-import com.basketbandit.rseye.entity.fragment.PlayerInformation;
 import com.google.gson.Gson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +54,7 @@ public class MapSocketHandler extends TextWebSocketHandler {
             }
 
             if(message.getPayload().equals("fetch")) {
-                HashMap<String, PlayerInformation> hashMap = new HashMap<>();
+                HashMap<String, Player.Information> hashMap = new HashMap<>();
                 Application.players.keySet().forEach(username -> {
                     Player player = Application.players.get(username);
                     hashMap.put(username, player.information());

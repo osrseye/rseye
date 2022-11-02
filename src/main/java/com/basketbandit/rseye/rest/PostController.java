@@ -8,7 +8,6 @@ import com.basketbandit.rseye.entity.Monster;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.Quest;
 import com.basketbandit.rseye.entity.event.*;
-import com.basketbandit.rseye.entity.fragment.*;
 import com.basketbandit.rseye.socket.MapSocketHandler;
 import com.basketbandit.rseye.socket.UpdateType;
 import com.google.gson.JsonArray;
@@ -35,23 +34,13 @@ public class PostController {
         JsonObject p = data.get("position").getAsJsonObject();
 
         // raw x,y position data
-        HashMap<String, String> position = new HashMap<>() {{
-            put("x", p.get("x").getAsString());
-            put("y", p.get("y").getAsString());
-            put("plane", p.get("plane").getAsString());
+        HashMap<String, Integer> position = new HashMap<>() {{
+            put("x", p.get("x").getAsInt());
+            put("y", p.get("y").getAsInt());
+            put("plane", p.get("plane").getAsInt());
         }};
 
-        // offset x,y position data based on world map
-        int mapPixelHeight = 256*178;
-        int mapOffsetX = 1152;
-        int mapOffsetY = 1215;
-        HashMap<String, String> offsetPosition = new HashMap<>() {{
-            put("x", "" + (p.get("x").getAsInt()-mapOffsetX)*4);
-            put("y", "" + (mapPixelHeight - ((p.get("y").getAsInt()-mapOffsetY)*4)));
-            put("plane", p.get("plane").getAsString());
-        }};
-
-        player.setInformation(new PlayerInformation(player.information().username(), player.information().usernameEncoded(), position, offsetPosition));
+        player.setInformation(new Player.Information(player.information().username(), position));
         MapSocketHandler.broadcastUpdate(UpdateType.POSITION_UPDATE, player);
     }
 
@@ -103,7 +92,7 @@ public class PostController {
             totalLevel += skill.get("level");
         }
 
-        player.setStats(new PlayerStats(totalLevel, data.get("combatLevel").getAsInt(), skills));
+        player.setStats(new Player.Stats(totalLevel, data.get("combatLevel").getAsInt(), skills));
 
         // submit exp update
         if(!diff.isEmpty()) {
@@ -131,7 +120,7 @@ public class PostController {
             }
         });
 
-        player.setBank(new PlayerBank(value, bank));
+        player.setBank(new Player.Bank(value, bank));
         MapSocketHandler.broadcastUpdate(UpdateType.BANK_UPDATE, player);
     }
 
@@ -148,7 +137,7 @@ public class PostController {
             equipped.put(slot, item);
         });
 
-        player.setEquipment(new PlayerEquipment(equipped));
+        player.setEquipment(new Player.Equipment(equipped));
         MapSocketHandler.broadcastUpdate(UpdateType.EQUIPMENT_UPDATE, player);
     }
 
@@ -164,7 +153,7 @@ public class PostController {
             inventory.add(item);
         });
 
-        player.setInventory(new PlayerInventory(inventory));
+        player.setInventory(new Player.Inventory(inventory));
         MapSocketHandler.broadcastUpdate(UpdateType.INVENTORY_UPDATE, player);
     }
 
@@ -185,7 +174,7 @@ public class PostController {
             quests.put(quest.get("id").getAsInt(), new Quest(quest.get("id").getAsInt(), quest.get("name").getAsString(), quest.get("state").getAsString()));
         });
 
-        player.setQuests(new PlayerQuests(data.get("questPoints").getAsInt(), quests));
+        player.setQuests(new Player.Quests(data.get("questPoints").getAsInt(), quests));
         MapSocketHandler.broadcastUpdate(UpdateType.QUEST_DATA, player);
     }
 
@@ -217,14 +206,14 @@ public class PostController {
     @PostMapping("/api/v1/overhead_update/")
     public void overheadUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         String overhead = data.has("overhead") ? data.get("overhead").getAsString() : "null";
-        player.setOverhead(new PlayerOverhead(overhead));
+        player.setOverhead(new Player.Overhead(overhead));
         MapSocketHandler.broadcastUpdate(UpdateType.OVERHEAD_UPDATE, new OverheadEvent(player.information().username(), player.information().usernameEncoded(), player.overhead().overhead()));
     }
 
     @PostMapping("/api/v1/skull_update/")
     public void skullUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         String skull = data.has("skull") ? data.get("skull").getAsString() : "null";
-        player.setSkull(new PlayerSkull(skull));
+        player.setSkull(new Player.Skull(skull));
         MapSocketHandler.broadcastUpdate(UpdateType.SKULL_UPDATE, new SkullEvent(player.information().username(), player.information().usernameEncoded(), player.skull().skull()));
     }
 

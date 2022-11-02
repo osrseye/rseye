@@ -3,9 +3,8 @@ package com.basketbandit.rseye.rest.intercept;
 import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.AssetManager;
 import com.basketbandit.rseye.entity.Player;
-import com.basketbandit.rseye.entity.fragment.PlayerInformation;
-import com.basketbandit.rseye.socket.UpdateType;
 import com.basketbandit.rseye.socket.MapSocketHandler;
+import com.basketbandit.rseye.socket.UpdateType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.springframework.stereotype.Component;
@@ -38,16 +37,11 @@ public class PostInterceptor implements HandlerInterceptor {
         Player player = Application.players.containsKey(username) ? Application.players.get(username) : new Player();
         if(!player.information().username().equals(username)) {
             player.setInformation(
-                new PlayerInformation(username, username.replace(" ", "_"),
+                new Player.Information(username,
                         new HashMap<>(){{
                             // set xy to varrock square
-                            put("x", "3213");
-                            put("y", "3428");
-                        }},
-                        new HashMap<>(){{
-                            // set offset xy to varrock square
-                            put("x", "8244");
-                            put("y", "36716");
+                            put("x", 3213);
+                            put("y", 3428);
                         }}
                 )
             );
