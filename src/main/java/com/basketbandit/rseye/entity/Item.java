@@ -1,19 +1,24 @@
 package com.basketbandit.rseye.entity;
 
+import com.basketbandit.rseye.Utils;
+
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class Item {
-    public String id;
-    public String name;
-    public String nameEncoded;
-    public String icon;
-    public int highAlchValue = 0;
-    public int quantity = 0;
-    public String quantityFormatted = "0";
-    public boolean isPlaceholder;
+    private final String id;
+    private final String name;
+    private final String nameEncoded;
+    private final String icon;
+    private final int highAlchValue;
+    private int quantity = 0;
+    private String quantityFormatted = "0";
+    private final boolean isPlaceholder;
 
+    /**
+     * Default constructor - used on init to generate database of items.
+     */
     public Item(String id, String name, String icon, int highAlchValue, boolean isPlaceholder) {
         this.id = id;
         this.name = name;
@@ -33,8 +38,46 @@ public class Item {
         this.nameEncoded = item.nameEncoded;
         this.icon = item.icon;
         this.quantity = item.quantity;
+        this.quantityFormatted = item.quantityFormatted;
         this.highAlchValue = item.highAlchValue;
         this.isPlaceholder = item.isPlaceholder;
+    }
+
+    public String id() {
+        return id;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public String nameEncoded() {
+        return nameEncoded;
+    }
+
+    public String icon() {
+        return icon;
+    }
+
+    public int highAlchValue() {
+        return highAlchValue;
+    }
+
+    public int quantity() {
+        return quantity;
+    }
+
+    public String quantityFormatted() {
+        return quantityFormatted;
+    }
+
+    public boolean isPlaceholder() {
+        return isPlaceholder;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+        this.quantityFormatted = Utils.formatNumber(quantity);
     }
 
     @Override
