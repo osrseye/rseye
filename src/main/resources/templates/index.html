@@ -47,7 +47,9 @@
         </div>
 
         <div class="player-status">Global Loot Tracker</div>
-        <fragment th:replace="./global/loot-tracker"></fragment>
+        <div id="global-loot-tracker" class="loot-container">
+            <fragment th:replace="./global/loot-tracker"></fragment>
+        </div>
 
         <div class="player-status">Players</div>
         <div class="player-data player-online"></div>
