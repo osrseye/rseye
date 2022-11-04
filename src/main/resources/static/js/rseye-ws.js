@@ -80,6 +80,9 @@ function connect() {
                 $(".update-feed").animate({top: 5}, 1000);
                 clearFeed();
             });
+            $.get("/loot-tracker", function(data) {
+                $("#global-loot-tracker").html(data);
+            })
             return;
         }
 

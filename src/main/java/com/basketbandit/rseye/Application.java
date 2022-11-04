@@ -1,5 +1,6 @@
 package com.basketbandit.rseye;
 
+import com.basketbandit.rseye.entity.LootTracker;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.event.CombatEvent;
 import com.basketbandit.rseye.entity.event.GrowthEvent;
@@ -22,6 +23,7 @@ public class Application {
 	public static CopyOnWriteArrayList<RaidEvent> raidFeed = new CopyOnWriteArrayList<>(); // inefficient but we aren't expecting high throughput
 	public static CopyOnWriteArrayList<GrowthEvent> growthFeed = new CopyOnWriteArrayList<>();
 	public static CopyOnWriteArrayList<QuestEvent> questFeed = new CopyOnWriteArrayList<>();
+	public static LootTracker globalLootTracker = new LootTracker();
 
 	public Application() {
 		new AssetManager();

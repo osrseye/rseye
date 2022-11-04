@@ -178,6 +178,7 @@ public class Player {
     private Bank bank = new Bank();
     private Skull skull = new Skull();
     private Overhead overhead = new Overhead();
+    private LootTracker lootTracker = new LootTracker();
     private long lastUpdate = System.currentTimeMillis();
 
     /**
@@ -232,6 +233,10 @@ public class Player {
         return skull;
     }
 
+    public LootTracker lootTracker() {
+        return lootTracker;
+    }
+
     public void setLoginState(String loginState) {
         this.loginState = loginState;
         this.lastUpdate = (loginState.equals("LOGGED_IN") || loginState.equals("HOPPING")) ? System.currentTimeMillis() : System.currentTimeMillis() - 600000; // make the time 10 minutes in the past so not logged back in
@@ -275,5 +280,9 @@ public class Player {
     public void setSkull(Skull skull) {
         this.skull = skull;
         this.lastUpdate = System.currentTimeMillis();
+    }
+
+    public void resetLootTracker() {
+        this.lootTracker = new LootTracker();
     }
 }

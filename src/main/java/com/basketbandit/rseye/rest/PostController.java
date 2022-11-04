@@ -113,8 +113,7 @@ public class PostController {
         inventoryArray.forEach(i -> {
             JsonObject o = i.getAsJsonObject();
             Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
-            item.quantity = item.isPlaceholder ? 0 : o.get("quantity").getAsInt();
-            item.quantityFormatted = item.isPlaceholder ? "0" : Utils.formatNumber(o.get("quantity").getAsInt());
+            item.setQuantity(item.isPlaceholder() ? 0 : o.get("quantity").getAsInt());
             if(!item.equals(AssetManager.items.get("0"))) {
                 bank.add(item);
             }
@@ -132,8 +131,7 @@ public class PostController {
         equippedItemKeySet.forEach(slot -> {
             JsonObject obj = equippedItemObject.get(slot).getAsJsonObject();
             Item item = new Item(AssetManager.items.getOrDefault(obj.get("id").getAsString(), AssetManager.items.get("0")));
-            item.quantity = obj.get("quantity").getAsInt();
-            item.quantityFormatted = Utils.formatNumber(obj.get("quantity").getAsInt());
+            item.setQuantity(obj.get("quantity").getAsInt());
             equipped.put(slot, item);
         });
 
@@ -148,8 +146,7 @@ public class PostController {
         inventoryArray.forEach(slot -> {
             JsonObject o = slot.getAsJsonObject();
             Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
-            item.quantity = o.get("quantity").getAsInt();
-            item.quantityFormatted = Utils.formatNumber(o.get("quantity").getAsInt());
+            item.setQuantity(o.get("quantity").getAsInt());
             inventory.add(item);
         });
 
@@ -181,11 +178,11 @@ public class PostController {
     @PostMapping("/api/v1/loot_update/")
     public void lootUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         ArrayList<Item> loot = new ArrayList<>();
+
         data.get("items").getAsJsonArray().forEach(slot -> {
             JsonObject o = slot.getAsJsonObject();
             Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
-            item.quantity = o.get("quantity").getAsInt();
-            item.quantityFormatted = Utils.formatNumber(o.get("quantity").getAsInt());
+            item.setQuantity(o.get("quantity").getAsInt());
             loot.add(item);
         });
 
@@ -193,6 +190,9 @@ public class PostController {
             case "NPC", "Player" -> {
                 Item weapon = player.equipment().equipped().getOrDefault("WEAPON", null);
                 Monster monster = AssetManager.monsters.get(data.get("entityId").getAsString());
+                // update loot tracker
+                //player.lootTracker().trackLoot(monster, loot);
+                Application.globalLootTracker.trackLoot(monster, loot);
                 Application.combatFeed.add(new CombatEvent(player, weapon, monster, loot));
                 MapSocketHandler.broadcastUpdate(UpdateType.COMBAT_LOOT_UPDATE, player);
             }

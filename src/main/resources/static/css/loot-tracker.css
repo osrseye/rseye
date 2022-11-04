@@ -1,0 +1,56 @@
+#global-loot-tracker {
+    background-color: #888888;
+    padding: 5px;
+}
+
+.monster {
+    width: 220px;
+    text-align: initial;
+    display: inline-block;
+    box-sizing: content-box;
+    color: white;
+    background-color: rgba(0,0,0,0.3);
+    border-radius: 5px;
+}
+
+.monster-header {
+    position: relative;
+    display: block;
+    padding: 5px 5px 5px 10px;
+    background: rgba(0,0,0,0.5);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.monster-header-kills {
+    color: #aaaaaa;
+}
+
+.monster-loot {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 5px;
+    width: 211px;
+}
+
+.monster-loot-item {
+    position: relative;
+    display: flex;
+    width: 40px;
+    height: 40px;
+    border: solid 1px #222222;
+    margin: 1px;
+    background: rgba(0,0,0,0.2);
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.monster-loot-item span {
+    position: absolute;
+    top: -2px;
+    left: 2px;
+    color: #ffff00;
+    font-size: 12px;
+    text-shadow: 1px 1px 2px #000;
+}

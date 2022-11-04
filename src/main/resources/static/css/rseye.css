@@ -294,6 +294,8 @@ canvas {
     padding: 10px;
     background-color: rgba(0,0,0,0.8);
     line-height: 1em;
+    color: white;
+    text-align: center;
 }
 
 .bank-container, .equipment-container, .inventory-container, .quests-container, .stats-container {

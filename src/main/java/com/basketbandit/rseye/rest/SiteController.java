@@ -15,7 +15,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class SiteController {
     @GetMapping("/")
     public ModelAndView index() {
-        return new ModelAndView("index");
+        ModelAndView mv = new ModelAndView("index");
+        mv.addObject("lootTracker", Application.globalLootTracker);
+        return mv;
+    }
+
+    @GetMapping("/loot-tracker")
+    public ModelAndView getGlobalLootTracker() {
+        ModelAndView mv = new ModelAndView("./global/loot-tracker");
+        mv.addObject("lootTracker", Application.globalLootTracker);
+        return mv;
     }
 
     @GetMapping("/player/{username}")
@@ -31,6 +40,7 @@ public class SiteController {
         mv.addObject("bank", player.bank());
         mv.addObject("overhead", player.overhead());
         mv.addObject("skull", player.skull());
+        mv.addObject("lootTracker", player.lootTracker());
         return mv;
     }
 
