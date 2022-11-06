@@ -1,5 +1,5 @@
 function connect() {
-    ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
+    ws = new WebSocket('ws://' + location.host + ':' + location.port + '/map/events');
 
     ws.onopen = function(event) {
         send("fetch");
@@ -114,18 +114,29 @@ function connect() {
 
         if(data.startsWith("exp_update")) {
             const player = JSON.parse(data.substring("exp_update:".length, data.length));
+
             var updateString = "";
             for(const [key, value] of Object.entries(player.data)) {
                 updateString += "<img class='xp-drop-icon' src='/data/icons/skill/"+key+".png'/><span>"+value+"</span><br>";
             }
-            var update = $("<span class='xp-drop'>" + updateString + "</span>");
-            $("div[title='"+player.usernameEncoded+"-position']").append(update);
-            update.css({top:(-15+-update.height())});
-            update.animate({
+
+            var updateWorld = $("<span class='xp-drop'>" + updateString + "</span>");
+            var updateMini = $("<span class='xp-drop'>" + updateString + "</span>");
+            $("div[title='"+player.usernameEncoded+"-position']").append(updateWorld);
+            $("div[title='"+player.usernameEncoded+"-minimap-position']").append(updateMini);
+            updateWorld.css({top:(-15+-updateWorld.height())});
+            updateWorld.animate({
                 opacity: '0',
-                top: -225+-update.height()
+                top: -225+-updateWorld.height()
             }, 3000, function(){
-              update.remove();
+              updateWorld.remove();
+            });
+            updateMini.css({top:(-15+-updateMini.height())});
+            updateMini.animate({
+                opacity: '0',
+                top: -225+-updateMini.height()
+            }, 3000, function(){
+              updateMini.remove();
             });
             return;
         }
@@ -148,8 +159,13 @@ function connect() {
 
         if(data.startsWith("equipment_update:")) {
             const player = JSON.parse(data.substring("equipment_update:".length, data.length));
+            // main
             $.get("/player/"+player.username+"/equipment", function(data) {
                 updatePlayerContainer(".equipment-container", player, data);
+            });
+            // minimap
+            $.get("/player/"+player.username+"/map-equipment", function(data) {
+                updatePlayerContainer(".map-equipment-container", player, data);
             });
             return;
         }

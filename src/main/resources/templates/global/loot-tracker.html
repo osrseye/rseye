@@ -1,14 +1,17 @@
-<div th:class="monster" th:if="${!lootTracker.entities.isEmpty}" th:each="entity: ${lootTracker.entities.values}">
-    <div class="monster-header">
-        <span th:text="${entity.monster.name}"></span>
-        <span class="monster-header-kills" th:text="${' x ' + entity.kills}"></span>
-    </div>
-    <div class="monster-loot">
-        <div class="monster-loot-item" th:if="${!entity.loot.isEmpty}" th:each="item: ${entity.loot.values}">
-            <a th:href="@{https://oldschool.runescape.wiki/w/__${item.nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" data-container=".equipment-container" th:title="${item.name}">
-                <img th:src="@{${item.icon}}" onError="this.onerror=null;this.src='/data/icons/items/0.png';" width="36"/>
-                <span th:if="${item.quantity} > 1" th:class="${item.quantity > 99999} ? thousand : (${item.quantity > 9999999} ? million : shrapnel)" th:text="${item.quantityFormatted}"></span>
-            </a>
+<div class="content-header">Global Loot Tracker</div>
+<div class="monster-container">
+    <div th:class="monster" th:if="${!lootTracker.entities.isEmpty}" th:each="entity: ${lootTracker.entities.values}">
+        <div class="monster-header">
+            <span th:text="${entity.monster.name}"></span>
+            <span class="monster-header-kills" th:text="${' x ' + entity.kills}"></span>
+        </div>
+        <div class="monster-loot">
+            <div class="monster-loot-item" th:if="${!entity.loot.isEmpty}" th:each="item: ${entity.loot.values}">
+                <a th:href="@{https://oldschool.runescape.wiki/w/__${item.nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" data-container=".equipment-container" th:title="${item.name}">
+                    <img th:src="@{${item.icon}}" onError="this.onerror=null;this.src='/data/icons/items/0.png';" width="36"/>
+                    <span th:if="${item.quantity} > 1" th:class="${item.quantity > 99999} ? thousand : (${item.quantity > 9999999} ? million : shrapnel)" th:text="${item.quantityFormatted}"></span>
+                </a>
+            </div>
         </div>
     </div>
 </div>

@@ -56,6 +56,31 @@ canvas {
     display: none;
 }
 
+.sub-content {
+    display: flex;
+}
+
+.content-header {
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(0,0,0,0.8);
+    color: white;
+    text-align: center;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+#global-loot-tracker {
+    width: 260px;
+    min-height: 99vh;
+    max-height: 99vh;
+    display: inline-flex;
+    flex-direction: column;
+    margin: 5px 0px 5px 5px;
+    padding-right: 0px;
+    box-sizing: content-box;
+}
+
 /* MAP */
 
 .leaflet-marker-icon {
@@ -69,11 +94,11 @@ canvas {
 }
 
 .player-map {
+    position: relative;
     background-color: #50628E!important;
     margin: auto;
-    margin-bottom: 15px;
-    width: 500px;
-    height: 500px;
+    width: 520px;
+    height: 520px;
     overflow: hidden;
 }
 
@@ -126,6 +151,26 @@ canvas {
 
 .map-player-offline {
     filter: grayscale(1)opacity(0.5);
+}
+
+.map-equipment {
+    position: relative;
+    display: flex;
+    width: 40px;
+    height: 40px;
+    border: solid 1px #222222;
+    margin: 1px;
+    background: rgba(0,0,0,0.4);
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.map-equipment-container {
+    z-index: 1000;
+    position: relative;
+    top: 524px;
+    left: 4px;
+    display: flex;
 }
 
 #followed-player {
@@ -313,13 +358,35 @@ canvas {
     background-color: #dc3545;
 }
 
+#player-container {
+    display: inline-flex;
+    flex-direction: column;
+    width: -webkit-fill-available;
+    margin: 5px;
+    max-height: 99vh;
+    min-height: 99vh;
+}
+
+.players {
+    background-color: #888888;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .player {
+    position: relative;
     display: inline-block;
-    width: 530px;
+    width: 548px;
     text-align: center;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.4);
     padding: 0px 0px 20px 0px;
-    margin: 10px;
+    margin: 2px;
     font-size: 14px;
     border-radius: 5px;
 }

@@ -7,6 +7,42 @@
     </div>
 
     <div class="player-map">
+        <div class="player-tabs">
+            <button class="tablink" onclick="openPage('player-map', this, 'green')">
+                <img src="/data/icons/worldmap_icon.webp" height="24"/>
+            </button>
+            <button class="tablink" onclick="openPage('player-equipment', this, 'red')">
+                <img src="/data/icons/equipment_icon.webp" height="24"/>
+            </button>
+            <button class="tablink" onclick="openPage('player-inventory', this, 'red')">
+                <img src="/data/icons/inventory_icon.webp" height="24"/>
+            </button>
+            <button class="tablink" onclick="openPage('player-stats', this, 'red')">
+                <img src="/data/icons/stats_icon.webp" height="24"/>
+            </button>
+            <button class="tablink" onclick="openPage('player-quests', this, 'red')">
+                <img src="/data/icons/quests_icon.webp" height="24"/>
+            </button>
+            <button class="tablink" onclick="openPage('player-bank', this, 'red')">
+                <img src="/data/icons/bank_icon.webp" height="24"/>
+            </button>
+        </div>
+        <div class="player-equipment tabcontent">
+            <fragment th:replace="./player/equipment"></fragment>
+        </div>
+        <div class="player-inventory tabcontent">
+            <fragment th:replace="./player/inventory"></fragment>
+        </div>
+        <div class="player-stats tabcontent">
+            <fragment th:replace="./player/stats"></fragment>
+        </div>
+        <div class="player-quests tabcontent">
+            <fragment th:replace="./player/quests"></fragment>
+        </div>
+        <div class="player-bank tabcontent">
+            <fragment th:replace="./player/bank"></fragment>
+        </div>
+
         <div th:id="${information.usernameEncoded + '-minimap'}" class="player-map"></div>
         <script th:inline="javascript">
             var [(${information.usernameEncoded + 'Minimap'})] = L.map([[${information.usernameEncoded + '-minimap'}]], {
@@ -15,7 +51,8 @@
                 maxZoom: 8,
                 zoomControl: false,
                 scrollWheelZoom: false,
-                renderer: L.canvas()
+                renderer: L.canvas(),
+                attributionControl: false
             }).setView([0,0], 8);
 
             L.tileLayer('./data/map/{x}/{y}.png', {
@@ -31,7 +68,7 @@
             });
 
             var [(${information.usernameEncoded + 'WorldmapMarker'})] = L.marker([(${information.usernameEncoded + 'Minimap'})].unproject(L.point([(${information.offsetPosition.get('x')})], [(${information.offsetPosition.get('y')})])), {title: [[${information.usernameEncoded + '-position'}]], icon: [(${information.usernameEncoded + 'MarkerIcon'})]}).addTo(map);
-            var [(${information.usernameEncoded + 'MinimapMarker'})] = L.marker([(${information.usernameEncoded + 'Minimap'})].unproject(L.point([(${information.offsetPosition.get('x')})], [(${information.offsetPosition.get('y')})])), {icon: marker}).addTo([(${information.usernameEncoded + 'Minimap'})]);
+            var [(${information.usernameEncoded + 'MinimapMarker'})] = L.marker([(${information.usernameEncoded + 'Minimap'})].unproject(L.point([(${information.offsetPosition.get('x')})], [(${information.offsetPosition.get('y')})])), {title: [[${information.usernameEncoded + '-minimap-position'}]], icon: marker}).addTo([(${information.usernameEncoded + 'Minimap'})]);
 
             setTimeout(function () {
                 [(${information.usernameEncoded + 'Minimap'})].invalidateSize(true);
@@ -44,12 +81,7 @@
         </script>
     </div>
 
-    <fragment th:replace="./player/equipment"></fragment>
-    <fragment th:replace="./player/inventory"></fragment>
-    <fragment th:replace="./player/stats"></fragment>
-    <fragment th:replace="./player/quests"></fragment>
-    <fragment th:replace="./player/bank"></fragment>
+    <div style="display: none">
+        <fragment th:replace="./player/map-sidebar"></fragment>
+    </div>
 </div>
-
-<!-- map sidebar label -->
-<fragment th:replace="./player/map-sidebar"></fragment>

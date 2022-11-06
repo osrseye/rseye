@@ -1,4 +1,4 @@
-var marker = L.icon({
+var marker = L.divIcon({
     iconUrl: './data/map/marker.png',
     iconSize: [4, 4], // size of the icon
     iconAnchor: [0, 0] // remove any offset
@@ -27,7 +27,8 @@ var map = L.map("map", {
     maxZoom: 8,
     zoomControl: false,
     scrollWheelZoom: false,
-    renderer: L.canvas()
+    renderer: L.canvas(),
+    attributionControl: false
 }).setView([0,0], 8);
 
 L.tileLayer('./data/map/{x}/{y}.png', {
