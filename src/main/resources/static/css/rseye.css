@@ -93,15 +93,6 @@ canvas {
     filter: drop-shadow(1px 1px 1px black);
 }
 
-.player-map {
-    position: relative;
-    background-color: #50628E!important;
-    margin: auto;
-    width: 520px;
-    height: 520px;
-    overflow: hidden;
-}
-
 #followed-player, .player-position {
     user-select: none;
     -webkit-user-select: none;
@@ -356,60 +347,6 @@ canvas {
 .badge-danger {
     color: #fff;
     background-color: #dc3545;
-}
-
-#player-container {
-    display: inline-flex;
-    flex-direction: column;
-    width: -webkit-fill-available;
-    margin: 5px;
-    max-height: 99vh;
-    min-height: 99vh;
-}
-
-.players {
-    background-color: #888888;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    padding: 5px;
-    border-bottom-right-radius: 5px;
-    border-bottom-left-radius: 5px;
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.player {
-    position: relative;
-    display: inline-block;
-    width: 548px;
-    text-align: center;
-    background-color: rgba(0,0,0,0.4);
-    padding: 0px 0px 20px 0px;
-    margin: 2px;
-    font-size: 14px;
-    border-radius: 5px;
-}
-
-.player-header {
-    position: relative;
-    background-color: rgba(0,0,0,0.5);
-    margin-bottom: 15px;
-    padding: 10px;
-    color: #ffffff;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-}
-
-.locator {
-    cursor: pointer;
-}
-
-.player-header .locator {
-    position: absolute;
-    top: 0px;
-    right: 5px;
-    font-size: 24px;
 }
 
 .tooltip > .tooltip-inner {

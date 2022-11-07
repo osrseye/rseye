@@ -1,5 +1,5 @@
 function connect() {
-    ws = new WebSocket('ws://' + location.host + ':' + location.port + '/map/events');
+    ws = new WebSocket('wss://' + location.host + ':' + location.port + '/map/events');
 
     ws.onopen = function(event) {
         send("fetch");
@@ -159,13 +159,8 @@ function connect() {
 
         if(data.startsWith("equipment_update:")) {
             const player = JSON.parse(data.substring("equipment_update:".length, data.length));
-            // main
             $.get("/player/"+player.username+"/equipment", function(data) {
                 updatePlayerContainer(".equipment-container", player, data);
-            });
-            // minimap
-            $.get("/player/"+player.username+"/map-equipment", function(data) {
-                updatePlayerContainer(".map-equipment-container", player, data);
             });
             return;
         }

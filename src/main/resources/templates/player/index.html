@@ -8,22 +8,22 @@
 
     <div class="player-map">
         <div class="player-tabs">
-            <button class="tablink" onclick="openPage('player-map', this, 'green')">
+            <button th:class="${'lefttab tablink ' + information.usernameEncoded + 'DefaultTab'}" th:attr="onclick=|${information.usernameEncoded + 'OpenTab(''player-map'', this)'}|">
                 <img src="/data/icons/worldmap_icon.webp" height="24"/>
             </button>
-            <button class="tablink" onclick="openPage('player-equipment', this, 'red')">
+            <button class="tablink" th:attr="onclick=|${information.usernameEncoded + 'OpenTab(''player-equipment'', this)'}|">
                 <img src="/data/icons/equipment_icon.webp" height="24"/>
             </button>
-            <button class="tablink" onclick="openPage('player-inventory', this, 'red')">
+            <button class="tablink" th:attr="onclick=|${information.usernameEncoded + 'OpenTab(''player-inventory'', this)'}|">
                 <img src="/data/icons/inventory_icon.webp" height="24"/>
             </button>
-            <button class="tablink" onclick="openPage('player-stats', this, 'red')">
+            <button class="tablink" th:attr="onclick=|${information.usernameEncoded + 'OpenTab(''player-stats'', this)'}|">
                 <img src="/data/icons/stats_icon.webp" height="24"/>
             </button>
-            <button class="tablink" onclick="openPage('player-quests', this, 'red')">
+            <button class="tablink" th:attr="onclick=|${information.usernameEncoded + 'OpenTab(''player-quests'', this)'}|">
                 <img src="/data/icons/quests_icon.webp" height="24"/>
             </button>
-            <button class="tablink" onclick="openPage('player-bank', this, 'red')">
+            <button class="righttab tablink" th:attr="onclick=|${information.usernameEncoded + 'OpenTab(''player-bank'', this)'}|">
                 <img src="/data/icons/bank_icon.webp" height="24"/>
             </button>
         </div>
@@ -77,6 +77,15 @@
 
             function [(${information.usernameEncoded + 'MinimapPan'})](x, y) {
                 [(${information.usernameEncoded + 'Minimap'})].panTo([(${information.usernameEncoded + 'Minimap'})].unproject(L.point(x, y)));
+            }
+        </script>
+        <script th:inline="javascript">
+            $(".[(${information.usernameEncoded + 'DefaultTab'})]").click();
+            function [(${information.usernameEncoded + 'OpenTab'})](tabName, button) {
+                $("#[(${information.usernameEncoded})] .tabcontent").css("display", "none");
+                $("#[(${information.usernameEncoded})] .tablink").css("backgroundColor", "");
+                $("#[(${information.usernameEncoded})] ." + tabName).css("display", "flex");
+                button.style.backgroundColor = '#222222';
             }
         </script>
     </div>
