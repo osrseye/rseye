@@ -1,5 +1,7 @@
 FROM openjdk:19-alpine
 
+USER root
+
 WORKDIR /app
 
 RUN apk add --no-cache wget && \
@@ -8,7 +10,7 @@ RUN apk add --no-cache wget && \
     unzip main.zip && \
     rm main.zip && \
     rm rseye-main/data/token.txt && \
-    cp -r rseye-main/data/ . && \
+    mv rseye-main/data/* . && \
     rm -r rseye-main
 
 COPY build/libs/rseye-1.0.0.jar .
