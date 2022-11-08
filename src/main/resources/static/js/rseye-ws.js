@@ -16,7 +16,7 @@ function connect() {
     ws.onmessage = function(event) {
         const data = event.data;
 
-        if(data.equals("ping")) {
+        if(data == "ping") {
             send("pong");
             return;
         }
