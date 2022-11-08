@@ -23,6 +23,16 @@ public class MapSocketHandler extends TextWebSocketHandler {
     private static final Gson gson = new Gson();
     private record Username(String username, String usernameEncoded){}; // using records facilitates the creation of serializable objects without any boilerplate
 
+    public synchronized static void broadcastPing() {
+        clients.forEach(client -> {
+            try {
+                client.sendMessage(new TextMessage("ping"));
+            } catch(IOException e) {
+                log.warn("There was a problem contacting client, reason: {}", e.getMessage(), e);
+            }
+        });
+    }
+
     public synchronized static void broadcastUpdate(UpdateType updateType, Player player) {
         String payload = updateType.value.equals("position_update") ? gson.toJson(player.information()) : gson.toJson(new Username(player.information().username(), player.information().usernameEncoded()));
         clients.forEach(client -> {

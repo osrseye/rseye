@@ -16,6 +16,11 @@ function connect() {
     ws.onmessage = function(event) {
         const data = event.data;
 
+        if(data.equals("ping")) {
+            send("pong");
+            return;
+        }
+
         if(data.startsWith("fetch:")) {
             // in case websocket connection is lost, clear old data
             $(".player-online").empty();
