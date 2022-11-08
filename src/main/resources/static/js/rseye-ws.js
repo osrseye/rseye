@@ -27,6 +27,7 @@ function connect() {
             $(".player-offline").empty();
             $(".map-player-online").empty();
             $(".map-player-offline").empty();
+            $(".leaflet-marker-pane").empty(); // experimental
 
             // load each player
             $.each(JSON.parse(data.substring("fetch:".length, data.length)), function(username, player) {
