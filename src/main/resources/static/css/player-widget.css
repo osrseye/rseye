@@ -3,7 +3,6 @@
     flex-direction: column;
     width: -webkit-fill-available;
     margin: 5px;
-    max-height: 99vh;
     min-height: 99vh;
 }
 
