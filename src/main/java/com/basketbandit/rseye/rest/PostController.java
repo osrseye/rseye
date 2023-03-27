@@ -189,7 +189,7 @@ public class PostController {
         switch(data.get("lootType").getAsString()) {
             case "NPC", "Player" -> {
                 Item weapon = player.equipment().equipped().getOrDefault("WEAPON", null);
-                Monster monster = AssetManager.monsters.get(data.get("entityId").getAsString());
+                Monster monster = AssetManager.monsters.getOrDefault(data.get("entityId").getAsString(), AssetManager.monsters.get("0"));
                 //player.lootTracker().trackLoot(monster, loot); // update loot trackers
                 Application.globalLootTracker.trackLoot(monster, loot); // update loot trackers
                 Application.combatFeed.add(new CombatEvent(player, weapon, monster, loot));
