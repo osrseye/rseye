@@ -1,6 +1,7 @@
 package com.basketbandit.rseye.entity;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,8 +14,8 @@ public class LootTracker {
         this.entities.put(monster.name(), entity);
     }
 
-    public ConcurrentHashMap<String, Entity> entities() {
-        return entities;
+    public Collection<Entity> entities() {
+        return entities.values();
     }
 
     public class Entity {

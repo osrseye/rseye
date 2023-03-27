@@ -1,6 +1,6 @@
 <div class="content-header">Global Loot Tracker</div>
 <div class="monster-container">
-    <div th:class="monster" th:if="${!lootTracker.entities.isEmpty}" th:each="entity: ${lootTracker.entities.values}">
+    <div th:class="monster" th:if="${!lootTracker.entities.isEmpty}" th:each="entity: ${lootTracker.entities}">
         <div class="monster-header">
             <span th:text="${entity.monster.name}"></span>
             <span class="monster-header-kills" th:text="${' x ' + entity.kills}"></span>
