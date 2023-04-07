@@ -6,24 +6,28 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class LootTracker {
-    private final ConcurrentHashMap<String, Entity> entities = new ConcurrentHashMap<>(); // uses ConcurrentHashMap for use in global loot tracking
+    private final ConcurrentHashMap<String, Record> records = new ConcurrentHashMap<>(); // uses ConcurrentHashMap for use in global loot tracking
 
     public void trackLoot(Monster monster, ArrayList<Item> loot) {
-        Entity entity = this.entities.getOrDefault(monster.name(), new Entity(monster));
-        entity.trackLoot(loot);
-        this.entities.put(monster.name(), entity);
+        Record record = this.records.getOrDefault(monster.name(), new Record(monster));
+        record.trackLoot(loot);
+        this.records.put(monster.name(), record);
     }
 
-    public Collection<Entity> entities() {
-        return entities.values();
+    public Collection<Record> records() {
+        return records.values();
     }
 
-    public class Entity {
+    public boolean hasRecord() {
+        return !records.isEmpty();
+    }
+
+    public class Record {
         private final Monster monster;
         private int kills = 0;
         private final HashMap<String, Item> loot = new HashMap<>();
 
-        public Entity(Monster monster) {
+        public Record(Monster monster) {
             this.monster = monster;
         }
 
