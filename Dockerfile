@@ -1,4 +1,4 @@
-FROM openjdk:20-alpine
+FROM eclipse-temurin:20-alpine
 
 USER root
 
