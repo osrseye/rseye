@@ -28,19 +28,19 @@
             </button>
         </div>
         <div class="player-equipment tabcontent">
-            <fragment th:replace="./player/equipment"></fragment>
+            <fragment th:replace="~{./player/equipment}"></fragment>
         </div>
         <div class="player-inventory tabcontent">
-            <fragment th:replace="./player/inventory"></fragment>
+            <fragment th:replace="~{./player/inventory}"></fragment>
         </div>
         <div class="player-stats tabcontent">
-            <fragment th:replace="./player/stats"></fragment>
+            <fragment th:replace="~{./player/stats}"></fragment>
         </div>
         <div class="player-quests tabcontent">
-            <fragment th:replace="./player/quests"></fragment>
+            <fragment th:replace="~{./player/quests}"></fragment>
         </div>
         <div class="player-bank tabcontent">
-            <fragment th:replace="./player/bank"></fragment>
+            <fragment th:replace="~{./player/bank}"></fragment>
         </div>
 
         <div th:id="${information.usernameEncoded + '-minimap'}" class="player-map"></div>
@@ -91,6 +91,6 @@
     </div>
 
     <div style="display: none">
-        <fragment th:replace="./player/map-sidebar"></fragment>
+        <fragment th:replace="~{./player/map-sidebar}"></fragment>
     </div>
 </div>

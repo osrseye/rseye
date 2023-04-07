@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <fragment th:replace="head"></fragment>
+    <fragment th:replace="~{head}"></fragment>
 </head>
 <body>
     <div class="loading-screen">
@@ -49,7 +49,7 @@
 
         <div class="sub-content">
             <div id="global-loot-tracker">
-                <fragment th:replace="./global/loot-tracker"></fragment>
+                <fragment th:replace="~{./global/loot-tracker}"></fragment>
             </div>
 
             <div id="player-container">

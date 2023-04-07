@@ -3,7 +3,7 @@
     <span th:if="${loginState == 'LOGGED_IN'}" class="badge badge-success">Online</span>
     <span th:if="${loginState != 'LOGGED_IN'}" class="badge badge-danger">Offline</span>
 
-    <fragment th:replace="./player/status"></fragment>
+    <fragment th:replace="~{./player/status}"></fragment>
 
     <div class="player-overheads">
         <img class="overhead MELEE" th:style="${overhead.overhead == 'MELEE' ? 'display: inline' : ''}" src="/data/icons/overhead/melee.png"/>
