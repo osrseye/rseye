@@ -10,7 +10,7 @@ public class PlayerStateCheckTask implements Task {
     @Override
     public void run() {
         try {
-            Application.players.forEach((s, player) -> {
+            Application.players.forEach((_, player) -> {
                 if(player.loginStateChanged()) {
                     MapSocketHandler.broadcastUpdate(UpdateType.LOGIN_UPDATE, player);
                 }

@@ -238,8 +238,8 @@ public class Player {
     }
 
     public void setLoginState(String loginState) {
-        this.loginState = loginState;
-        this.lastUpdate = (loginState.equals("LOGGED_IN") || loginState.equals("HOPPING") || loginState.equals("LOADING")) ? System.currentTimeMillis() : System.currentTimeMillis() - 600000; // make the time 10 minutes in the past so not logged back in
+        this.loginState = (loginState.equals("LOGGED_IN") || loginState.equals("HOPPING") || loginState.equals("LOADING")) ? "LOGGED_IN" : loginState;
+        this.lastUpdate = this.loginState.equals("LOGGED_IN") ? System.currentTimeMillis() : System.currentTimeMillis() - 600000; // make the time 10 minutes in the past so not logged back in
     }
 
     public void setInformation(Information information) {
