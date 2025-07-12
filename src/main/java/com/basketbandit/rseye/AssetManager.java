@@ -25,7 +25,7 @@ public class AssetManager {
             Gson gson = new Gson();
             JsonObject obj = gson.fromJson(r, JsonObject.class);
             obj.keySet().forEach(key -> items.put(key, new Item(key, obj.get(key).getAsJsonObject().get("name").getAsString(), "/data/icons/items/" + key + ".png", obj.get(key).getAsJsonObject().get("highalch").getAsInt(), obj.get(key).getAsJsonObject().get("placeholder").getAsBoolean())));
-            log.info("Found " + items.keySet().size() + " item(s)");
+            log.info("Found {} item(s)", items.size());
         } catch(Exception e) {
             log.error("There was an issue loading assets: {}", e.getMessage(), e);
         }
@@ -34,14 +34,14 @@ public class AssetManager {
             Gson gson = new Gson();
             JsonObject obj = gson.fromJson(r, JsonObject.class);
             obj.keySet().forEach(key -> monsters.put(key, new Monster(key, obj.get(key).getAsJsonObject().get("name").getAsString(), obj.get(key).getAsJsonObject().get("combatLevel").getAsInt())));
-            log.info("Found " + monsters.keySet().size() + " monster(s)");
+            log.info("Found {} monster(s)", monsters.size());
         } catch(Exception e) {
             log.error("There was an issue loading assets: {}", e.getMessage(), e);
         }
 
         try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/token.txt"), StandardCharsets.UTF_8))) {
             r.lines().forEach(token -> tokens.add(token));
-            log.info("Found " + tokens.size() + " token(s)");
+            log.info("Found {} token(s)", tokens.size());
         } catch(Exception e) {
             log.warn("There was an issue while reading the token data file, reason: {}", e.getMessage(), e);
         }
