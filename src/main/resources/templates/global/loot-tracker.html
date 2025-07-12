@@ -1,6 +1,6 @@
 <div class="content-header">Global Loot Tracker</div>
 <div class="monster-container">
-    <div th:class="monster" th:if="${!lootTracker.hasRecord}" th:each="record: ${lootTracker.records}">
+    <div th:class="monster" th:if="${lootTracker.hasRecord}" th:each="record: ${lootTracker.records}">
         <div class="monster-header">
             <span th:text="${record.monster.name}"></span>
             <span class="monster-header-kills" th:text="${' x ' + record.kills}"></span>
