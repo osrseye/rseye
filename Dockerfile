@@ -1,4 +1,4 @@
-FROM eclipse-temurin:20-alpine
+FROM eclipse-temurin:24-alpine
 
 USER root
 
@@ -13,9 +13,9 @@ RUN apk add --no-cache wget && \
     mv rseye-main/data/* . && \
     rm -r rseye-main
 
-COPY build/libs/rseye-1.0.0.jar .
-RUN chmod +x rseye-1.0.0.jar
+COPY build/libs/rseye-1.0.1.jar .
+RUN chmod +x rseye-1.0.1.jar
 
 EXPOSE 8443
 
-ENTRYPOINT ["java", "-Xms1G", "-Xmx2G", "-jar", "rseye-1.0.0.jar"]
+ENTRYPOINT ["java", "-Xms256M", "-Xmx512M", "-jar", "rseye-1.0.1.jar"]
