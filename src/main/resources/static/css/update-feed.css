@@ -21,6 +21,10 @@
     border-color: #575040;
 }
 
+.growth {
+    min-height: 0px;!important
+}
+
 .feed-player, .feed-skill {
     color: #ffff00;
 }
