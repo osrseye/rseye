@@ -7,16 +7,16 @@ public class EventLogClearTask implements Task {
     @Override
     public void run() {
         if(Application.combatFeed.size() > 10) {
-            Application.combatFeed.remove(0);
+            Application.combatFeed.removeFirst();
         }
         if(Application.raidFeed.size() > 10) {
-            Application.raidFeed.remove(0);
+            Application.raidFeed.removeFirst();
         }
         if(Application.questFeed.size() > 10) {
-            Application.questFeed.remove(0);
+            Application.questFeed.removeFirst();
         }
         if(Application.growthFeed.size() > 10) {
-            Application.growthFeed.remove(0);
+            Application.growthFeed.removeFirst();
         }
     }
 }
