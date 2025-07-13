@@ -52,10 +52,10 @@ map.tile_layer = L.tileLayer('https://raw.githubusercontent.com/Explv/osrs_map_t
 map.tile_layer.addTo(map);
 map.invalidateSize();
 
-setTimeout(function () {
-    map.invalidateSize(true);
-    map.setView(map.unproject(L.point(8244, 36716))); // lumbridge castle
-}, 100);
+//setTimeout(function () {
+//    map.invalidateSize(true);
+////    map.setView(map.unproject(L.point(8244, 36716))); // lumbridge castle
+//}, 100);
 
 display();
 connect();
