@@ -6,7 +6,7 @@
             <span class="monster-header-kills" th:text="${' x ' + record.kills}"></span>
         </div>
         <div class="monster-loot">
-            <div class="monster-loot-item" th:if="${!categories.isEmpty}" th:each="category: ${categories.values}">
+            <div class="monster-loot-item" th:if="${!record.loot.isEmpty}" th:each="item: ${record.loot.values}">
                 <a th:href="@{https://oldschool.runescape.wiki/w/__${item.nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" data-container=".equipment-container" th:title="${item.name}">
                     <img th:src="@{${item.icon}}" onError="this.onerror=null;this.src='/data/icons/items/0.png';" width="36"/>
                     <span th:if="${item.quantity} > 1" th:class="${item.quantity > 99999} ? thousand : (${item.quantity > 9999999} ? million : shrapnel)" th:text="${item.quantityFormatted}"></span>
