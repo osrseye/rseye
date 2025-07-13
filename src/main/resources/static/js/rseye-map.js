@@ -4,38 +4,53 @@ var marker = L.divIcon({
     iconAnchor: [0, 0] // remove any offset
 });
 
-var yx = L.latLng;
-var xy = function(x, y) {
-    if (L.Util.isArray(x)) { // When doing xy([x, y]);
-    return yx(x[1], x[0]);
-    }
-    return yx(y, x); // When doing xy(x, y);
-};
+//var yx = L.latLng;
+//var xy = function(x, y) {
+//    if (L.Util.isArray(x)) { // When doing xy([x, y]);
+//        return yx(x[1], x[0]);
+//    }
+//    return yx(y, x); // When doing xy(x, y);
+//};
+//
+//var bounds = L.latLngBounds([
+//    xy(0, 0),
+//    xy(256*49, 256*178)
+//]);
+//
+//L.CRS.OSRS = L.extend({}, L.CRS.Simple, {
+//    transformation: new L.Transformation(1/178, 0, 1/49, 0) // Compute a and c coefficients so that  tile 0/0/0 is from [0, 0] to [4096, 4096]
+//});
+//
+//var map = L.map("map", {
+//    crs: L.CRS.OSRS, // http://leafletjs.com/reference-1.0.3.html#map-crs
+//    minZoom: 8,
+//    maxZoom: 8,
+//    zoomControl: false,
+//    scrollWheelZoom: false,
+//    renderer: L.canvas(),
+//    attributionControl: false
+//}).setView([0,0], 8);
+//
+//L.tileLayer('./data/map/{x}/{y}.png', {
+//    bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
+//    noWrap: true,
+//    tms: true
+//}).addTo(map);
 
-var bounds = L.latLngBounds([
-    xy(0, 0),
-    xy(256*49, 256*178)
-]);
-
-L.CRS.OSRS = L.extend({}, L.CRS.Simple, {
-    transformation: new L.Transformation(1 / 178, 0, 1 / 49, 0) // Compute a and c coefficients so that  tile 0/0/0 is from [0, 0] to [4096, 4096]
+var map = L.map('map', {
+    zoomControl: false,
+    renderer: L.canvas()
 });
 
-var map = L.map("map", {
-    crs: L.CRS.OSRS, // http://leafletjs.com/reference-1.0.3.html#map-crs
+map.plane = 0;
+map.tile_layer = L.tileLayer('https://raw.githubusercontent.com/Explv/osrs_map_tiles/master/' + map.plane + '/{z}/{x}/{y}.png', {
     minZoom: 8,
     maxZoom: 8,
-    zoomControl: false,
-    scrollWheelZoom: false,
-    renderer: L.canvas(),
-    attributionControl: false
-}).setView([0,0], 8);
-
-L.tileLayer('./data/map/{x}/{y}.png', {
-    bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
     noWrap: true,
     tms: true
-}).addTo(map);
+});
+map.tile_layer.addTo(map);
+map.invalidateSize();
 
 setTimeout(function () {
     map.invalidateSize(true);
