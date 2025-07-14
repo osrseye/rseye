@@ -55,7 +55,7 @@
                 attributionControl: false
             }).setView([0,0], 8);
 
-            L.tileLayer('./data/map/{x}/{y}.png', {
+            L.tileLayer('./data/map/'+[(${information.position.plane})]+'/{x}/{y}.png', {
                 bounds: bounds,
                 noWrap: true,
                 tms: true

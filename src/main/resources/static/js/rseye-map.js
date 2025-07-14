@@ -31,7 +31,7 @@ var map = L.map("map", {
     attributionControl: false
 }).setView([0,0], 8);
 
-L.tileLayer('./data/map/{x}/{y}.png', {
+L.tileLayer('./data/map/0/{x}/{y}.png', {
     bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
     noWrap: true,
     tms: true

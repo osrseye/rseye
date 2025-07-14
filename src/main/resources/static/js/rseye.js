@@ -1,5 +1,8 @@
 var mapController = document.getElementById('map');
 var mapMouse = Array.from({length: 3}, i => i = false);
+var mapPlaneUp = document.getElementById('mapPlaneUp');
+var mapPlaneDown = document.getElementById('mapPlaneUp');
+var mapPlane = 0;
 var followedPlayer;
 
 mapController.addEventListener('mousedown', (e) => {
@@ -28,12 +31,26 @@ mapController.addEventListener('mousemove', (e) => {
     }
 });
 
-$('.ui-button').click(function() {
-    if(followedPlayer == null) {
-        return;
+$('#map-plane-up').click(function() {
+    if(mapPlane < 3) {
+        mapPlane += 1
+        L.tileLayer('./data/map/'+mapPlane+'/{x}/{y}.png', {
+            bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
+            noWrap: true,
+            tms: true
+        }).addTo(map);
     }
-    const container = $('#followed-player-data').find($(this).attr("aria-container")).toggle();
-    container.is(':hidden') ? $(this).removeClass("container-visible") : $(this).addClass("container-visible");
+});
+
+$('#map-plane-down').click(function() {
+    if(mapPlane > 0) {
+        mapPlane += -1
+        L.tileLayer('./data/map/'+mapPlane+'/{x}/{y}.png', {
+            bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
+            noWrap: true,
+            tms: true
+        }).addTo(map);
+    }
 });
 
 $(document).on('input','[class~=bank-input]',function() {
@@ -46,14 +63,25 @@ $(document).on('input','[class~=bank-input]',function() {
 function updatePosition(player) {
     var x = player.offsetPosition.x;
     var y = player.offsetPosition.y;
+    var plane = player.position.plane
+    var planeUpdated = ($("#"+player.usernameEncoded).attr("aria-plane") != plane)
 
     // store player position on their div
     $("#"+player.usernameEncoded).attr("aria-x", x);
     $("#"+player.usernameEncoded).attr("aria-y", y);
+    $("#"+player.usernameEncoded).attr("aria-plane", plane);
 
     // update world map
     const smap = $("#map-status-"+player.usernameEncoded)
     if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === smap.attr("aria-username-sane")) {
+        if(planeUpdated) {
+            mapPlane = plane;
+            L.tileLayer('./data/map/'+plane+'/{x}/{y}.png', {
+                bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
+                noWrap: true,
+                tms: true
+            }).addTo(map);
+        }
         panWorldMap(x, y);
     }
     var marker = player.usernameEncoded + "WorldmapMarker";
@@ -63,6 +91,13 @@ function updatePosition(player) {
     var minimap = player.usernameEncoded + "Minimap";
     var pan = player.usernameEncoded + "MinimapPan";
     var minimarker = player.usernameEncoded + "MinimapMarker";
+    if(planeUpdated) {
+        L.tileLayer('./data/map/'+plane+'/{x}/{y}.png', {
+            bounds: bounds,
+            noWrap: true,
+            tms: true
+        }).addTo(window[minimap]);
+    }
     window[pan](x, y);
     window[minimarker].setLatLng(window[minimap].unproject(L.point(x, y)));
 }
