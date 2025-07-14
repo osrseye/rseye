@@ -10,7 +10,7 @@ public class Player {
         }
         public Information(String username, HashMap<String, Integer> position) {
             this(username, username.replace(" ", "_"), position, new HashMap<>() {{
-                put("x", (position.get("x")-1152)*4); // mapOffsetX = 1152
+                put("x", (position.get("x")-1024)*4); // mapOffsetX = 1024
                 put("y", (256*178 - ((position.get("y")-1215)*4))); // mapPixelHeight = 256*178, mapOffsetY = 1215
                 put("plane", position.get("plane"));
             }});
