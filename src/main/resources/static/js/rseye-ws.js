@@ -42,7 +42,7 @@ function connect() {
                     // create minimap
                     playerMinimaps.set(player.username.encoded, new RuneMap(player.username.encoded + "-minimap"));
                     playerMinimaps.get(player.username.encoded).setView(player.position.offx, player.position.offy);
-                    playerMinimaps.get(player.username.encoded).addPlayerMarker(player);
+                    playerMinimaps.get(player.username.encoded).addPlayerMarker(player, "mini");
 
                     updatePosition(player);
                 });
