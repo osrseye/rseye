@@ -37,7 +37,7 @@ function connect() {
                     $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
 
                     // add to world map
-                    worldMap.addPlayerMarker(player);
+                    worldMap.addPlayerMarker(player, "world");
 
                     // create minimap
                     playerMinimaps.set(player.username.encoded, new RuneMap(player.username.encoded + "-minimap"));
