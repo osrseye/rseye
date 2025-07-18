@@ -21,9 +21,14 @@ public class GetController {
         return Application.players.getOrDefault(username, new Player()).loginState();
     }
 
-    @GetMapping("/api/v2/player/{username}/information")
-    public Player.Information getPlayerInformation(@PathVariable("username") String username) {
-        return Application.players.getOrDefault(username, new Player()).information();
+    @GetMapping("/api/v2/player/{username}/username")
+    public Player.Username getPlayerUsername(@PathVariable("username") String username) {
+        return Application.players.getOrDefault(username, new Player()).username();
+    }
+
+    @GetMapping("/api/v2/player/{username}/position")
+    public Player.Position getPlayerPosition(@PathVariable("username") String username) {
+        return Application.players.getOrDefault(username, new Player()).position();
     }
 
     @GetMapping("/api/v2/player/{username}/inventory")
@@ -41,9 +46,9 @@ public class GetController {
         return Application.players.getOrDefault(username, new Player()).quests();
     }
 
-    @GetMapping("/api/v2/player/{username}/stats")
-    public Player.Stats getPlayerStats(@PathVariable("username") String username) {
-        return Application.players.getOrDefault(username, new Player()).stats();
+    @GetMapping("/api/v2/player/{username}/skills")
+    public Player.Skills getPlayerSkills(@PathVariable("username") String username) {
+        return Application.players.getOrDefault(username, new Player()).skills();
     }
 
     @GetMapping("/api/v2/player/{username}/bank")
@@ -57,11 +62,11 @@ public class GetController {
     }
 
     @GetMapping("/api/v2/position/all")
-    public HashMap<String, Player.Information> getPositions() {
-        HashMap<String, Player.Information> hashMap = new HashMap<>();
+    public HashMap<String, Player.Position> getPositions() {
+        HashMap<String, Player.Position> hashMap = new HashMap<>();
         Application.players.keySet().forEach(username -> {
             Player player = Application.players.get(username);
-            hashMap.put(username, player.information());
+            hashMap.put(username, player.position());
         });
         return hashMap;
     }

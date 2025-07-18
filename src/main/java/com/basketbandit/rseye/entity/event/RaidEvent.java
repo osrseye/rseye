@@ -5,5 +5,5 @@ import com.basketbandit.rseye.entity.Player;
 
 import java.util.ArrayList;
 
-public record RaidEvent(Player player, String raid, ArrayList<Item> loot) {
+public record RaidEvent(Player.Username username, String raid, ArrayList<Item> loot) implements Event {
 }

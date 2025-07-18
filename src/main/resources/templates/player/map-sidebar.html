@@ -1,5 +1,5 @@
-<div th:id="${'map-status-' + information.usernameEncoded}" th:class="${loginState + ' locator map-player-status-player'}" th:aria-username-sane="${information.usernameEncoded}" th:aria-username="${information.username}" aria-tx="0" aria-ty="0">
-    <span th:text="${information.username + ' (level-' + stats.combatLevel + ')'}"></span>
+<div th:id="${'map-status-' + username.encoded}" th:class="${loginState + ' locator map-player-status-player'}" th:aria-username-sane="${username.encoded}" th:aria-username="${username.natural}" aria-tx="0" aria-ty="0">
+    <span th:text="${username.natural + ' (level-' + skills.combatLevel + ')'}"></span>
     <span th:if="${loginState == 'LOGGED_IN'}" class="badge badge-success">Online</span>
     <span th:if="${loginState != 'LOGGED_IN'}" class="badge badge-danger">Offline</span>
 

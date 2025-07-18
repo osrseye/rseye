@@ -7,19 +7,19 @@ import com.basketbandit.rseye.socket.MapSocketHandler;
 import com.basketbandit.rseye.socket.UpdateType;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.jspecify.annotations.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.stream.Collectors;
 
 @Component
 public class PostInterceptor implements HandlerInterceptor {
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws IOException {
+    public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws IOException {
         // If "Authorization" is null, doesn't start with "Bearer: ", or isn't a valid token.
         if(request.getHeader("Authorization") == null || !request.getHeader("Authorization").startsWith("Bearer: ")
                 || !AssetManager.tokens.contains(request.getHeader("Authorization").substring(8))) {
@@ -34,17 +34,9 @@ public class PostInterceptor implements HandlerInterceptor {
         }
 
         String username = object.get("username").getAsString();
-        Player player = Application.players.containsKey(username) ? Application.players.get(username) : new Player();
-        if(!player.information().username().equals(username)) {
-            player.setInformation(
-                new Player.Information(username,
-                        new HashMap<>(){{
-                            // set xy to varrock square
-                            put("x", 3213);
-                            put("y", 3428);
-                        }}
-                )
-            );
+        Player player = Application.players.getOrDefault(username, new Player());
+        if(!username.equals(player.username().natural())) {
+            player.setUsername(new Player.Username(username));
             Application.players.put(username, player);
             MapSocketHandler.broadcastUpdate(UpdateType.NEW_PLAYER, player);
         }

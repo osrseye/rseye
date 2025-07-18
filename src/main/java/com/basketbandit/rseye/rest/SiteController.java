@@ -32,8 +32,9 @@ public class SiteController {
         Player player = Application.players.getOrDefault(username, new Player());
         ModelAndView mv = new ModelAndView("./player/index");
         mv.addObject("loginState", player.loginState());
-        mv.addObject("information", player.information());
-        mv.addObject("stats", player.stats());
+        mv.addObject("username", player.username());
+        mv.addObject("position", player.position());
+        mv.addObject("skills", player.skills());
         mv.addObject("quests", player.quests());
         mv.addObject("equipment", player.equipment());
         mv.addObject("inventory", player.inventory());
@@ -44,11 +45,11 @@ public class SiteController {
         return mv;
     }
 
-    @GetMapping("/player/{username}/stats")
-    public ModelAndView getPlayerStats(@PathVariable("username") String username) {
+    @GetMapping("/player/{username}/skills")
+    public ModelAndView getPlayerSkills(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
-        ModelAndView mv = new ModelAndView("./player/stats");
-        mv.addObject("stats", player.stats());
+        ModelAndView mv = new ModelAndView("./player/skills");
+        mv.addObject("skills", player.skills());
         return mv;
     }
 
@@ -56,7 +57,7 @@ public class SiteController {
     public ModelAndView getPlayerStatus(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
         ModelAndView mv = new ModelAndView("./player/status");
-        mv.addObject("stats", player.stats());
+        mv.addObject("skills", player.skills());
         return mv;
     }
 
@@ -80,7 +81,7 @@ public class SiteController {
     public ModelAndView getPlayerBank(@PathVariable("username") String username) {
         Player player = Application.players.getOrDefault(username, new Player());
         ModelAndView mv = new ModelAndView("./player/bank");
-        mv.addObject("information", player.information());
+        mv.addObject("username", player.username());
         mv.addObject("bank", player.bank());
         return mv;
     }

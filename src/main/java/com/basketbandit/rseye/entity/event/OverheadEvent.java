@@ -1,4 +1,6 @@
 package com.basketbandit.rseye.entity.event;
 
-public record OverheadEvent(String username, String usernameEncoded, String overhead) implements Event {
+import com.basketbandit.rseye.entity.Player;
+
+public record OverheadEvent(Player.Username username, String overhead) implements Event {
 }

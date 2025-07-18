@@ -4,20 +4,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Player {
-    public record Information(String username, String usernameEncoded, HashMap<String, Integer> position, HashMap<String, Integer> offsetPosition) {
-        public Information() {
-            this("", "", new HashMap<>(), new HashMap<>());
+    public record Username(String natural, String encoded) {
+        public Username() {
+            this("", "");
         }
-        public Information(String username, HashMap<String, Integer> position) {
-            this(username, username.replace(" ", "_"), position, new HashMap<>() {{
-                put("x", (position.get("x")-1024)*4); // mapOffsetX = 1024
-                put("y", (256*178 - ((position.get("y")-1215)*4))); // mapPixelHeight = 256*178, mapOffsetY = 1215
-                put("plane", position.get("plane"));
-            }});
+        public Username(String natural) {
+            this(natural, natural.replace(" ", "_"));
         }
     }
-    public record Stats(Integer totalLevel, Integer combatLevel, HashMap<String, HashMap<String, Integer>> stats) {
-        public Stats() {
+    public record Position(Integer plane, Integer x, Integer y, Integer offx, Integer offy){
+        public Position() {
+            // varrock magic numbers
+            this(0,3213, 3428, (3213-1024)*4, (256*178-((3428-1215)*4)));
+        }
+    }
+    public record Skills(Integer totalLevel, Integer combatLevel, HashMap<String, HashMap<String, Integer>> skills) {
+        public Skills() {
             this(38,3, new HashMap<>(){{
                 // initialising this map makes life easier
                 put("ATTACK", new HashMap<>(){{
@@ -38,12 +40,12 @@ public class Player {
                 put("STRENGTH", new HashMap<>(){{
                     put("level", 0);
                     put("xp", 0);
-                    put("boostedLevel", 0);
+                    put("boostedLevel", 1);
                 }});
                 put("AGILITY", new HashMap<>(){{
                     put("level", 0);
                     put("xp", 0);
-                    put("boostedLevel", 0);
+                    put("boostedLevel", 1);
                 }});
                 put("SMITHING", new HashMap<>(){{
                     put("level", 0);
@@ -170,8 +172,9 @@ public class Player {
     }
 
     private String loginState = "LOGGED_OUT";
-    private Information information = new Information();
-    private Stats stats = new Stats();
+    private Username username = new Username();
+    private Position position = new Position();
+    private Skills skills = new Skills();
     private Quests quests = new Quests();
     private Equipment equipment = new Equipment();
     private Inventory inventory = new Inventory();
@@ -201,12 +204,16 @@ public class Player {
         return loginState;
     }
 
-    public Information information() {
-        return information;
+    public Username username() {
+        return username;
     }
 
-    public Stats stats() {
-        return stats;
+    public Position position() {
+        return position;
+    }
+
+    public Skills skills() {
+        return skills;
     }
 
     public Quests quests() {
@@ -242,13 +249,17 @@ public class Player {
         this.lastUpdate = this.loginState.equals("LOGGED_IN") ? System.currentTimeMillis() : System.currentTimeMillis() - 600000; // make the time 10 minutes in the past so not logged back in
     }
 
-    public void setInformation(Information information) {
-        this.information = information;
+    public void setUsername(Username username) {
+        this.username = username;
         this.lastUpdate = System.currentTimeMillis();
     }
 
-    public void setStats(Stats stats) {
-        this.stats = stats;
+    public void setPosition(Integer plane, Integer x, Integer y, Integer offx, Integer offy) {
+        this.position = new Position(plane, x, y, offx, offy);
+    }
+
+    public void setSkills(Skills skills) {
+        this.skills = skills;
         this.lastUpdate = System.currentTimeMillis();
     }
 
@@ -284,5 +295,13 @@ public class Player {
 
     public void resetLootTracker() {
         this.lootTracker = new LootTracker();
+    }
+
+    /**********/
+    /**********/
+
+    public record BasicInfo(Username username, Position position){}
+    public BasicInfo basicInfo() {
+        return new BasicInfo(username, position);
     }
 }

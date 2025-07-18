@@ -4,6 +4,7 @@ import com.basketbandit.rseye.Application;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.event.Event;
 import com.google.gson.Gson;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
@@ -21,7 +23,6 @@ public class MapSocketHandler extends TextWebSocketHandler {
     private static final Logger log = LoggerFactory.getLogger(MapSocketHandler.class);
     private static final CopyOnWriteArrayList<WebSocketSession> clients = new CopyOnWriteArrayList<>();
     private static final Gson gson = new Gson();
-    private record Username(String username, String usernameEncoded){}; // using records facilitates the creation of serializable objects without any boilerplate
 
     public synchronized static void broadcastPing() {
         clients.forEach(client -> {
@@ -34,7 +35,10 @@ public class MapSocketHandler extends TextWebSocketHandler {
     }
 
     public synchronized static void broadcastUpdate(UpdateType updateType, Player player) {
-        String payload = updateType.value.equals("position_update") ? gson.toJson(player.information()) : gson.toJson(new Username(player.information().username(), player.information().usernameEncoded()));
+        String payload = (updateType.value.equals("position_update") || updateType.value.equals("new_player"))
+                ? gson.toJson(player.basicInfo())
+                : gson.toJson(Map.of("username", player.username()));
+
         clients.forEach(client -> {
             try {
                 client.sendMessage(new TextMessage(updateType.value + ":" + payload));
@@ -56,7 +60,7 @@ public class MapSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void handleTextMessage(WebSocketSession session, TextMessage message) {
+    public void handleTextMessage(@NonNull WebSocketSession session, @NonNull TextMessage message) {
         try {
             if(!session.isOpen()) {
                 session.close();
@@ -64,10 +68,10 @@ public class MapSocketHandler extends TextWebSocketHandler {
             }
 
             if(message.getPayload().equals("fetch")) {
-                HashMap<String, Player.Information> hashMap = new HashMap<>();
+                HashMap<String, Player.BasicInfo> hashMap = new HashMap<>();
                 Application.players.keySet().forEach(username -> {
                     Player player = Application.players.get(username);
-                    hashMap.put(username, player.information());
+                    hashMap.put(username, player.basicInfo());
                 });
                 session.sendMessage(new TextMessage("fetch:" + gson.toJson(hashMap)));
             }
@@ -77,12 +81,12 @@ public class MapSocketHandler extends TextWebSocketHandler {
     }
 
     @Override
-    public void afterConnectionEstablished(WebSocketSession session) {
+    public void afterConnectionEstablished(@NonNull WebSocketSession session) {
         clients.add(session);
     }
 
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+    public void afterConnectionClosed(@NonNull WebSocketSession session, @NonNull CloseStatus status) {
         clients.remove(session);
     }
 }

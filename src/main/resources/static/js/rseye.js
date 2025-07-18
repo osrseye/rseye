@@ -1,9 +1,25 @@
+var worldMap = new RuneMap('map');
+
+var playerMinimaps = new Map();
+var playerMinimapMarkers = new Map();
+
 var mapController = document.getElementById('map');
-var mapMouse = Array.from({length: 3}, i => i = false);
-var mapPlaneUp = document.getElementById('mapPlaneUp');
-var mapPlaneDown = document.getElementById('mapPlaneUp');
+var mapMouse = [false, false, false];
 var mapPlane = 0;
 var followedPlayer;
+
+setTimeout(function () {
+    worldMap.map.invalidateSize(true);
+    worldMap.panTo(L.point(8244, 36716)); // varrock & falador
+}, 100);
+
+function display() {
+    $('.loading-screen').remove();
+    $('.content').toggle();
+}
+
+display();
+connect();
 
 mapController.addEventListener('mousedown', (e) => {
     if(e.button !== 0 && e.button !== 1 && e.button !== 2) { // middle click || right click
@@ -34,22 +50,14 @@ mapController.addEventListener('mousemove', (e) => {
 $('#map-plane-up').click(function() {
     if(mapPlane < 3) {
         mapPlane += 1
-        L.tileLayer('./data/map/'+mapPlane+'/{x}/{y}.png', {
-            bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
-            noWrap: true,
-            tms: true
-        }).addTo(map);
+        worldMap.updateLayer(mapPlane);
     }
 });
 
 $('#map-plane-down').click(function() {
     if(mapPlane > 0) {
         mapPlane += -1
-        L.tileLayer('./data/map/'+mapPlane+'/{x}/{y}.png', {
-            bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
-            noWrap: true,
-            tms: true
-        }).addTo(map);
+        worldMap.updateLayer(mapPlane);
     }
 });
 
@@ -60,56 +68,54 @@ $(document).on('input','[class~=bank-input]',function() {
     });
 });
 
+$('.ui-button').click(function() {
+    if(followedPlayer == null) {
+        return;
+    }
+    const container = $('#followed-player-data').find($(this).attr("aria-container")).toggle();
+    container.is(':hidden') ? $(this).removeClass("container-visible") : $(this).addClass("container-visible");
+});
+
 function updatePosition(player) {
-    var x = player.offsetPosition.x;
-    var y = player.offsetPosition.y;
-    var plane = player.position.plane
-    var planeUpdated = ($("#"+player.usernameEncoded).attr("aria-plane") != plane)
+    var x = player.position.offx;
+    var y = player.position.offy;
+    var plane = player.position.plane;
+    var planeUpdated = ($("#"+player.username.encoded).attr("aria-plane") != plane);
 
     // store player position on their div
-    $("#"+player.usernameEncoded).attr("aria-x", x);
-    $("#"+player.usernameEncoded).attr("aria-y", y);
-    $("#"+player.usernameEncoded).attr("aria-plane", plane);
+    $("#"+player.username.encoded).attr("aria-x", x);
+    $("#"+player.username.encoded).attr("aria-y", y);
+    $("#"+player.username.encoded).attr("aria-plane", plane);
 
     // update world map
-    const smap = $("#map-status-"+player.usernameEncoded)
-    if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === smap.attr("aria-username-sane")) {
+    if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === $("#map-status-"+player.username.encoded).attr("aria-username-sane")) {
         if(planeUpdated) {
             mapPlane = plane;
-            L.tileLayer('./data/map/'+plane+'/{x}/{y}.png', {
-                bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
-                noWrap: true,
-                tms: true
-            }).addTo(map);
+            worldMap.updateLayer(mapPlane);
         }
-        panWorldMap(x, y);
+        worldMap.panTo(x, y);
     }
-    var marker = player.usernameEncoded + "WorldmapMarker";
-    window[marker].setLatLng(map.unproject(L.point(x, y)));
+    worldMap.updatePlayerMarker(player.username.encoded, x, y);
 
     // update player minimap
-    var minimap = player.usernameEncoded + "Minimap";
-    var pan = player.usernameEncoded + "MinimapPan";
-    var minimarker = player.usernameEncoded + "MinimapMarker";
-    if(planeUpdated) {
-        L.tileLayer('./data/map/'+plane+'/{x}/{y}.png', {
-            bounds: bounds,
-            noWrap: true,
-            tms: true
-        }).addTo(window[minimap]);
+    minimap = playerMinimaps.get(player.username.encoded);
+    if(minimap) {
+        if(planeUpdated) {
+            minimap.updateLayer(mapPlane);
+        }
+        minimap.panTo(x,y);
+        minimap.updatePlayerMarker(player.username.encoded, x, y);
     }
-    window[pan](x, y);
-    window[minimarker].setLatLng(window[minimap].unproject(L.point(x, y)));
 }
 
 function updatePlayerContainer(container, player, data) {
-    $("#"+player.usernameEncoded).find('[data-container="'+container+'"]').tooltip('dispose'); // removes tooltip before replacing dom (or it'll stick)
-    $("#"+player.usernameEncoded).find(container).replaceWith(data); // replace dom
-    if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === player.usernameEncoded) {
-        const obj = $('#followed-player-' + player.usernameEncoded).find(container);
+    $("#"+player.username.encoded).find('[data-container="'+container+'"]').tooltip('dispose'); // removes tooltip before replacing dom (or it'll stick)
+    $("#"+player.username.encoded).find(container).replaceWith(data); // replace dom
+    if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === player.username.encoded) {
+        const obj = $('#followed-player-' + player.username.encoded).find(container);
         const style = obj.attr('style');
         obj.replaceWith(data);
-        $('#followed-player-' + player.usernameEncoded).find(container).attr("style", style); // have to get dom again since obj will still contain old data even after .replaceWith()
+        $('#followed-player-' + player.username.encoded).find(container).attr("style", style); // have to get dom again since obj will still contain old data even after .replaceWith()
     }
     $('[data-toggle="tooltip"]').tooltip()
 }
@@ -121,20 +127,20 @@ $(document).on('click','[class~=locator]',function() {
     // followed player
     const playerDiv = $('#'+$(this).attr("aria-username-sane"));
     $('#inventory-button').addClass("container-visible");
-    $('#equipment-button, #stats-button, #quests-button, #bank-button').removeClass("container-visible");
+    $('#equipment-button, #skills-button, #quests-button, #bank-button').removeClass("container-visible");
     $('#followed-player-ui').removeClass("ui-disabled");
     $('#followed-player-data').html("<div id='followed-player-" + $(this).attr("aria-username-sane") + "'></div>");
     const followDiv = $('#followed-player-' + $(this).attr("aria-username-sane"));
     followDiv.append(playerDiv.find(".equipment-container").clone(true).toggle());
     followDiv.append(playerDiv.find(".inventory-container").clone(true));
-    followDiv.append(playerDiv.find(".stats-container").clone(true).toggle());
+    followDiv.append(playerDiv.find(".skills-container").clone(true).toggle());
     followDiv.append(playerDiv.find(".quests-container").clone(true).toggle());
     followDiv.append(playerDiv.find(".bank-container").clone(true).toggle());
     followDiv.find(".bank-container").find(":input").val("").trigger("input"); // stops search input being cloned and resets any toggles
     $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
 
     // pan map to followed player
-    panWorldMap(playerDiv.attr("aria-x"), playerDiv.attr("aria-y"));
+    worldMap.panTo(playerDiv.attr("aria-x"), playerDiv.attr("aria-y"));
 });
 
 function clearFeed() {

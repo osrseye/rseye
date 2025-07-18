@@ -1,55 +1,81 @@
-var marker = L.divIcon({
-    iconUrl: './data/map/marker.png',
-    iconSize: [4, 4], // size of the icon
-    iconAnchor: [0, 0] // remove any offset
-});
+const tileSize = 256;
+const tileColumns = 51;
+const tileRows = 178;
 
-var yx = L.latLng;
-var xy = function(x, y) {
-    if (L.Util.isArray(x)) { // When doing xy([x, y]);
-        return yx(x[1], x[0]);
+class RuneMap {
+    constructor(name) {
+        this.name = name;
+        this.playerMarkers = new Map();
+        this.tileColumns = tileColumns;
+        this.tileRows = tileRows;
+        this.tileSize = tileSize;
+        this.bounds = L.latLngBounds([
+            L.latLng(0, 0),
+            L.latLng(this.tileSize * this.tileRows, this.tileSize * this.tileColumns) // latlng is yx
+        ]);
+        this.map = this.init();
     }
-    return yx(y, x); // When doing xy(x, y);
-};
 
-var bounds = L.latLngBounds([
-    xy(0, 0),
-    xy(256*51, 256*178)
-]);
+    init() {
+        L.CRS.OSRS = L.extend({}, L.CRS.Simple, {
+            transformation: new L.Transformation(1 / this.tileRows, 0, 1 / this.tileColumns, 0)
+        });
 
-L.CRS.OSRS = L.extend({}, L.CRS.Simple, {
-    transformation: new L.Transformation(1/178, 0, 1/51, 0) // Compute a and c coefficients so that  tile 0/0/0 is from [0, 0] to [4096, 4096]
-});
+        const map = L.map(this.name, {
+            crs: L.CRS.OSRS,
+            minZoom: 8,
+            maxZoom: 8,
+            zoomControl: false,
+            scrollWheelZoom: false,
+            attributionControl: false,
+            renderer: L.canvas()
+        }).setView([0, 0], 8);
 
-var map = L.map("map", {
-    crs: L.CRS.OSRS, // http://leafletjs.com/reference-1.0.3.html#map-crs
-    minZoom: 8,
-    maxZoom: 8,
-    zoomControl: false,
-    scrollWheelZoom: false,
-    renderer: L.canvas(),
-    attributionControl: false
-}).setView([0,0], 8);
+        L.tileLayer('./data/map/0/{x}/{y}.png', {
+            bounds: this.bounds,
+            noWrap: true,
+            tms: true
+        }).addTo(map);
 
-L.tileLayer('./data/map/0/{x}/{y}.png', {
-    bounds: bounds, // http://leafletjs.com/reference-1.0.3.html#gridlayer-bounds
-    noWrap: true,
-    tms: true
-}).addTo(map);
+        return map;
+    }
 
-setTimeout(function () {
-    map.invalidateSize(true);
-    map.setView(map.unproject(L.point(8244, 36716))); // varrock & falador
-}, 100);
+    updateLayer(layer) {
+        layer = (layer < 0) ? 0 : (layer > 3) ? 3 : layer; // ensure layer is between 0-3
+        L.tileLayer('./data/map/' + layer + '/{x}/{y}.png', {
+            bounds: this.bounds,
+            noWrap: true,
+            tms: true
+        }).addTo(this.map);
+    }
 
-display();
-connect();
+    panTo(x, y) {
+        this.map.panTo(this.map.unproject(L.point(x, y)));
+    }
 
-function panWorldMap(x, y) {
-    map.panTo(map.unproject(L.point(x, y)));
-}
+    setView(x, y) {
+        this.map.setView(this.map.unproject(L.point(x, y)), 8);
+    }
 
-function display() {
-    $('.loading-screen').remove();
-    $('.content').toggle();
+    playerMarker(username) {
+        return this.playerMarkers.get(username);
+    }
+
+    updatePlayerMarker(username, x, y) {
+        let playerMarker = this.playerMarkers.get(username);
+        if(playerMarker) {
+            playerMarker.setLatLng(this.map.unproject(L.point(x, y)));
+        }
+    }
+
+    addPlayerMarker(player, map) {
+        let icon = L.divIcon({
+            iconSize: [4, 4], // size of the icon
+            iconAnchor: [0, 0], // remove any offset
+            html: "<span class='marker-name'>" + player.username.natural + "</span>"
+        });
+        let marker = L.marker([0,0], {title: player.username.encoded + "-" + map, icon: icon});
+        this.playerMarkers.set(player.username.encoded, marker);
+        this.playerMarkers.get(player.username.encoded).addTo(this.map);
+    }
 }

@@ -31,10 +31,19 @@ function connect() {
 
             // load each player
             $.each(JSON.parse(data.substring("fetch:".length, data.length)), function(username, player) {
-                $.get("/player/"+player.username, function(data) {
+                $.get("/player/"+player.username.natural, function(data) {
                     $(data.includes("LOGGED_IN") ? ".player-online" : ".player-offline").append(data);
-                    $("#map-status-"+player.usernameEncoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
+                    $("#map-status-"+player.username.encoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
                     $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
+
+                    // add to world map
+                    worldMap.addPlayerMarker(player);
+
+                    // create minimap
+                    playerMinimaps.set(player.username.encoded, new RuneMap(player.username.encoded + "-minimap"));
+                    playerMinimaps.get(player.username.encoded).setView(player.position.offx, player.position.offy);
+                    playerMinimaps.get(player.username.encoded).addPlayerMarker(player);
+
                     updatePosition(player);
                 });
             });
@@ -43,19 +52,29 @@ function connect() {
 
         if(data.startsWith("new_player:")) {
             const player = JSON.parse(data.substring("new_player:".length, data.length));
-            $.get("/player/"+player.username, function(data) {
+            $.get("/player/"+player.username.natural, function(data) {
                 $(data.includes("LOGGED_IN") ? ".player-online" : ".player-offline").append(data);
-                $("#map-status-"+player.usernameEncoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
-                $("#"+player.usernameEncoded+"-position").detach().appendTo('#canvas-container');
+                $("#map-status-"+player.username.encoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
+                $("#"+player.username.encoded+"-position").detach().appendTo('#canvas-container');
+
+                // add to world map
+                worldMap.addPlayerMarker(player, "world");
+
+                // create minimap
+                playerMinimaps.set(player.username.encoded, new RuneMap(player.username.encoded + "-minimap"));
+                playerMinimaps.get(player.username.encoded).setView(player.position.offx, player.position.offy);
+                playerMinimaps.get(player.username.encoded).addPlayerMarker(player, "mini");
+
+                updatePosition(player);
             });
             return;
         }
 
         if(data.startsWith("login_update:")) {
             const player = JSON.parse(data.substring("login_update:".length, data.length));
-            $.get("/api/v2/player/"+player.username+"/login_state", function(data) {
-                const pn = $("#"+player.usernameEncoded);
-                const map = $("#map-status-"+player.usernameEncoded);
+            $.get("/api/v2/player/"+player.username.natural+"/login_state", function(data) {
+                const pn = $("#"+player.username.encoded);
+                const map = $("#map-status-"+player.username.encoded);
                 const badge = pn.find(".badge");
                 const mapBadge = map.find(".badge");
                 if((data == "LOGGED_IN" || data == "HOPPING") && badge.hasClass("badge-danger")) {
@@ -102,7 +121,7 @@ function connect() {
             return;
         }
 
-        if(data.startsWith("stat_update:")) {
+        if(data.startsWith("skill_update:")) {
             $.get("/growth/latest", function(data) {
                 $(".update-feed").prepend(data);
                 clearFeed();
@@ -128,8 +147,8 @@ function connect() {
 
             var updateWorld = $("<span class='xp-drop'>" + updateString + "</span>");
             var updateMini = $("<span class='xp-drop'>" + updateString + "</span>");
-            $("div[title='"+player.usernameEncoded+"-position']").append(updateWorld);
-            $("div[title='"+player.usernameEncoded+"-minimap-position']").append(updateMini);
+            $("div[title='"+player.username.encoded+"-world']").append(updateWorld);
+            $("div[title='"+player.username.encoded+"-mini']").append(updateMini);
             updateWorld.css({top:(-15+-updateWorld.height())});
             updateWorld.animate({
                 opacity: '0',
@@ -149,7 +168,7 @@ function connect() {
 
         if(data.startsWith("inventory_update:")) {
             const player = JSON.parse(data.substring("inventory_update:".length, data.length));
-            $.get("/player/"+player.username+"/inventory", function(data) {
+            $.get("/player/"+player.username.natural+"/inventory", function(data) {
                 updatePlayerContainer(".inventory-container", player, data);
             });
             return;
@@ -157,7 +176,7 @@ function connect() {
 
         if(data.startsWith("bank_update:")) {
             const player = JSON.parse(data.substring("bank_update:".length, data.length));
-            $.get("/player/"+player.username+"/bank", function(data) {
+            $.get("/player/"+player.username.natural+"/bank", function(data) {
                 updatePlayerContainer(".bank-container", player, data);
             });
             return;
@@ -165,7 +184,7 @@ function connect() {
 
         if(data.startsWith("equipment_update:")) {
             const player = JSON.parse(data.substring("equipment_update:".length, data.length));
-            $.get("/player/"+player.username+"/equipment", function(data) {
+            $.get("/player/"+player.username.natural+"/equipment", function(data) {
                 updatePlayerContainer(".equipment-container", player, data);
             });
             return;
@@ -174,23 +193,23 @@ function connect() {
         if(data.startsWith("status_update")) {
             // loads the player current hitpoints/prayer
             const player = JSON.parse(data.substring("status_update:".length, data.length));
-            $.get("/player/"+player.username+"/status", function(data) {
-                $("#map-status-"+player.usernameEncoded).find(".player-current-state").replaceWith(data);
+            $.get("/player/"+player.username.natural+"/status", function(data) {
+                $("#map-status-"+player.username.encoded).find(".player-current-state").replaceWith(data);
             });
             return;
         }
 
-        if(data.startsWith("stat_data:")) {
-            const player = JSON.parse(data.substring("stat_data:".length, data.length));
-            $.get("/player/"+player.username+"/stats", function(data) {
-                updatePlayerContainer(".stats-container", player, data);
+        if(data.startsWith("skill_data:")) {
+            const player = JSON.parse(data.substring("skill_data:".length, data.length));
+            $.get("/player/"+player.username.natural+"/skills", function(data) {
+                updatePlayerContainer(".skills-container", player, data);
             });
             return;
         }
 
         if(data.startsWith("quest_data:")) {
             const player = JSON.parse(data.substring("quest_data:".length, data.length));
-            $.get("/player/"+player.username+"/quests", function(data) {
+            $.get("/player/"+player.username.natural+"/quests", function(data) {
                 updatePlayerContainer(".quests-container", player, data);
             });
             return;
@@ -198,28 +217,28 @@ function connect() {
 
         if(data.startsWith("overhead_update:")) {
             const player = JSON.parse(data.substring("overhead_update:".length, data.length));
-            $("#map-status-"+player.usernameEncoded).find(".player-overheads").children().hide();
-            $("#map-status-"+player.usernameEncoded).find("."+player.overhead).show();
+            $("#map-status-"+player.username.encoded).find(".player-overheads").children().hide();
+            $("#map-status-"+player.username.encoded).find("."+player.overhead).show();
             return;
         }
 
         if(data.startsWith("skull_update:")) {
             const player = JSON.parse(data.substring("skull_update:".length, data.length));
-            $("#map-status-"+player.usernameEncoded).find(".player-skulls").children().hide();
-            $("#map-status-"+player.usernameEncoded).find("."+player.skull).show();
+            $("#map-status-"+player.username.encoded).find(".player-skulls").children().hide();
+            $("#map-status-"+player.username.encoded).find("."+player.skull).show();
             return;
         }
     };
 }
 
 function send(data) {
+    if(ws.readyState == 1) {
+        ws.send(data);
+    }
     if(ws.readyState == 0) {
         setTimeout(() => {
             send(data);
         }, 10);
         return;
-    }
-    if(ws.readyState == 1) {
-        ws.send(data);
     }
 }

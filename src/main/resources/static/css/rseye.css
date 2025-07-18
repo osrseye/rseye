@@ -355,7 +355,7 @@ canvas {
     text-align: center;
 }
 
-.bank-container, .equipment-container, .inventory-container, .quests-container, .stats-container {
+.bank-container, .equipment-container, .inventory-container, .quests-container, .skills-container {
     position: relative;
     display: inline-flex;
 }
@@ -591,9 +591,9 @@ ul.inventory-ul {
     color: #00ff00;
 }
 
-/* STATS */
+/* SKILLS */
 
-.stat-table {
+.skill-table {
     position: absolute;
     width: 185px;
     height: 258px;
@@ -602,14 +602,14 @@ ul.inventory-ul {
     text-shadow: 1px 1px 2px #000;
 }
 
-.stat-td {
+.skill-td {
     height: 30px;
     width: 50px;
     text-align: right;
     padding-top: 5px;
 }
 
-.stat-total {
+.skill-total {
     position: relative;
     text-align: center;
     top: 5px;

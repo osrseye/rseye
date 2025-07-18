@@ -1,5 +1,5 @@
 <div class="feed-item quest">
-    <span class="feed-player" th:text="${quest.player + ' '}"></span>
+    <span class="feed-player" th:text="${quest.player.username.natural + ' '}"></span>
     <span th:if="${quest.state == 'IN_PROGRESS'}" class="quest-text">has started</span>
     <span th:if="${quest.state == 'FINISHED'}" class="quest-text">has finished</span>
     <a th:if="${quest.state == 'IN_PROGRESS'}" th:href="@{https://oldschool.runescape.wiki/w/__${quest.quest}__}" target="_blank" class="feed-skill" th:text="${' ' + quest.quest}"></a>

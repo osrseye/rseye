@@ -1,0 +1,45 @@
+<div class="skills-container">
+    <img width="204px" height="275px" src="/data/ui/skills_tab.webp">
+    <table th:if="${!skills.skills.isEmpty}" class="skill-table">
+        <tr>
+            <td class="skill-td" th:text="${skills.skills.ATTACK.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.HITPOINTS.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.MINING.level}"></td>
+        </tr>
+        <tr>
+            <td class="skill-td" th:text="${skills.skills.STRENGTH.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.AGILITY.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.SMITHING.level}"></td>
+        </tr>
+        <tr>
+            <td class="skill-td" th:text="${skills.skills.DEFENCE.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.HERBLORE.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.FISHING.level}"></td>
+        </tr>
+        <tr>
+            <td class="skill-td" th:text="${skills.skills.RANGED.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.THIEVING.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.COOKING.level}"></td>
+        </tr>
+        <tr>
+            <td class="skill-td" th:text="${skills.skills.PRAYER.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.CRAFTING.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.FIREMAKING.level}"></td>
+        </tr>
+        <tr>
+            <td class="skill-td" th:text="${skills.skills.MAGIC.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.FLETCHING.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.WOODCUTTING.level}"></td>
+        </tr>
+        <tr>
+            <td class="skill-td" th:text="${skills.skills.RUNECRAFT.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.SLAYER.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.FARMING.level}"></td>
+        </tr>
+        <tr>
+            <td class="skill-td" th:text="${skills.skills.CONSTRUCTION.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.HUNTER.level}"></td>
+            <td class="skill-td skill-total" th:text="${skills.totalLevel}"></td>
+        </tr>
+    </table>
+</div>

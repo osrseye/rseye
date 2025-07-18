@@ -32,32 +32,30 @@ public class PostController {
     @PostMapping("/api/v1/position_update/")
     public void positionUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         JsonObject p = data.get("position").getAsJsonObject();
-
-        // raw x,y position data
-        HashMap<String, Integer> position = new HashMap<>() {{
-            put("x", p.get("x").getAsInt());
-            put("y", p.get("y").getAsInt());
-            put("plane", p.get("plane").getAsInt());
-        }};
-
-        player.setInformation(new Player.Information(player.information().username(), position));
+        player.setPosition(
+            p.get("plane").getAsInt(),
+            p.get("x").getAsInt(),
+            p.get("y").getAsInt(),
+            (p.get("x").getAsInt()-1024)*4,
+            (256*178) - ((p.get("y").getAsInt()-1215)*4)
+        );
         MapSocketHandler.broadcastUpdate(UpdateType.POSITION_UPDATE, player);
     }
 
-    @PostMapping("/api/v1/stat_update/")
-    public void statUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
-        HashMap<String, HashMap<String, Integer>> skills = player.stats().stats();
+    @PostMapping("/api/v1/stat_update/") // mapping remains until runeline plugin changed
+    public void skillUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
+        HashMap<String, HashMap<String, Integer>> skills = player.skills().skills();
         HashMap<String, Integer> diff = new HashMap<>();
         AtomicBoolean emitStatData = new AtomicBoolean(false);
         data.get("statChanges").getAsJsonArray().forEach(s -> {
-            JsonObject statUpdate = s.getAsJsonObject();
-            String skill = statUpdate.get("skill").getAsString();
+            JsonObject skillUpdate = s.getAsJsonObject();
+            String skill = skillUpdate.get("skill").getAsString();
             HashMap<String, Integer> statCurrent = skills.get(skill);
 
             // determine if the player has leveled-up a stat
-            if(statCurrent.get("level") != 0 && statCurrent.get("level") < statUpdate.get("level").getAsInt()) {
-                Application.growthFeed.add(new GrowthEvent(player.information().username(), Utils.toPascal(statUpdate.get("skill").getAsString()), statUpdate.get("level").getAsString()));
-                MapSocketHandler.broadcastUpdate(UpdateType.STAT_UPDATE, player);
+            if(statCurrent.get("level") != 0 && statCurrent.get("level") < skillUpdate.get("level").getAsInt()) {
+                Application.growthFeed.add(new GrowthEvent(player.username(), Utils.toPascal(skillUpdate.get("skill").getAsString()), skillUpdate.get("level").getAsString()));
+                MapSocketHandler.broadcastUpdate(UpdateType.SKILL_UPDATE, player);
                 emitStatData.set(true);
             }
 
@@ -67,23 +65,23 @@ public class PostController {
             }
 
             // determine if the players current prayer or hitpoints have changed
-            if((skill.equals("HITPOINTS") || skill.equals("PRAYER")) && statCurrent.get("boostedLevel") != statUpdate.get("boostedLevel").getAsInt()) {
+            if((skill.equals("HITPOINTS") || skill.equals("PRAYER")) && statCurrent.get("boostedLevel") != skillUpdate.get("boostedLevel").getAsInt()) {
                 MapSocketHandler.broadcastUpdate(UpdateType.STATUS_UPDATE, player);
             }
 
             // calculate exp differences
             if(statCurrent.get("level") != 0) {
-                int diffInt = statUpdate.get("xp").getAsInt() - statCurrent.get("xp");
+                int diffInt = skillUpdate.get("xp").getAsInt() - statCurrent.get("xp");
                 if(diffInt > 0) {
-                    diff.put(skill, statUpdate.get("xp").getAsInt() - statCurrent.get("xp"));
+                    diff.put(skill, skillUpdate.get("xp").getAsInt() - statCurrent.get("xp"));
                 }
             }
 
             // update skills with new data
-            skills.put(statUpdate.get("skill").getAsString(), new HashMap<>(){{
-                put("level", statUpdate.get("level").getAsInt());
-                put("xp", statUpdate.get("xp").getAsInt());
-                put("boostedLevel", statUpdate.get("boostedLevel").getAsInt());
+            skills.put(skillUpdate.get("skill").getAsString(), new HashMap<>(){{
+                put("level", skillUpdate.get("level").getAsInt());
+                put("xp", skillUpdate.get("xp").getAsInt());
+                put("boostedLevel", skillUpdate.get("boostedLevel").getAsInt());
             }});
         });
 
@@ -92,16 +90,16 @@ public class PostController {
             totalLevel += skill.get("level");
         }
 
-        player.setStats(new Player.Stats(totalLevel, data.get("combatLevel").getAsInt(), skills));
+        player.setSkills(new Player.Skills(totalLevel, data.get("combatLevel").getAsInt(), skills));
 
         // submit exp update
         if(!diff.isEmpty()) {
-            MapSocketHandler.broadcastUpdate(UpdateType.EXP_UPDATE, new ExperienceEvent(player.information().username(), player.information().usernameEncoded(), diff));
+            MapSocketHandler.broadcastUpdate(UpdateType.EXP_UPDATE, new ExperienceEvent(player.username(), diff));
         }
 
         // submit stat data
         if(emitStatData.get()) {
-            MapSocketHandler.broadcastUpdate(UpdateType.STAT_DATA, player);
+            MapSocketHandler.broadcastUpdate(UpdateType.SKILL_DATA, player);
         }
     }
 
@@ -160,7 +158,7 @@ public class PostController {
         if(questArray.size() < 3) {
             for(int i = 0; i < questArray.size(); i++) {
                 JsonObject quest = questArray.get(i).getAsJsonObject();
-                Application.questFeed.add(new QuestEvent(player.information().username(), quest.get("name").getAsString(), quest.get("state").getAsString()));
+                Application.questFeed.add(new QuestEvent(player.username(), quest.get("name").getAsString(), quest.get("state").getAsString()));
                 MapSocketHandler.broadcastUpdate(UpdateType.QUEST_UPDATE, player);
             }
         }
@@ -192,11 +190,11 @@ public class PostController {
                 Monster monster = AssetManager.monsters.getOrDefault(data.get("entityId").getAsString(), AssetManager.monsters.get("0"));
                 //player.lootTracker().trackLoot(monster, loot); // update loot trackers
                 Application.globalLootTracker.trackLoot(monster, loot); // update loot trackers
-                Application.combatFeed.add(new CombatEvent(player, weapon, monster, loot));
+                Application.combatFeed.add(new CombatEvent(player.username(), weapon, monster, loot));
                 MapSocketHandler.broadcastUpdate(UpdateType.COMBAT_LOOT_UPDATE, player);
             }
             case "Barrows", "Theatre of Blood", "Chambers of Xeric", "Tombs of Amascut" -> {
-                Application.raidFeed.add(new RaidEvent(player, data.get("lootType").getAsString(), loot));
+                Application.raidFeed.add(new RaidEvent(player.username(), data.get("lootType").getAsString(), loot));
                 MapSocketHandler.broadcastUpdate(UpdateType.RAID_LOOT_UPDATE, player);
             }
         }
@@ -206,14 +204,14 @@ public class PostController {
     public void overheadUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         String overhead = data.has("overhead") ? data.get("overhead").getAsString() : "null";
         player.setOverhead(new Player.Overhead(overhead));
-        MapSocketHandler.broadcastUpdate(UpdateType.OVERHEAD_UPDATE, new OverheadEvent(player.information().username(), player.information().usernameEncoded(), player.overhead().overhead()));
+        MapSocketHandler.broadcastUpdate(UpdateType.OVERHEAD_UPDATE, new OverheadEvent(player.username(), player.overhead().overhead()));
     }
 
     @PostMapping("/api/v1/skull_update/")
     public void skullUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         String skull = data.has("skull") ? data.get("skull").getAsString() : "null";
         player.setSkull(new Player.Skull(skull));
-        MapSocketHandler.broadcastUpdate(UpdateType.SKULL_UPDATE, new SkullEvent(player.information().username(), player.information().usernameEncoded(), player.skull().skull()));
+        MapSocketHandler.broadcastUpdate(UpdateType.SKULL_UPDATE, new SkullEvent(player.username(), player.skull().skull()));
     }
 
     @PostMapping("/api/v1/death_update/")
