@@ -140,6 +140,7 @@ $(document).on('click','[class~=locator]',function() {
     $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
 
     // pan map to followed player
+    worldMap.updateLayer(playerDiv.attr("aria-plane"));
     worldMap.panTo(playerDiv.attr("aria-x"), playerDiv.attr("aria-y"));
 });
 
