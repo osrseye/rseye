@@ -1,5 +1,5 @@
 <div class="feed-item growth">
-    <span class="feed-player" th:text="${growth.player.username.natural + ' '}"></span>
+    <span class="feed-player" th:text="${growth.username.natural + ' '}"></span>
     <span class="growth-text">has advanced a</span>
     <a th:href="@{https://oldschool.runescape.wiki/w/__${growth.skill}__}" target="_blank" class="feed-skill" th:text="${' ' + growth.skill + ' '}"></a>
     <span class="growth-text">level! </span>

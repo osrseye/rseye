@@ -190,11 +190,11 @@ public class PostController {
                 Monster monster = AssetManager.monsters.getOrDefault(data.get("entityId").getAsString(), AssetManager.monsters.get("0"));
                 //player.lootTracker().trackLoot(monster, loot); // update loot trackers
                 Application.globalLootTracker.trackLoot(monster, loot); // update loot trackers
-                Application.combatFeed.add(new CombatEvent(player.username(), weapon, monster, loot));
+                Application.combatFeed.add(new CombatEvent(player.combatInfo(), weapon, monster, loot));
                 MapSocketHandler.broadcastUpdate(UpdateType.COMBAT_LOOT_UPDATE, player);
             }
             case "Barrows", "Theatre of Blood", "Chambers of Xeric", "Tombs of Amascut" -> {
-                Application.raidFeed.add(new RaidEvent(player.username(), data.get("lootType").getAsString(), loot));
+                Application.raidFeed.add(new RaidEvent(player.combatInfo(), data.get("lootType").getAsString(), loot));
                 MapSocketHandler.broadcastUpdate(UpdateType.RAID_LOOT_UPDATE, player);
             }
         }

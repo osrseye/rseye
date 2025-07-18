@@ -304,4 +304,9 @@ public class Player {
     public BasicInfo basicInfo() {
         return new BasicInfo(username, position);
     }
+
+    public record CombatInfo(Username username, Integer combatLevel){}
+    public CombatInfo combatInfo() {
+        return new CombatInfo(username, skills().combatLevel());
+    }
 }
