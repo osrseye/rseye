@@ -41,8 +41,10 @@ function connect() {
 
                     // create minimap
                     playerMinimaps.set(player.username.encoded, new RuneMap(player.username.encoded + "-minimap"));
-                    playerMinimaps.get(player.username.encoded).setView(player.position.offx, player.position.offy);
-                    playerMinimaps.get(player.username.encoded).addPlayerMarker(player, "mini");
+                    minimap = playerMinimaps.get(player.username.encoded);
+                    minimap.setView(player.position.offx, player.position.offy);
+                    minimap.updateLayer(player.position.plane);
+                    minimap.addPlayerMarker(player, "mini");
 
                     updatePosition(player);
                 });
@@ -62,8 +64,10 @@ function connect() {
 
                 // create minimap
                 playerMinimaps.set(player.username.encoded, new RuneMap(player.username.encoded + "-minimap"));
-                playerMinimaps.get(player.username.encoded).setView(player.position.offx, player.position.offy);
-                playerMinimaps.get(player.username.encoded).addPlayerMarker(player, "mini");
+                minimap = playerMinimaps.get(player.username.encoded);
+                minimap.setView(player.position.offx, player.position.offy);
+                minimap.updateLayer(player.position.plane);
+                minimap.addPlayerMarker(player, "mini");
 
                 updatePosition(player);
             });
