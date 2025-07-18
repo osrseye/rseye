@@ -2,6 +2,7 @@ package com.basketbandit.rseye.entity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Player {
     public record Username(String natural, String encoded) {
@@ -20,126 +21,34 @@ public class Player {
     }
     public record Skills(Integer totalLevel, Integer combatLevel, HashMap<String, HashMap<String, Integer>> skills) {
         public Skills() {
-            this(38,3, new HashMap<>(){{
-                // initialising this map makes life easier
-                put("ATTACK", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("HITPOINTS", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("MINING", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("STRENGTH", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 1);
-                }});
-                put("AGILITY", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 1);
-                }});
-                put("SMITHING", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("DEFENCE", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("HERBLORE", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("FISHING", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("RANGED", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("THIEVING", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("COOKING", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("PRAYER", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("CRAFTING", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("FIREMAKING", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("MAGIC", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("FLETCHING", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("WOODCUTTING", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("RUNECRAFT", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("SLAYER", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("FARMING", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("CONSTRUCTION", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-                put("HUNTER", new HashMap<>(){{
-                    put("level", 0);
-                    put("xp", 0);
-                    put("boostedLevel", 0);
-                }});
-            }});
+            this(38, 3, new HashMap<>(Map.ofEntries(
+                Map.entry("ATTACK", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("HITPOINTS", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("MINING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("STRENGTH", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("AGILITY", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("SMITHING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("DEFENCE", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("HERBLORE", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("FISHING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("RANGED", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("THIEVING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("COOKING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("PRAYER", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("CRAFTING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("FIREMAKING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("MAGIC", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("FLETCHING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("WOODCUTTING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("RUNECRAFT", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("SLAYER", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("FARMING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("CONSTRUCTION", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
+                Map.entry("HUNTER", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0)))
+            )));
         }
     }
+
     public record Quests(Integer questPoints, HashMap<Integer, Quest> quests) {
         public Quests() {
             this(0, new HashMap<>());
