@@ -107,13 +107,17 @@ function connect() {
             const map = $("#map-status-"+player.username.encoded);
             const badge = pn.find(".badge");
             const mapBadge = map.find(".badge");
-            if((data == "LOGGED_IN" || data == "HOPPING") && badge.hasClass("badge-danger")) {
-                badge.removeClass("badge-danger").addClass("badge-success").text("Online");
-                pn.detach().appendTo(".player-online");
-                mapBadge.removeClass("badge-danger").addClass("badge-success").text("Online");
-                map.detach().appendTo(".map-player-online");
+
+            if(data == "LOGGED_IN" || data == "HOPPING") {
+                if(badge.hasClass("badge-danger")) {
+                    badge.removeClass("badge-danger").addClass("badge-success").text("Online");
+                    pn.detach().appendTo(".player-online");
+                    mapBadge.removeClass("badge-danger").addClass("badge-success").text("Online");
+                    map.detach().appendTo(".map-player-online");
+                }
                 return;
             }
+
             badge.removeClass("badge-success").addClass("badge-danger").text("Offline");
             pn.detach().appendTo(".player-offline");
             mapBadge.removeClass("badge-success").addClass("badge-danger").text("Offline");
