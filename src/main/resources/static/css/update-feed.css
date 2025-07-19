@@ -21,7 +21,7 @@
     border-color: #575040;
 }
 
-.growth {
+.growth, .quest {
     min-height: 0px;!important
 }
 
