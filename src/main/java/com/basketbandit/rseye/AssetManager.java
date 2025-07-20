@@ -24,7 +24,37 @@ public class AssetManager {
         try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/items-cache-data.json"), StandardCharsets.UTF_8))) {
             Gson gson = new Gson();
             JsonObject obj = gson.fromJson(r, JsonObject.class);
-            obj.keySet().forEach(key -> items.put(key, new Item(key, obj.get(key).getAsJsonObject().get("name").getAsString(), "/data/icons/items/" + key + ".png", obj.get(key).getAsJsonObject().get("highalch").getAsInt(), obj.get(key).getAsJsonObject().get("placeholder").getAsBoolean())));
+            // non-linked items
+            obj.keySet().forEach(id -> {
+                JsonObject object = obj.get(id).getAsJsonObject();
+                Item item = new Item(
+                    id,
+                    object.get("name").getAsString(),
+                    "/data/icons/items/" + id + ".png",
+                    object.get("stackable").getAsBoolean(),
+                    object.get("stacked").isJsonNull() ? 0 : object.get("stacked").getAsInt(),
+                    object.get("highalch").getAsInt(),
+                    object.get("placeholder").getAsBoolean()
+                );
+                items.put(id, item);
+            });
+            // linked items
+            obj.keySet().forEach(id -> {
+                JsonObject object = obj.get(id).getAsJsonObject();
+                if(!object.get("linked_id_item").isJsonNull()) {
+                    Item item = new Item(
+                        id,
+                        object.get("name").getAsString(),
+                        "/data/icons/items/" + id + ".png",
+                        object.get("stackable").getAsBoolean(),
+                        object.get("stacked").isJsonNull() ? 0 : object.get("stacked").getAsInt(),
+                        object.get("highalch").getAsInt(),
+                        object.get("placeholder").getAsBoolean()
+                    );
+                    String linkedItemID = object.get("linked_id_item").getAsString();
+                    items.get(linkedItemID).addLinkedItem(item);
+                }
+            });
             log.info("Found {} item(s)", items.size());
         } catch(Exception e) {
             log.error("There was an issue loading assets: {}", e.getMessage(), e);
