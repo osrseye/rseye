@@ -1,61 +1,23 @@
-<div th:id="${username.encoded}" th:class="${loginState + ' player'}" th:aria-x="${position.offx}" th:aria-y="${position.offy}">
-    <div class="player-header">
-        <span th:text="${username.natural + ' (level-' + skills.combatLevel + ')'}"></span>
-        <span th:if="${loginState == 'LOGGED_IN'}" class="badge badge-success">Online</span>
-        <span th:if="${loginState != 'LOGGED_IN'}" class="badge badge-danger">Offline</span>
-        <div class="locator" th:aria-username-sane="${username.encoded}" th:aria-username="${username.natural}">🗺️</div>
-    </div>
-
-    <div class="player-map">
-        <div class="player-tabs">
-            <button th:class="${'lefttab tablink ' + username.encoded + 'DefaultTab'}" th:attr="onclick=|${username.encoded + 'OpenTab(''player-map'', this)'}|">
-                <img src="/data/icons/worldmap_icon.webp" height="24"/>
-            </button>
-            <button class="tablink" th:attr="onclick=|${username.encoded + 'OpenTab(''player-equipment'', this)'}|">
-                <img src="/data/icons/equipment_icon.webp" height="24"/>
-            </button>
-            <button class="tablink" th:attr="onclick=|${username.encoded + 'OpenTab(''player-inventory'', this)'}|">
-                <img src="/data/icons/inventory_icon.webp" height="24"/>
-            </button>
-            <button class="tablink" th:attr="onclick=|${username.encoded + 'OpenTab(''player-skills'', this)'}|">
-                <img src="/data/icons/skills_icon.webp" height="24"/>
-            </button>
-            <button class="tablink" th:attr="onclick=|${username.encoded + 'OpenTab(''player-quests'', this)'}|">
-                <img src="/data/icons/quests_icon.webp" height="24"/>
-            </button>
-            <button class="righttab tablink" th:attr="onclick=|${username.encoded + 'OpenTab(''player-bank'', this)'}|">
-                <img src="/data/icons/bank_icon.webp" height="24"/>
-            </button>
-        </div>
-        <div class="player-equipment tabcontent">
+<div th:id="${username.encoded + '-container'}">
+    <div class="player-container">
+        <div class="player-equipment">
             <fragment th:replace="~{./player/equipment}"></fragment>
         </div>
-        <div class="player-inventory tabcontent">
+        <div class="player-inventory">
             <fragment th:replace="~{./player/inventory}"></fragment>
         </div>
-        <div class="player-skills tabcontent">
+        <div class="player-skills">
             <fragment th:replace="~{./player/skills}"></fragment>
         </div>
-        <div class="player-quests tabcontent">
+        <div class="player-quests">
             <fragment th:replace="~{./player/quests}"></fragment>
         </div>
-        <div class="player-bank tabcontent">
+        <div class="player-bank">
             <fragment th:replace="~{./player/bank}"></fragment>
         </div>
-
-        <div th:id="${username.encoded + '-minimap'}" class="player-map"></div>
-        <script th:inline="javascript">
-            $(".[(${username.encoded + 'DefaultTab'})]").click();
-            function [(${username.encoded + 'OpenTab'})](tabName, button) {
-                $("#[(${username.encoded})] .tabcontent").css("display", "none");
-                $("#[(${username.encoded})] .tablink").css("backgroundColor", "");
-                $("#[(${username.encoded})] ." + tabName).css("display", "flex");
-                button.style.backgroundColor = '#222222';
-            }
-        </script>
     </div>
 
     <div style="display: none">
-        <fragment th:replace="~{./player/map-sidebar}"></fragment>
+        <fragment th:replace="~{./player/map-display}"></fragment>
     </div>
 </div>

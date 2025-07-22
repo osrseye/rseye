@@ -1,15 +1,15 @@
-<div class="player-current-state">
-    <div class="hitpoints-container">
-        <div class="progress">
-            <div class="progress-bar progress-hitpoints bg-success" role="progressbar" th:style="${'width: ' + (skills.skills.HITPOINTS.boostedLevel * 100) / (skills.skills.HITPOINTS.level > 0 ? skills.skills.HITPOINTS.level : 1) + '%'}" th:aria-valuenow="${skills.skills.HITPOINTS.boostedLevel}" aria-valuemin="0" th:aria-valuemax="${skills.skills.HITPOINTS.level}"></div>
-            <span class="current-hitpoints" th:text="${skills.skills.HITPOINTS.boostedLevel + '/' + skills.skills.HITPOINTS.level}"></span>
-        </div>
+<div class="hitpoints-container">
+    <div class="progress">
+        <div class="progress-bar progress-hitpoints bg-danger" role="progressbar" th:style="${'width: ' + (skills.skills.HITPOINTS.boostedLevel * 100) / (skills.skills.HITPOINTS.level > 0 ? skills.skills.HITPOINTS.level : 1) + '%'}" th:aria-valuenow="${skills.skills.HITPOINTS.boostedLevel}" aria-valuemin="0" th:aria-valuemax="${skills.skills.HITPOINTS.level}"></div>
+        <span class="current-hitpoints" th:text="${skills.skills.HITPOINTS.boostedLevel}"></span>
+        <img class="hitpoints-icon" src="/data/icons/skill/HITPOINTS.png" alt="combat_icon"/>
     </div>
+</div>
 
-    <div class="prayer-container">
-        <div class="progress">
-            <div class="progress-bar progress-prayer bg-info" role="progressbar" th:style="${'width: ' + (skills.skills.PRAYER.boostedLevel * 100) / (skills.skills.PRAYER.level > 0 ? skills.skills.PRAYER.level : 1)  + '%'}" th:aria-valuenow="${skills.skills.PRAYER.boostedLevel}" aria-valuemin="0" th:aria-valuemax="${skills.skills.PRAYER.level}"></div>
-            <span class="current-prayer" th:text="${skills.skills.PRAYER.boostedLevel + '/' + skills.skills.PRAYER.level}"></span>
-        </div>
+<div class="prayer-container">
+    <div class="progress">
+        <div class="progress-bar progress-prayer bg-info" role="progressbar" th:style="${'width: ' + (skills.skills.PRAYER.boostedLevel * 100) / (skills.skills.PRAYER.level > 0 ? skills.skills.PRAYER.level : 1)  + '%'}" th:aria-valuenow="${skills.skills.PRAYER.boostedLevel}" aria-valuemin="0" th:aria-valuemax="${skills.skills.PRAYER.level}"></div>
+        <span class="current-prayer" th:text="${skills.skills.PRAYER.boostedLevel}"></span>
+        <img class="prayer-icon" src="/data/icons/skill/PRAYER.png" alt="combat_icon"/>
     </div>
 </div>

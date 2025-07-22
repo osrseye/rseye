@@ -60,19 +60,18 @@ function connect() {
         // load each player
         $.each(JSON.parse(payload), function(username, player) {
             $.get("/player/"+player.username.natural, function(data) {
-                $(data.includes("LOGGED_IN") ? ".player-online" : ".player-offline").append(data);
-                $("#map-status-"+player.username.encoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
+                $(".players").append(data); // hidden data
+                $("#"+player.username.encoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
                 $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
 
                 // add to world map
-                worldMap.addPlayerMarker(player, "world");
+                worldMap.addPlayerMarker(player, true, "world");
 
                 // create minimap
                 playerMinimaps.set(player.username.encoded, new RuneMap(player.username.encoded + "-minimap"));
                 minimap = playerMinimaps.get(player.username.encoded);
                 minimap.setView(player.position.offx, player.position.offy);
-                minimap.updateLayer(player.position.plane);
-                minimap.addPlayerMarker(player, "mini");
+                minimap.addPlayerMarker(player, false, "mini");
 
                 updatePosition(player);
             });
@@ -82,19 +81,18 @@ function connect() {
     function newPlayer(payload) {
         const player = JSON.parse(payload);
         $.get("/player/"+player.username.natural, function(data) {
-            $(data.includes("LOGGED_IN") ? ".player-online" : ".player-offline").append(data);
-            $("#map-status-"+player.username.encoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
+            $(".players").append(data); // hidden data
+            $("#"+player.username.encoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
             $("#"+player.username.encoded+"-position").detach().appendTo('#canvas-container');
 
             // add to world map
-            worldMap.addPlayerMarker(player, "world");
+            worldMap.addPlayerMarker(player, true, "world");
 
             // create minimap
             playerMinimaps.set(player.username.encoded, new RuneMap(player.username.encoded + "-minimap"));
             minimap = playerMinimaps.get(player.username.encoded);
             minimap.setView(player.position.offx, player.position.offy);
-            minimap.updateLayer(player.position.plane);
-            minimap.addPlayerMarker(player, "mini");
+            minimap.addPlayerMarker(player, false, "mini");
 
             updatePosition(player);
         });
@@ -104,24 +102,18 @@ function connect() {
         const player = JSON.parse(payload);
         $.get("/api/v2/player/"+player.username.natural+"/login_state", function(data) {
             const pn = $("#"+player.username.encoded);
-            const map = $("#map-status-"+player.username.encoded);
             const badge = pn.find(".badge");
-            const mapBadge = map.find(".badge");
 
             if(data == "LOGGED_IN" || data == "HOPPING") {
                 if(badge.hasClass("badge-danger")) {
                     badge.removeClass("badge-danger").addClass("badge-success").text("Online");
-                    pn.detach().appendTo(".player-online");
-                    mapBadge.removeClass("badge-danger").addClass("badge-success").text("Online");
-                    map.detach().appendTo(".map-player-online");
+                    pn.detach().appendTo(".map-player-online");
                 }
                 return;
             }
 
             badge.removeClass("badge-success").addClass("badge-danger").text("Offline");
-            pn.detach().appendTo(".player-offline");
-            mapBadge.removeClass("badge-success").addClass("badge-danger").text("Offline");
-            map.detach().appendTo(".map-player-offline");
+            pn.detach().appendTo(".map-player-offline");
         });
     }
 
@@ -210,20 +202,20 @@ function connect() {
     function statusUpdate(payload) {
         const player = JSON.parse(payload);
         $.get("/player/"+player.username.natural+"/status", function(data) {
-            $("#map-status-"+player.username.encoded).find(".player-current-state").replaceWith(data);
+            $("#"+player.username.encoded).find(".status").html(data);
         });
     }
 
     function overheadUpdate(payload) {
         const player = JSON.parse(payload);
-        $("#map-status-"+player.username.encoded).find(".player-overheads").children().hide();
-        $("#map-status-"+player.username.encoded).find("."+player.overhead).show();
+        $("#"+player.username.encoded).find(".player-overheads").children().hide();
+        $("#"+player.username.encoded).find("."+player.overhead).show();
     }
 
     function skullUpdate(payload) {
         const player = JSON.parse(payload);
-        $("#map-status-"+player.username.encoded).find(".player-skulls").children().hide();
-        $("#map-status-"+player.username.encoded).find("."+player.skull).show();
+        $("#"+player.username.encoded).find(".player-skulls").children().hide();
+        $("#"+player.username.encoded).find("."+player.skull).show();
     }
 
     function combatLootUpdate() {

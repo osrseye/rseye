@@ -5,7 +5,6 @@ var playerMinimapMarkers = new Map();
 
 var mapController = document.getElementById('map');
 var mapMouse = [false, false, false];
-var mapPlane = 0;
 var followedPlayer;
 
 setTimeout(function () {
@@ -48,17 +47,11 @@ mapController.addEventListener('mousemove', (e) => {
 });
 
 $('#map-plane-up').click(function() {
-    if(mapPlane < 3) {
-        mapPlane += 1
-        worldMap.updateLayer(mapPlane);
-    }
+    worldMap.updateLayer(worldMap.plane + 1);
 });
 
 $('#map-plane-down').click(function() {
-    if(mapPlane > 0) {
-        mapPlane += -1
-        worldMap.updateLayer(mapPlane);
-    }
+    worldMap.updateLayer(worldMap.plane - 1);
 });
 
 $(document).on('input','[class~=bank-input]',function() {
@@ -88,29 +81,22 @@ function updatePosition(player) {
     $("#"+player.username.encoded).attr("aria-plane", plane);
 
     // update world map
-    if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === $("#map-status-"+player.username.encoded).attr("aria-username-sane")) {
-        if(planeUpdated) {
-            mapPlane = plane;
-            worldMap.updateLayer(mapPlane);
-        }
-        worldMap.panTo(x, y);
+    if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === $("#"+player.username.encoded).attr("aria-username-sane")) {
+        worldMap.panTo(x, y, plane);
     }
     worldMap.updatePlayerMarker(player.username.encoded, x, y);
 
     // update player minimap
     minimap = playerMinimaps.get(player.username.encoded);
     if(minimap) {
-        if(planeUpdated) {
-            minimap.updateLayer(mapPlane);
-        }
-        minimap.panTo(x,y);
+        minimap.panTo(x, y, plane);
         minimap.updatePlayerMarker(player.username.encoded, x, y);
     }
 }
 
 function updatePlayerContainer(container, player, data) {
-    $("#"+player.username.encoded).find('[data-container="'+container+'"]').tooltip('dispose'); // removes tooltip before replacing dom (or it'll stick)
-    $("#"+player.username.encoded).find(container).replaceWith(data); // replace dom
+    $("#"+player.username.encoded+'-container').find('[data-container="'+container+'"]').tooltip('dispose'); // removes tooltip before replacing dom (or it'll stick)
+    $("#"+player.username.encoded+'-container').find(container).replaceWith(data); // replace dom
     if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === player.username.encoded) {
         const obj = $('#followed-player-' + player.username.encoded).find(container);
         const style = obj.attr('style');
@@ -125,7 +111,7 @@ $(document).on('click','[class~=locator]',function() {
     $('#followed-player').html("<span class='title-text'>FOLLOWING</span><br><span class='feed-player'>" + $(this).attr("aria-username") + "</span>");
 
     // followed player
-    const playerDiv = $('#'+$(this).attr("aria-username-sane"));
+    const playerDiv = $('#'+$(this).attr("aria-username-sane") + "-container");
     $('#inventory-button').addClass("container-visible");
     $('#equipment-button, #skills-button, #quests-button, #bank-button').removeClass("container-visible");
     $('#followed-player-ui').removeClass("ui-disabled");
@@ -140,8 +126,8 @@ $(document).on('click','[class~=locator]',function() {
     $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
 
     // pan map to followed player
-    worldMap.updateLayer(playerDiv.attr("aria-plane"));
-    worldMap.panTo(playerDiv.attr("aria-x"), playerDiv.attr("aria-y"));
+    let player = $('#'+$(this).attr("aria-username-sane"));
+    worldMap.panTo(player.attr("aria-x"), player.attr("aria-y"), player.attr("aria-plane"));
 });
 
 function clearFeed() {

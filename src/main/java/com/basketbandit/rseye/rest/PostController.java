@@ -46,34 +46,34 @@ public class PostController {
     public void skillUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         HashMap<String, HashMap<String, Integer>> skills = player.skills().skills();
         HashMap<String, Integer> diff = new HashMap<>();
-        AtomicBoolean emitStatData = new AtomicBoolean(false);
+        AtomicBoolean emitSkillData = new AtomicBoolean(false);
         data.get("statChanges").getAsJsonArray().forEach(s -> {
             JsonObject skillUpdate = s.getAsJsonObject();
             String skill = skillUpdate.get("skill").getAsString();
-            HashMap<String, Integer> statCurrent = skills.get(skill);
+            HashMap<String, Integer> skillCurrent = skills.get(skill);
 
             // determine if the player has leveled-up a stat
-            if(statCurrent.get("level") != 0 && statCurrent.get("level") < skillUpdate.get("level").getAsInt()) {
+            if(skillCurrent.get("level") != 0 && skillCurrent.get("level") < skillUpdate.get("level").getAsInt()) {
                 Application.growthFeed.add(new GrowthEvent(player.username(), Utils.toPascal(skillUpdate.get("skill").getAsString()), skillUpdate.get("level").getAsString()));
                 MapSocketHandler.broadcastUpdate(UpdateType.SKILL_UPDATE, player);
-                emitStatData.set(true);
+                emitSkillData.set(true);
             }
 
             // if the current level is 0, it's safe to assume we're about to update it - so emit.
-            if(statCurrent.get("level") == 0) {
-                emitStatData.set(true);
+            if(skillCurrent.get("level") == 0) {
+                emitSkillData.set(true);
             }
 
             // determine if the players current prayer or hitpoints have changed
-            if((skill.equals("HITPOINTS") || skill.equals("PRAYER")) && statCurrent.get("boostedLevel") != skillUpdate.get("boostedLevel").getAsInt()) {
+            if((skill.equals("HITPOINTS") || skill.equals("PRAYER")) && skillCurrent.get("boostedLevel") != skillUpdate.get("boostedLevel").getAsInt()) {
                 MapSocketHandler.broadcastUpdate(UpdateType.STATUS_UPDATE, player);
             }
 
             // calculate exp differences
-            if(statCurrent.get("level") != 0) {
-                int diffInt = skillUpdate.get("xp").getAsInt() - statCurrent.get("xp");
+            if(skillCurrent.get("level") != 0) {
+                int diffInt = skillUpdate.get("xp").getAsInt() - skillCurrent.get("xp");
                 if(diffInt > 0) {
-                    diff.put(skill, skillUpdate.get("xp").getAsInt() - statCurrent.get("xp"));
+                    diff.put(skill, skillUpdate.get("xp").getAsInt() - skillCurrent.get("xp"));
                 }
             }
 
@@ -98,7 +98,7 @@ public class PostController {
         }
 
         // submit stat data
-        if(emitStatData.get()) {
+        if(emitSkillData.get()) {
             MapSocketHandler.broadcastUpdate(UpdateType.SKILL_DATA, player);
         }
     }

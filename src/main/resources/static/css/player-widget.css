@@ -51,14 +51,137 @@
     font-size: 24px;
 }
 
+.player-container {
+    position: relative;
+    width: 196px;
+    height: 196px;
+}
+
 .player-map {
     position: relative;
     background-color: #50628E!important;
     margin: auto;
-    width: 520px;
-    height: 520px;
+    width: 196px;
+    height: 196px;
     overflow: hidden;
+    border-radius: 98px;
+    border: solid 3px #111111;
+}
+
+/* player status */
+
+.player-current-state {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.hitpoints-container, .prayer-container {
+    position: relative;
+    margin-bottom: 3px;
+    top: 63px;
+    width: 60px;
+    height: 25px;
+}
+
+.hitpoints-container {
+    left: -30px;
+}
+
+.prayer-container {
+    left: -30px;
+}
+
+.hitpoints-container .progress, .prayer-container .progress {
+    position: relative;
+    width: 100%;
+    height: 25px;
+    margin: auto;
+}
+
+.current-hitpoints, .current-prayer {
+    position: absolute;
+    width: 100%;
+    line-height: 25px;
+    text-shadow: 1px 1px 2px #000;
+    color: #ffffff;
+    margin-left: 10px;
+}
+
+
+.player-mini-username {
+    position: absolute;
+    width: 75%;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 5px;
     border-radius: 5px;
+    justify-self: anchor-center;
+}
+
+.player-mini-login {
+    position: absolute;
+    bottom: 0px;
+    text-align: center;
+    justify-self: anchor-center;
+}
+
+.player-mini-combat {
+    position: absolute;
+    height: 25px;
+    width: 60px;
+    line-height:25px;
+    padding: 5px;
+    background: rgba(0, 0, 0, 0.7);
+    border-radius: 5px;
+    top: 35px;
+    left: -20px;
+}
+
+.combat-level {
+    position: absolute;
+    display: inline-block;
+    padding-left: 5px;
+    font-size: 0.85em;
+    vertical-align: middle;
+    top: 0px;
+}
+
+.combat-icon, .hitpoints-icon, .prayer-icon {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 16px;
+    height: 16px;
+}
+
+.player-overheads {
+    position: absolute;
+    top: 120px;
+    padding: 3px;
+    left: -12px;
+    width: 32px;
+    height: 32px;
+    border-radius: 30px;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.player-skulls {
+    position: absolute;
+    top: 150px;
+    padding: 3px;
+    left: 8px;
+    width: 32px;
+    height: 32px;
+    border-radius: 30px;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.MELEE, .RANGED, .MAGIC, .REDEMPTION, .RETRIBUTION, .SMITE, .SKULL {
+    display: none;
 }
 
 /* Style tab links */

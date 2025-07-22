@@ -71,14 +71,17 @@ canvas {
 }
 
 #global-loot-tracker {
-    width: 260px;
+    width: 100%;
     min-height: 99vh;
     max-height: 99vh;
     display: inline-flex;
     flex-direction: column;
-    margin: 5px 0px 5px 5px;
     padding-right: 0px;
     box-sizing: content-box;
+}
+
+#hidden-data {
+    display: none;
 }
 
 /* MAP */
@@ -117,7 +120,7 @@ canvas {
 
 #map-player-status {
     position: absolute;
-    width: 400px;
+    width: 300px;
     top: 10px;
     right: 0px;
     padding: 10px;
@@ -129,20 +132,16 @@ canvas {
     position: relative;
     padding: 15px;
     padding-left: 20px;
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,0.1);
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
     margin-bottom: 5px;
     line-height: 1em;
 }
 
-.map-player-status-player .badge {
-    margin-left: 10px;
-}
-
-.map-player-offline {
+/*.map-player-offline {
     filter: grayscale(1)opacity(0.5);
-}
+}*/
 
 .map-equipment {
     position: relative;
@@ -245,13 +244,12 @@ canvas {
     width: 130px !important;
 }
 
-
 .hitpoints-container .progress {
-    background-color: #dc3545;
+    background-color: #dc354555;
 }
 
 .prayer-container .progress {
-    background-color: #004085;
+    background-color: #0dcaf055;
 }
 
 .player-position .hitpoints-container, .player-position .prayer-container {
@@ -297,32 +295,6 @@ canvas {
     width: 250px;
     left: -95px;
     text-align: center;
-}
-
-.player-overheads {
-    position: absolute;
-    top: 2px;
-    padding: 8px;
-    left: -48px;
-    width: 42px;
-    height: 42px;
-    border-radius: 30px;
-    background: rgba(0,0,0,0.7);
-}
-
-.player-skulls {
-    position: absolute;
-    top: 48px;
-    padding: 8px;
-    left: -48px;
-    width: 42px;
-    height: 42px;
-    border-radius: 30px;
-    background: rgba(0,0,0,0.7);
-}
-
-.MELEE, .RANGED, .MAGIC, .REDEMPTION, .RETRIBUTION, .SMITE, .SKULL {
-    display: none;
 }
 
 .title-text {
@@ -379,34 +351,6 @@ canvas {
 
 .tooltip-arrow {
     display: none !important;
-}
-
-.hitpoints-container, .prayer-container {
-    width: 50%;
-    padding-right: 2px;
-    padding-left: 2px;
-}
-
-.hitpoints-container .progress, .prayer-container .progress {
-    position: relative;
-    width: 100%;
-    height: 30px;
-    margin: auto;
-}
-
-.current-hitpoints, .current-prayer {
-    position: absolute;
-    width: 100%;
-    line-height: 30px;
-    text-shadow: 1px 1px 2px #000;
-    text-align: center;
-    color: #ffffff;
-}
-
-.player-current-state {
-    margin-top: 10px;
-    width: 90%;
-    display: inline-flex;
 }
 
 /* BANK */

@@ -1,0 +1,30 @@
+<div th:id="${username.encoded}" th:class="${loginState + ' locator map-player-status-player'}" th:aria-username-sane="${username.encoded}" th:aria-username="${username.natural}" th:aria-x="${position.offx}" th:aria-y="${position.offy}" th:aria-plane="${position.plane}">
+    <div class="player-container">
+        <div class="player-current-state">
+            <span class="player-mini-username" th:text="${username.natural}"></span>
+            <div class="player-mini-combat">
+                <div class="combat-level" th:text="${skills.combatLevel}"></div>
+                <img class="combat-icon" src="/data/icons/combat_icon.webp" alt="combat_icon"/>
+            </div>
+            <span th:if="${loginState == 'LOGGED_IN'}" class="badge badge-success player-mini-login">Online</span>
+            <span th:if="${loginState != 'LOGGED_IN'}" class="badge badge-danger player-mini-login">Offline</span>
+            <div class="status">
+                <fragment th:replace="~{./player/status}"></fragment>
+            </div>
+        </div>
+
+        <div class="player-overheads">
+            <img class="overhead MELEE" th:style="${overhead.overhead == 'MELEE' ? 'display: inline' : ''}" src="/data/icons/overhead/melee.png"/>
+            <img class="overhead RANGED" th:style="${overhead.overhead == 'RANGED' ? 'display: inline' : ''}" src="/data/icons/overhead/ranged.png"/>
+            <img class="overhead MAGIC" th:style="${overhead.overhead == 'MAGIC' ? 'display: inline' : ''}" src="/data/icons/overhead/magic.png"/>
+            <img class="overhead REDEMPTION" th:style="${overhead.overhead == 'REDEMPTION' ? 'display: inline' : ''}" src="/data/icons/overhead/redemption.png"/>
+            <img class="overhead RETRIBUTION" th:style="${overhead.overhead == 'RETRIBUTION' ? 'display: inline' : ''}" src="/data/icons/overhead/retribution.png"/>
+            <img class="overhead SMITE" th:style="${overhead.overhead == 'SMITE' ? 'display: inline' : ''}" src="/data/icons/overhead/smite.png"/>
+        </div>
+        <div class="player-skulls">
+            <img class="skull SKULL" th:style="${skull.skull == 'SKULL' ? 'display: inline' : ''}" src="/data/icons/overhead/skull.png"/>
+        </div>
+
+        <div th:id="${username.encoded + '-minimap'}" class="player-map"></div>
+    </div>
+</div>

@@ -13,6 +13,7 @@ class RuneMap {
             L.latLng(0, 0),
             L.latLng(this.tileSize * this.tileRows, this.tileSize * this.tileColumns) // latlng is yx
         ]);
+        this.plane = 0;
         this.currentLayer = null;
         this.map = this.init();
     }
@@ -42,8 +43,17 @@ class RuneMap {
     }
 
     updateLayer(layer) {
+        if(isNaN(layer)) {
+            return;
+        }
+
         layer = Math.max(0, Math.min(layer, 3));
-        const layerPath = './data/map/' + layer + '/{x}/{y}.png';
+        if(this.plane == layer) {
+            return
+        }
+
+        this.plane = layer;
+        let layerPath = './data/map/' + this.plane + '/{x}/{y}.png';
 
         if(this.currentLayer) {
             this.map.removeLayer(this.currentLayer);
@@ -57,6 +67,11 @@ class RuneMap {
     }
 
     panTo(x, y) {
+        this.map.panTo(this.map.unproject(L.point(x, y)));
+    }
+
+    panTo(x, y, plane) {
+        this.updateLayer(plane);
         this.map.panTo(this.map.unproject(L.point(x, y)));
     }
 
@@ -75,11 +90,12 @@ class RuneMap {
         }
     }
 
-    addPlayerMarker(player, map) {
+    addPlayerMarker(player, showUsername, map) {
+        let iconHtml = showUsername ? "<span class='marker-name'>" + player.username.natural + "</span>" : ""
         let icon = L.divIcon({
             iconSize: [4, 4], // size of the icon
             iconAnchor: [0, 0], // remove any offset
-            html: "<span class='marker-name'>" + player.username.natural + "</span>"
+            html: iconHtml
         });
         let marker = L.marker([0,0], {title: player.username.encoded + "-" + map, icon: icon});
         this.playerMarkers.set(player.username.encoded, marker);
