@@ -13,6 +13,7 @@ class RuneMap {
             L.latLng(0, 0),
             L.latLng(this.tileSize * this.tileRows, this.tileSize * this.tileColumns) // latlng is yx
         ]);
+        this.currentLayer = null;
         this.map = this.init();
     }
 
@@ -31,7 +32,7 @@ class RuneMap {
             renderer: L.canvas()
         }).setView([0, 0], 8);
 
-        L.tileLayer('./data/map/0/{x}/{y}.png', {
+        this.currentLayer = L.tileLayer('./data/map/0/{x}/{y}.png', {
             bounds: this.bounds,
             noWrap: true,
             tms: true
@@ -41,8 +42,14 @@ class RuneMap {
     }
 
     updateLayer(layer) {
-        layer = (layer < 0) ? 0 : (layer > 3) ? 3 : layer; // ensure layer is between 0-3
-        L.tileLayer('./data/map/' + layer + '/{x}/{y}.png', {
+        layer = Math.max(0, Math.min(layer, 3));
+        const layerPath = './data/map/' + layer + '/{x}/{y}.png';
+
+        if(this.currentLayer) {
+            this.map.removeLayer(this.currentLayer);
+        }
+
+        this.currentLayer = L.tileLayer(layerPath, {
             bounds: this.bounds,
             noWrap: true,
             tms: true
