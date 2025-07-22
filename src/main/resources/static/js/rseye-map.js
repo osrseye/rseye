@@ -66,13 +66,33 @@ class RuneMap {
         }).addTo(this.map);
     }
 
-    panTo(x, y) {
+    panToFast(x, y, plane) {
+        this.updateLayer(plane);
         this.map.panTo(this.map.unproject(L.point(x, y)));
     }
 
     panTo(x, y, plane) {
         this.updateLayer(plane);
-        this.map.panTo(this.map.unproject(L.point(x, y)));
+
+        const duration = 600;
+        const target = this.map.unproject(L.point(x, y));
+        const start = this.map.getCenter();
+        const startTime = performance.now();
+
+        const animate = (time) => {
+            const elapsed = time - startTime;
+            const t = Math.min(elapsed / duration, 1);
+            const lat = start.lat + (target.lat - start.lat) * t;
+            const lng = start.lng + (target.lng - start.lng) * t;
+
+            this.map.panTo([lat, lng], { animate: false }); // disable default animation
+
+            if(t < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+
+        requestAnimationFrame(animate);
     }
 
     setView(x, y) {
@@ -84,10 +104,28 @@ class RuneMap {
     }
 
     updatePlayerMarker(username, x, y) {
-        let playerMarker = this.playerMarkers.get(username);
-        if(playerMarker) {
-            playerMarker.setLatLng(this.map.unproject(L.point(x, y)));
+        let marker = this.playerMarkers.get(username);
+        if(!marker) {
+            return;
         }
+
+        const duration = 600;
+        const startLatLng = marker.getLatLng();
+        const endLatLng = this.map.unproject(L.point(x, y));
+        const startTime = performance.now();
+
+        const animate = (time) => {
+            const elapsed = time - startTime;
+            const t = Math.min(elapsed / duration, 1);
+            const currentLat = startLatLng.lat + (endLatLng.lat - startLatLng.lat) * t;
+            const currentLng = startLatLng.lng + (endLatLng.lng - startLatLng.lng) * t;
+            marker.setLatLng([currentLat, currentLng]);
+            if(t < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+
+        requestAnimationFrame(animate);
     }
 
     addPlayerMarker(player, showUsername, map) {

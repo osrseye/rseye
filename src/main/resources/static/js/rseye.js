@@ -9,7 +9,7 @@ var followedPlayer;
 
 setTimeout(function () {
     worldMap.map.invalidateSize(true);
-    worldMap.panTo(L.point(8244, 36716)); // varrock & falador
+    worldMap.panToFast(8244, 36716); // varrock & falador
 }, 100);
 
 function display() {
