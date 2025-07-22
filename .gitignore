@@ -38,7 +38,7 @@ out/
 
 ### Assets ###
 /data/map/
-/data/icons/
+#/data/icons/
 /data/icons-items-complete.json
 /data/items-cache-data.json
 /data/monsters-cache-data.json
