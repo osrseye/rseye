@@ -36,7 +36,8 @@ class RuneMap {
         this.currentLayer = L.tileLayer('./data/map/0/{x}/{y}.png', {
             bounds: this.bounds,
             noWrap: true,
-            tms: true
+            tms: true,
+            edgeBufferTiles: 5
         }).addTo(map);
 
         return map;
@@ -62,7 +63,8 @@ class RuneMap {
         this.currentLayer = L.tileLayer(layerPath, {
             bounds: this.bounds,
             noWrap: true,
-            tms: true
+            tms: true,
+            edgeBufferTiles: 5
         }).addTo(this.map);
     }
 
