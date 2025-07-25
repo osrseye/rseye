@@ -61,14 +61,6 @@ $(document).on('input','[class~=bank-input]',function() {
     });
 });
 
-$('.ui-button').click(function() {
-    if(followedPlayer == null) {
-        return;
-    }
-    const container = $('#followed-player-data').find($(this).attr("aria-container")).toggle();
-    container.is(':hidden') ? $(this).removeClass("container-visible") : $(this).addClass("container-visible");
-});
-
 function updatePosition(player) {
     var x = player.position.offx;
     var y = player.position.offy;
@@ -130,6 +122,27 @@ $(document).on('click','[class~=locator]',function() {
     // pan map to followed player
     let player = $('#'+$(this).attr("aria-username-sane"));
     worldMap.panTo(player.attr("aria-x"), player.attr("aria-y"), player.attr("aria-plane"));
+});
+
+// followed player container buttons (bottom right)
+$('.ui-button').click(function() {
+    if(followedPlayer == null) {
+        return;
+    }
+
+    $('#followed-player-data').find(".equipment-container").hide();
+    $('#equipment-button').removeClass("container-visible");
+    $('#followed-player-data').find(".inventory-container").hide();
+    $('#inventory-button').removeClass("container-visible");
+    $('#followed-player-data').find(".skills-container").hide();
+    $('#skills-button').removeClass("container-visible");
+    $('#followed-player-data').find(".quests-container").hide();
+    $('#quests-button').removeClass("container-visible");
+    $('#followed-player-data').find(".bank-container").hide();
+    $('#bank-button').removeClass("container-visible");
+
+    const container = $('#followed-player-data').find($(this).attr("aria-container")).toggle();
+    container.is(':hidden') ? $(this).removeClass("container-visible") : $(this).addClass("container-visible");
 });
 
 function clearFeed() {
