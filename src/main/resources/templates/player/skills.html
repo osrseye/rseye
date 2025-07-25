@@ -2,43 +2,43 @@
     <img width="204px" height="275px" src="/data/ui/skills_tab.webp">
     <table th:if="${!skills.skills.isEmpty}" class="skill-table">
         <tr>
-            <td class="skill-td" th:text="${skills.skills.ATTACK.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.HITPOINTS.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.MINING.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.ATTACK.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.ATTACK.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.HITPOINTS.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.HITPOINTS.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.MINING.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.MINING.xp, 0, 'COMMA')}"></td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.STRENGTH.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.AGILITY.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.SMITHING.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.STRENGTH.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.STRENGTH.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.AGILITY.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.AGILITY.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.SMITHING.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.SMITHING.xp, 0, 'COMMA')}"></td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.DEFENCE.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.HERBLORE.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.FISHING.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.DEFENCE.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.DEFENCE.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.HERBLORE.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.HERBLORE.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.FISHING.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.FISHING.xp, 0, 'COMMA')}"></td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.RANGED.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.THIEVING.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.COOKING.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.RANGED.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.RANGED.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.THIEVING.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.THIEVING.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.COOKING.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.COOKING.xp, 0, 'COMMA')}"></td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.PRAYER.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.CRAFTING.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.FIREMAKING.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.PRAYER.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.PRAYER.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.CRAFTING.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.CRAFTING.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.FIREMAKING.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.FIREMAKING.xp, 0, 'COMMA')}"></td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.MAGIC.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.FLETCHING.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.WOODCUTTING.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.MAGIC.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.MAGIC.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.FLETCHING.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.FLETCHING.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.WOODCUTTING.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.WOODCUTTING.xp, 0, 'COMMA')}"></td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.RUNECRAFT.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.SLAYER.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.FARMING.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.RUNECRAFT.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.RUNECRAFT.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.SLAYER.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.SLAYER.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.FARMING.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.FARMING.xp, 0, 'COMMA')}"></td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.CONSTRUCTION.level}"></td>
-            <td class="skill-td" th:text="${skills.skills.HUNTER.level}"></td>
+            <td class="skill-td" th:text="${skills.skills.CONSTRUCTION.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.CONSTRUCTION.xp, 0, 'COMMA')}"></td>
+            <td class="skill-td" th:text="${skills.skills.HUNTER.level}" data-toggle="tooltip" data-container=".skill-td" th:title="${'XP: ' + #numbers.formatInteger(skills.skills.HUNTER.xp, 0, 'COMMA')}"></td>
             <td class="skill-td skill-total" th:text="${skills.totalLevel}"></td>
         </tr>
     </table>

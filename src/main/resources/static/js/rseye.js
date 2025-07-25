@@ -95,7 +95,6 @@ function updatePosition(player) {
 }
 
 function updatePlayerContainer(container, player, data) {
-    $("#"+player.username.encoded+'-container').find('[data-container="'+container+'"]').tooltip('dispose'); // removes tooltip before replacing dom (or it'll stick)
     $("#"+player.username.encoded+'-container').find(container).replaceWith(data); // replace dom
     if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === player.username.encoded) {
         const obj = $('#followed-player-' + player.username.encoded).find(container);
@@ -103,7 +102,10 @@ function updatePlayerContainer(container, player, data) {
         obj.replaceWith(data);
         $('#followed-player-' + player.username.encoded).find(container).attr("style", style); // have to get dom again since obj will still contain old data even after .replaceWith()
     }
-    $('[data-toggle="tooltip"]').tooltip()
+
+    $('.tooltip').remove(); // Removes old tooltip DOM elements
+    $('[data-toggle="tooltip"]').tooltip('dispose'); // Disposes old instances
+    $('[data-toggle="tooltip"]').tooltip() // Add new tooltip
 }
 
 $(document).on('click','[class~=locator]',function() {
