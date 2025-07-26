@@ -125,6 +125,11 @@ function connect() {
     function expUpdate(payload) {
         const player = JSON.parse(payload);
 
+        // update xp in skill box
+        $.get("/player/"+player.username.natural+"/skills", function(data) {
+            updatePlayerContainer(".skills-container", player, data);
+        });
+
         var updateString = "";
         for(const [key, value] of Object.entries(player.data)) {
             updateString += "<img class='xp-drop-icon' src='/data/icons/skill/"+key+".png'/><span>"+value+"</span><br>";
@@ -227,6 +232,8 @@ function connect() {
         });
         $.get("/loot-tracker", function(data) {
             $("#global-loot-tracker").html(data);
+
+            // rejig the track to display items in a "masonry" layout
             const items = document.querySelectorAll('.monster');
             items.forEach(item => {
               const rowHeight = 86; // matches grid-auto-rows
