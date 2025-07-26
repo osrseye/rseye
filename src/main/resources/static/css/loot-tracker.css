@@ -1,12 +1,17 @@
 .monster-container {
     padding: 5px;
     background-color: #888888;
-    display: flex;
-    flex-wrap: wrap;
     align-items: baseline;
-    align-content: flex-start;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 220px);
+    gap: 5px;
+    grid-auto-rows: 86px;
+    grid-auto-flow: dense;
+    height: 100vh;
+    grid-auto-columns: auto;
+    justify-content: center;
 }
 
 .content-header {
@@ -15,8 +20,6 @@
     background-color: rgba(0,0,0,0.8);
     color: white;
     text-align: center;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
 }
 
 .monster {
@@ -28,6 +31,7 @@
     background-color: rgba(0,0,0,0.4);
     border-radius: 5px;
     margin: 2px;
+    grid-row: span var(--rows, 1);
 }
 
 .monster-header {

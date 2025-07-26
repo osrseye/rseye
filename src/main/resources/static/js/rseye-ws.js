@@ -227,6 +227,12 @@ function connect() {
         });
         $.get("/loot-tracker", function(data) {
             $("#global-loot-tracker").html(data);
+            const items = document.querySelectorAll('.monster');
+            items.forEach(item => {
+              const rowHeight = 86; // matches grid-auto-rows
+              const rows = Math.ceil(item.getBoundingClientRect().height / rowHeight);
+              item.style.setProperty('--rows', rows);
+            });
         })
     }
 
