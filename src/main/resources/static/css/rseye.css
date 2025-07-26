@@ -210,9 +210,15 @@ canvas {
 
 #followed-player-ui .btn {
     height: 48px;
-    width: 62px;
+    width: 48px;
     background: #726451;
     border: 2px solid #3C3121!important;
+    padding: 0px!important;
+    line-height: 2.4!important;
+}
+
+#followed-player-ui .btn img {
+    height: 26px;
 }
 
 .ui-disabled {
@@ -549,6 +555,7 @@ ul.inventory-ul {
     width: 50px;
     text-align: right;
     padding-top: 5px;
+    cursor: pointer!important;
 }
 
 .skill-total {

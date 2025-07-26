@@ -62,7 +62,6 @@ function connect() {
             $.get("/player/"+player.username.natural, function(data) {
                 $(".players").append(data); // hidden data
                 $("#"+player.username.encoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
-                $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
 
                 // add to world map
                 worldMap.addPlayerMarker(player, true, "world");
@@ -76,6 +75,7 @@ function connect() {
                 updatePosition(player);
             });
         });
+        $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
     }
 
     function newPlayer(payload) {
@@ -96,6 +96,7 @@ function connect() {
 
             updatePosition(player);
         });
+        $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
     }
 
     function loginUpdate(payload) {
