@@ -37,7 +37,7 @@ class RuneMap {
             bounds: this.bounds,
             noWrap: true,
             tms: true,
-            edgeBufferTiles: 5
+            edgeBufferTiles: (this.name == "map") ? 5 : 1
         }).addTo(map);
 
         return map;
@@ -64,7 +64,7 @@ class RuneMap {
             bounds: this.bounds,
             noWrap: true,
             tms: true,
-            edgeBufferTiles: 5
+            edgeBufferTiles: (this.name == "map") ? 5 : 1
         }).addTo(this.map);
     }
 
