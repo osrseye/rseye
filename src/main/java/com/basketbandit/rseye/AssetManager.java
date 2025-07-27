@@ -19,6 +19,7 @@ public class AssetManager {
     public static ArrayList<String> tokens = new ArrayList<>();
     public static HashMap<String, Item> items = new HashMap<>();
     public static HashMap<String, Monster> monsters = new HashMap<>();
+    public static HashMap<Integer, Integer> xpTable = new HashMap<>();
 
     public AssetManager() {
         try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/items-cache-data.json"), StandardCharsets.UTF_8))) {
@@ -65,6 +66,16 @@ public class AssetManager {
             JsonObject obj = gson.fromJson(r, JsonObject.class);
             obj.keySet().forEach(key -> monsters.put(key, new Monster(key, obj.get(key).getAsJsonObject().get("name").getAsString(), obj.get(key).getAsJsonObject().get("combatLevel").getAsInt())));
             log.info("Found {} monster(s)", monsters.size());
+        } catch(Exception e) {
+            log.error("There was an issue loading assets: {}", e.getMessage(), e);
+        }
+
+        try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/xp-table.json"), StandardCharsets.UTF_8))) {
+            Gson gson = new Gson();
+            JsonObject obj = gson.fromJson(r, JsonObject.class);
+            JsonObject table = obj.get("xp_table").getAsJsonObject();
+            table.keySet().forEach(key -> xpTable.put(Integer.valueOf(key), table.get(key).getAsInt()));
+            log.info("Found {} level(s)", xpTable.size());
         } catch(Exception e) {
             log.error("There was an issue loading assets: {}", e.getMessage(), e);
         }

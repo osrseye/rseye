@@ -126,10 +126,7 @@ function connect() {
     function expUpdate(payload) {
         const player = JSON.parse(payload);
 
-        // update xp in skill box
-        $.get("/player/"+player.username.natural+"/skills", function(data) {
-            updatePlayerContainer(".skills-container", player, data);
-        });
+        skillData(payload); // reload skill ui
 
         var updateString = "";
         for(const [key, value] of Object.entries(player.data)) {

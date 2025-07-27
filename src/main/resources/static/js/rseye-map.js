@@ -37,7 +37,7 @@ class RuneMap {
             bounds: this.bounds,
             noWrap: true,
             tms: true,
-            tileSize: 256,
+            tileSize: this.tileSize,
             format: 'image/webp',
             edgeBufferTiles: (this.name == "map") ? 3 : 1,
             errorTileUrl: './data/map/0/0/0.webp'
@@ -67,7 +67,7 @@ class RuneMap {
             bounds: this.bounds,
             noWrap: true,
             tms: true,
-            tileSize: 256,
+            tileSize: this.tileSize,
             format: 'image/webp',
             edgeBufferTiles: (this.name == "map") ? 3 : 1,
             errorTileUrl: './data/map/0/0/0.webp'

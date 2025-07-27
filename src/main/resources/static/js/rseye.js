@@ -87,9 +87,6 @@ function updatePosition(player) {
 }
 
 function updatePlayerContainer(container, player, data) {
-    $('.tooltip').remove(); // Removes old tooltip DOM elements
-    $('[data-toggle="tooltip"]').tooltip('dispose'); // Disposes old instances
-
     $("#"+player.username.encoded+'-container').find(container).replaceWith(data); // replace dom
     if(followedPlayer != null && followedPlayer.attr("aria-username-sane") === player.username.encoded) {
         const obj = $('#followed-player-' + player.username.encoded).find(container);
@@ -97,8 +94,6 @@ function updatePlayerContainer(container, player, data) {
         obj.replaceWith(data);
         $('#followed-player-' + player.username.encoded).find(container).attr("style", style); // have to get dom again since obj will still contain old data even after .replaceWith()
     }
-
-    $('[data-toggle="tooltip"]').tooltip() // Add new tooltip
 }
 
 $(document).on('click','[class~=locator]',function() {
@@ -118,7 +113,6 @@ $(document).on('click','[class~=locator]',function() {
     followDiv.append(playerDiv.find(".quests-container").clone(true).toggle());
     followDiv.append(playerDiv.find(".bank-container").clone(true).toggle());
     followDiv.find(".bank-container").find(":input").val("").trigger("input"); // stops search input being cloned and resets any toggles
-    $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
 
     // pan map to followed player
     let player = $('#'+$(this).attr("aria-username-sane"));
@@ -136,10 +130,9 @@ $('.ui-button').click(function() {
 });
 
 function clearFeed() {
-    $('[data-toggle="tooltip"]').tooltip();
+
     if($('.feed-item').length > 5) {
         $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
-            $('[data-container=".feed-item"]').tooltip('dispose');
             $(this).remove();
             clearFeed(); // calls function recursively AFTER the element has been removed
         });

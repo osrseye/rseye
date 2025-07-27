@@ -347,10 +347,17 @@ canvas {
 }
 
 .tooltip > .tooltip-inner {
-    background-color: #3B3226;
-    border: solid;
-    border-color: #575040;
-    color: #F79420;
+    background-color: #3B3226AA!important;
+    border: solid!important;
+    border-color: #575040!important;
+    color: #F79420!important;
+}
+
+.tooltip {
+    background-color: #3B3226AA!important;
+    border: solid!important;
+    border-color: #575040!important;
+    color: #F79420!important;
 }
 
 .tooltip-arrow {

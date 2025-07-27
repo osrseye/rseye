@@ -1,5 +1,7 @@
 package com.basketbandit.rseye.entity;
 
+import com.basketbandit.rseye.AssetManager;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +48,30 @@ public class Player {
                 Map.entry("CONSTRUCTION", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
                 Map.entry("HUNTER", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0)))
             )));
+        }
+        public String summary(String key) {
+            HashMap<String, Integer> skill = skills.get(key);
+            String skillNameFormatted = key.charAt(0) + key.substring(1).toLowerCase();
+            int currentXp = skill.get("xp");
+            int nextXp = AssetManager.xpTable.get(skill.get("level")+1);
+            return "%s XP: %,d\nNext level at: %,d\nRemaining XP: %,d".formatted(skillNameFormatted, currentXp, nextXp, (nextXp-currentXp));
+        }
+        public int xpForLevel(int level) {
+            return AssetManager.xpTable.get(Math.max(1, Math.min(level, 99)));
+        }
+        public int xpForNext(String key) {
+            HashMap<String, Integer> skill = skills.get(key);
+            if(skill.get("level") == 99) {
+                return 0;
+            }
+            return AssetManager.xpTable.get(skill.get("level")+1);
+        }
+        public int xpUntilNext(String key) {
+            HashMap<String, Integer> skill = skills.get(key);
+            if(skill.get("level") == 99) {
+                return 0;
+            }
+            return AssetManager.xpTable.get(skill.get("level")+1) - skill.get("xp");
         }
     }
 
