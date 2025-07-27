@@ -39,7 +39,8 @@ class RuneMap {
             tms: true,
             tileSize: 256,
             format: 'image/webp',
-            edgeBufferTiles: (this.name == "map") ? 3 : 1
+            edgeBufferTiles: (this.name == "map") ? 3 : 1,
+            errorTileUrl: './data/map/0/0/0.webp'
         }).addTo(map);
 
         return map;
@@ -68,7 +69,8 @@ class RuneMap {
             tms: true,
             tileSize: 256,
             format: 'image/webp',
-            edgeBufferTiles: (this.name == "map") ? 3 : 1
+            edgeBufferTiles: (this.name == "map") ? 3 : 1,
+            errorTileUrl: './data/map/0/0/0.webp'
         }).addTo(this.map);
     }
 
