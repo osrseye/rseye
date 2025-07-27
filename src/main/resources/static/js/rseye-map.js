@@ -33,7 +33,7 @@ class RuneMap {
             renderer: L.canvas()
         }).setView([0, 0], 8);
 
-        this.currentLayer = L.tileLayer('./data/map/0/{x}/{y}.png', {
+        this.currentLayer = L.tileLayer('./data/map/0/{x}/{y}.webp', {
             bounds: this.bounds,
             noWrap: true,
             tms: true,
@@ -56,7 +56,7 @@ class RuneMap {
         }
 
         this.plane = layer;
-        let layerPath = './data/map/' + this.plane + '/{x}/{y}.png';
+        let layerPath = './data/map/' + this.plane + '/{x}/{y}.webp';
 
         if(this.currentLayer) {
             this.map.removeLayer(this.currentLayer);
