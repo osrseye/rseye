@@ -37,6 +37,8 @@ class RuneMap {
             bounds: this.bounds,
             noWrap: true,
             tms: true,
+            tileSize: 256,
+            format: 'image/webp'
             edgeBufferTiles: (this.name == "map") ? 3 : 1
         }).addTo(map);
 
@@ -64,6 +66,8 @@ class RuneMap {
             bounds: this.bounds,
             noWrap: true,
             tms: true,
+            tileSize: 256,
+            format: 'image/webp'
             edgeBufferTiles: (this.name == "map") ? 3 : 1
         }).addTo(this.map);
     }
