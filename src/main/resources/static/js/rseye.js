@@ -131,17 +131,6 @@ $('.ui-button').click(function() {
         return;
     }
 
-    $('#followed-player-data').find(".equipment-container").hide();
-    $('#equipment-button').removeClass("container-visible");
-    $('#followed-player-data').find(".inventory-container").hide();
-    $('#inventory-button').removeClass("container-visible");
-    $('#followed-player-data').find(".skills-container").hide();
-    $('#skills-button').removeClass("container-visible");
-    $('#followed-player-data').find(".quests-container").hide();
-    $('#quests-button').removeClass("container-visible");
-    $('#followed-player-data').find(".bank-container").hide();
-    $('#bank-button').removeClass("container-visible");
-
     const container = $('#followed-player-data').find($(this).attr("aria-container")).toggle();
     container.is(':hidden') ? $(this).removeClass("container-visible") : $(this).addClass("container-visible");
 });
