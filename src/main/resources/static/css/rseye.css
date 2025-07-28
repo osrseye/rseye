@@ -346,18 +346,20 @@ canvas {
     background-color: #dc3545;
 }
 
-.tooltip > .tooltip-inner {
-    background-color: #3B3226AA!important;
-    border: solid!important;
-    border-color: #575040!important;
-    color: #F79420!important;
+.skill-td .tooltip {
+    visibility: hidden;
+    position: absolute;
+    width: max-content;
+    padding: 2px 6px 2px 6px;
+    background-color: #3B3226EE !important;
+    border: solid !important;
+    border-color: #575040 !important;
+    color: #F79420 !important;
+    opacity: 1;
 }
 
-.tooltip {
-    background-color: #3B3226AA!important;
-    border: solid!important;
-    border-color: #575040!important;
-    color: #F79420!important;
+.skill-td:hover .tooltip {
+    visibility: visible;
 }
 
 .tooltip-arrow {

@@ -26,6 +26,7 @@ public class Application {
 	public static CopyOnWriteArrayList<CombatEvent> combatFeed = new CopyOnWriteArrayList<>(); // inefficient but we aren't expecting high throughput
 	public static CopyOnWriteArrayList<RaidEvent> raidFeed = new CopyOnWriteArrayList<>(); // inefficient but we aren't expecting high throughput
 	public static CopyOnWriteArrayList<GrowthEvent> growthFeed = new CopyOnWriteArrayList<>();
+	public static CopyOnWriteArrayList<GrowthEvent> deathFeed = new CopyOnWriteArrayList<>();
 	public static CopyOnWriteArrayList<QuestEvent> questFeed = new CopyOnWriteArrayList<>();
 	public static LootTracker globalLootTracker = new LootTracker();
 

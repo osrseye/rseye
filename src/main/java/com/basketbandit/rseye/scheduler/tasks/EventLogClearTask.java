@@ -18,5 +18,8 @@ public class EventLogClearTask implements Task {
         if(Application.growthFeed.size() > 10) {
             Application.growthFeed.removeFirst();
         }
+        if(Application.deathFeed.size() > 10) {
+            Application.deathFeed.removeFirst();
+        }
     }
 }

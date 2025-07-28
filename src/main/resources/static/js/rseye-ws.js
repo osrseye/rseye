@@ -45,6 +45,7 @@ function connect() {
             case "quest_data": return questData(payload);
             case "overhead_update": return overheadUpdate(payload);
             case "skull_update": return skullUpdate(payload);
+            case "death_update": return deathUpdate(payload);
             default: return console.warn("Unhandled message type:", type);
         }
     };
@@ -75,7 +76,6 @@ function connect() {
                 updatePosition(player);
             });
         });
-        $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
     }
 
     function newPlayer(payload) {
@@ -96,7 +96,6 @@ function connect() {
 
             updatePosition(player);
         });
-        $('[data-toggle="tooltip"]').tooltip() // initialise tooltips
     }
 
     function loginUpdate(payload) {
@@ -243,6 +242,16 @@ function connect() {
 
     function raidLootUpdate() {
         $.get("/raid/latest", function(data) {
+            $(".update-feed").css({top:-150});
+            $(".update-feed").prepend(data);
+            $(".update-feed").animate({top: 5}, 1000);
+            clearFeed();
+        });
+    }
+
+    function deathUpdate(payload) {
+        const player = JSON.parse(payload);
+        $.get("/death/latest", function(data) {
             $(".update-feed").css({top:-150});
             $(".update-feed").prepend(data);
             $(".update-feed").animate({top: 5}, 1000);

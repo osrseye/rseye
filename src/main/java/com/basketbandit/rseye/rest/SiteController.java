@@ -130,6 +130,18 @@ public class SiteController {
         return new ModelAndView("./event/growth/empty");
     }
 
+    @GetMapping("/death/latest")
+    public ModelAndView getDeathFeedLatest() {
+        int feedSize = Application.deathFeed.size();
+        if(feedSize > 0) {
+            GrowthEvent deathFeed = Application.deathFeed.get(feedSize - 1);
+            ModelAndView mv = new ModelAndView("./event/death/index");
+            mv.addObject("death", deathFeed);
+            return mv;
+        }
+        return new ModelAndView("./event/death/empty");
+    }
+
     @GetMapping("/quest/latest")
     public ModelAndView getQuestFeedLatest() {
         int feedSize = Application.questFeed.size();
