@@ -7,4 +7,17 @@ import com.basketbandit.rseye.entity.Player;
 import java.util.ArrayList;
 
 public record CombatEvent(Player.CombatInfo player, Item weapon, Monster monster, ArrayList<Item> loot) implements Event {
+    public int combatLevelDifference() {
+        return monster.combatLevel() - player.combatLevel();
+    }
+
+    public String combatLevelDifferenceTextColour() {
+        return combatLevelDifference() > 9 ? "#ff0000" :
+               combatLevelDifference() > 6 ? "#ff3000" :
+               combatLevelDifference() > 3 ? "#ff7000" :
+               combatLevelDifference() > 0 ? "#ffb000" :
+               combatLevelDifference() == 0 ? "#ffff00" :
+               combatLevelDifference() > -4 ? "#c0ff00" :
+               combatLevelDifference() > -7 ? "#40ff00" : "#00ff00";
+    }
 }

@@ -124,13 +124,11 @@ $('.ui-button').click(function() {
     if(followedPlayer == null) {
         return;
     }
-
     const container = $('#followed-player-data').find($(this).attr("aria-container")).toggle();
     container.is(':hidden') ? $(this).removeClass("container-visible") : $(this).addClass("container-visible");
 });
 
 function clearFeed() {
-
     if($('.feed-item').length > 5) {
         $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {
             $(this).remove();

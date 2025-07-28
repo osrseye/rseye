@@ -1,12 +1,14 @@
 <div class="feed-item combat">
     <span class="combat-feed-title">Combat</span>
     <div class="combat-combatants">
-        <span class="feed-player" th:text="${combat.player.username.natural + ' (level-' + combat.player.combatLevel + ')'}"></span>
+        <span class="combat-monster" th:text="${combat.player.username.natural}"></span>
+        <span class="feed-player" th:text="${' (level-' + combat.player.combatLevel + ')'}"></span>
         <a th:if="${combat.weapon != null}" th:href="@{https://oldschool.runescape.wiki/w/__${combat.weapon.nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" data-container=".feed-item" th:title="${combat.weapon.name}">
             <img th:src="@{${combat.weapon.icon}}" onError="this.onerror=null;this.src='/data/items/0.png';" width="36" />
         </a>
         <span th:if="${combat.weapon == null}"> 💀 </span>
-        <span class="combat-monster" th:text="${combat.monster.name + ' (level-' + combat.monster.combatLevel + ')'}"></span>
+        <span class="combat-monster" th:text="${combat.monster.name}"></span>
+        <span th:style="|color: ${combat.combatLevelDifferenceTextColour()}|" th:text="${' (level-' + combat.monster.combatLevel + ')'}"></span>
     </div>
 
     <span class="combat-feed-title">Loot</span>
