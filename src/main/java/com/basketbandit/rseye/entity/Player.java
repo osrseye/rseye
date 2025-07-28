@@ -54,7 +54,7 @@ public class Player {
             String skillNameFormatted = key.charAt(0) + key.substring(1).toLowerCase();
             int currentXp = skill.get("xp");
             int nextXp = AssetManager.xpTable.get(skill.get("level")+1);
-            return "%s XP: %,d<br>Next level at: %,d <br>Remaining XP: %,d".formatted(skillNameFormatted, currentXp, nextXp, (nextXp-currentXp));
+            return "%s XP: %,d\nNext level at: %,d\nRemaining XP: %,d".formatted(skillNameFormatted, currentXp, nextXp, (nextXp-currentXp));
         }
         public int xpForLevel(int level) {
             return AssetManager.xpTable.get(Math.max(1, Math.min(level, 99)));
