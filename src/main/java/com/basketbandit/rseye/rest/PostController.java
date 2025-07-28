@@ -216,6 +216,6 @@ public class PostController {
 
     @PostMapping("/api/v1/death_update/")
     public void deathUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
-        MapSocketHandler.broadcastUpdate(UpdateType.DEATH_UPDATE, player);
+        MapSocketHandler.broadcastUpdate(UpdateType.DEATH_UPDATE, new DeathEvent(player.combatInfo()));
     }
 }
