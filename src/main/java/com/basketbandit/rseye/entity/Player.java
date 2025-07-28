@@ -50,24 +50,22 @@ public class Player {
             )));
         }
         public String summary(String key) {
-            HashMap<String, Integer> skill = skills.get(key);
+            HashMap<String, Integer> skill = skills.getOrDefault(key, new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0)));
             String skillNameFormatted = key.charAt(0) + key.substring(1).toLowerCase();
             int currentXp = skill.get("xp");
             int nextXp = AssetManager.xpTable.get(skill.get("level")+1);
-            return "%s XP: %,d\nNext level at: %,d\nRemaining XP: %,d".formatted(skillNameFormatted, currentXp, nextXp, (nextXp-currentXp));
+            return "%s XP: %,d<br>Next level at: %,d <br>Remaining XP: %,d".formatted(skillNameFormatted, currentXp, nextXp, (nextXp-currentXp));
         }
         public int xpForLevel(int level) {
             return AssetManager.xpTable.get(Math.max(1, Math.min(level, 99)));
         }
-        public int xpForNext(String key) {
-            HashMap<String, Integer> skill = skills.get(key);
-            if(skill.get("level") == 99) {
-                return 0;
-            }
-            return AssetManager.xpTable.get(skill.get("level")+1);
+
+        public int xpForNext(int level) {
+            return AssetManager.xpTable.get(Math.max(1, Math.min(level+1, 99)));
         }
+
         public int xpUntilNext(String key) {
-            HashMap<String, Integer> skill = skills.get(key);
+            HashMap<String, Integer> skill = skills.getOrDefault(key, new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0)));
             if(skill.get("level") == 99) {
                 return 0;
             }
