@@ -1,16 +1,16 @@
 package com.basketbandit.rseye.scheduler.tasks;
 
 
-import com.basketbandit.rseye.Application;
-import com.basketbandit.rseye.socket.UpdateType;
+import com.basketbandit.rseye.DataManager;
 import com.basketbandit.rseye.scheduler.Task;
 import com.basketbandit.rseye.socket.MapSocketHandler;
+import com.basketbandit.rseye.socket.UpdateType;
 
 public class PlayerStateCheckTask implements Task {
     @Override
     public void run() {
         try {
-            Application.players.forEach((_, player) -> {
+            DataManager.players.forEach((_, player) -> {
                 if(player.loginStateChanged()) {
                     MapSocketHandler.broadcastUpdate(UpdateType.LOGIN_UPDATE, player);
                 }

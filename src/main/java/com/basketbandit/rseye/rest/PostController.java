@@ -1,7 +1,6 @@
 package com.basketbandit.rseye.rest;
 
-import com.basketbandit.rseye.Application;
-import com.basketbandit.rseye.AssetManager;
+import com.basketbandit.rseye.DataManager;
 import com.basketbandit.rseye.Utils;
 import com.basketbandit.rseye.entity.Item;
 import com.basketbandit.rseye.entity.Monster;
@@ -54,7 +53,7 @@ public class PostController {
 
             // determine if the player has leveled-up a stat
             if(skillCurrent.get("level") != 0 && skillCurrent.get("level") < skillUpdate.get("level").getAsInt()) {
-                Application.growthFeed.add(new GrowthEvent(player.username(), Utils.toPascal(skillUpdate.get("skill").getAsString()), skillUpdate.get("level").getAsString()));
+                DataManager.growthFeed.add(new GrowthEvent(player.username(), Utils.toPascal(skillUpdate.get("skill").getAsString()), skillUpdate.get("level").getAsString()));
                 MapSocketHandler.broadcastUpdate(UpdateType.SKILL_UPDATE, player);
                 emitSkillData.set(true);
             }
@@ -110,9 +109,9 @@ public class PostController {
         ArrayList<Item> bank = new ArrayList<>();
         inventoryArray.forEach(i -> {
             JsonObject o = i.getAsJsonObject();
-            Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
+            Item item = new Item(DataManager.items.getOrDefault(o.get("id").getAsString(), DataManager.items.get("0")));
             item.setQuantity(item.isPlaceholder() ? 0 : o.get("quantity").getAsInt());
-            if(!item.equals(AssetManager.items.get("0"))) {
+            if(!item.equals(DataManager.items.get("0"))) {
                 bank.add(item);
             }
         });
@@ -128,7 +127,7 @@ public class PostController {
         HashMap<String, Item> equipped = new HashMap<>();
         equippedItemKeySet.forEach(slot -> {
             JsonObject obj = equippedItemObject.get(slot).getAsJsonObject();
-            Item item = new Item(AssetManager.items.getOrDefault(obj.get("id").getAsString(), AssetManager.items.get("0")));
+            Item item = new Item(DataManager.items.getOrDefault(obj.get("id").getAsString(), DataManager.items.get("0")));
             item.setQuantity(obj.get("quantity").getAsInt());
             equipped.put(slot, item);
         });
@@ -143,7 +142,7 @@ public class PostController {
         ArrayList<Item> inventory = new ArrayList<>();
         inventoryArray.forEach(slot -> {
             JsonObject o = slot.getAsJsonObject();
-            Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
+            Item item = new Item(DataManager.items.getOrDefault(o.get("id").getAsString(), DataManager.items.get("0")));
             item.setQuantity(o.get("quantity").getAsInt());
             inventory.add(item);
         });
@@ -158,7 +157,7 @@ public class PostController {
         if(questArray.size() < 3) {
             for(int i = 0; i < questArray.size(); i++) {
                 JsonObject quest = questArray.get(i).getAsJsonObject();
-                Application.questFeed.add(new QuestEvent(player.username(), quest.get("name").getAsString(), quest.get("state").getAsString()));
+                DataManager.questFeed.add(new QuestEvent(player.username(), quest.get("name").getAsString(), quest.get("state").getAsString()));
                 MapSocketHandler.broadcastUpdate(UpdateType.QUEST_UPDATE, player);
             }
         }
@@ -179,7 +178,7 @@ public class PostController {
 
         data.get("items").getAsJsonArray().forEach(slot -> {
             JsonObject o = slot.getAsJsonObject();
-            Item item = new Item(AssetManager.items.getOrDefault(o.get("id").getAsString(), AssetManager.items.get("0")));
+            Item item = new Item(DataManager.items.getOrDefault(o.get("id").getAsString(), DataManager.items.get("0")));
             item.setQuantity(o.get("quantity").getAsInt());
             loot.add(item);
         });
@@ -187,14 +186,14 @@ public class PostController {
         switch(data.get("lootType").getAsString()) {
             case "NPC", "Player" -> {
                 Item weapon = player.equipment().equipped().getOrDefault("WEAPON", null);
-                Monster monster = AssetManager.monsters.getOrDefault(data.get("entityId").getAsString(), AssetManager.monsters.get("0"));
+                Monster monster = DataManager.monsters.getOrDefault(data.get("entityId").getAsString(), DataManager.monsters.get("0"));
                 //player.lootTracker().trackLoot(monster, loot); // update loot trackers
-                Application.globalLootTracker.trackLoot(monster, loot); // update loot trackers
-                Application.combatFeed.add(new CombatEvent(player.combatInfo(), weapon, monster, loot));
+                DataManager.globalLootTracker.trackLoot(monster, loot); // update loot trackers
+                DataManager.combatFeed.add(new CombatEvent(player.combatInfo(), weapon, monster, loot));
                 MapSocketHandler.broadcastUpdate(UpdateType.COMBAT_LOOT_UPDATE, player);
             }
             case "Barrows", "Theatre of Blood", "Chambers of Xeric", "Tombs of Amascut" -> {
-                Application.raidFeed.add(new RaidEvent(player.combatInfo(), data.get("lootType").getAsString(), loot));
+                DataManager.raidFeed.add(new RaidEvent(player.combatInfo(), data.get("lootType").getAsString(), loot));
                 MapSocketHandler.broadcastUpdate(UpdateType.RAID_LOOT_UPDATE, player);
             }
         }

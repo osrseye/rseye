@@ -1,25 +1,25 @@
 package com.basketbandit.rseye.scheduler.tasks;
 
-import com.basketbandit.rseye.Application;
+import com.basketbandit.rseye.DataManager;
 import com.basketbandit.rseye.scheduler.Task;
 
 public class EventLogClearTask implements Task {
     @Override
     public void run() {
-        if(Application.combatFeed.size() > 10) {
-            Application.combatFeed.removeFirst();
+        if(DataManager.combatFeed.size() > 10) {
+            DataManager.combatFeed.removeFirst();
         }
-        if(Application.raidFeed.size() > 10) {
-            Application.raidFeed.removeFirst();
+        if(DataManager.raidFeed.size() > 10) {
+            DataManager.raidFeed.removeFirst();
         }
-        if(Application.questFeed.size() > 10) {
-            Application.questFeed.removeFirst();
+        if(DataManager.questFeed.size() > 10) {
+            DataManager.questFeed.removeFirst();
         }
-        if(Application.growthFeed.size() > 10) {
-            Application.growthFeed.removeFirst();
+        if(DataManager.growthFeed.size() > 10) {
+            DataManager.growthFeed.removeFirst();
         }
-        if(Application.deathFeed.size() > 10) {
-            Application.deathFeed.removeFirst();
+        if(DataManager.deathFeed.size() > 10) {
+            DataManager.deathFeed.removeFirst();
         }
     }
 }

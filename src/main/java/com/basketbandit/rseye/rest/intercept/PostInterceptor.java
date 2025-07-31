@@ -1,7 +1,6 @@
 package com.basketbandit.rseye.rest.intercept;
 
-import com.basketbandit.rseye.Application;
-import com.basketbandit.rseye.AssetManager;
+import com.basketbandit.rseye.DataManager;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.socket.MapSocketHandler;
 import com.basketbandit.rseye.socket.UpdateType;
@@ -22,7 +21,7 @@ public class PostInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws IOException {
         // If "Authorization" is null, doesn't start with "Bearer: ", or isn't a valid token.
         if(request.getHeader("Authorization") == null || !request.getHeader("Authorization").startsWith("Bearer: ")
-                || !AssetManager.tokens.contains(request.getHeader("Authorization").substring(8))) {
+                || !DataManager.tokens.contains(request.getHeader("Authorization").substring(8))) {
             return false;
         }
 
@@ -34,10 +33,10 @@ public class PostInterceptor implements HandlerInterceptor {
         }
 
         String username = object.get("username").getAsString();
-        Player player = Application.players.getOrDefault(username, new Player());
+        Player player = DataManager.players.getOrDefault(username, new Player());
         if(!username.equals(player.username().natural())) {
             player.setUsername(new Player.Username(username));
-            Application.players.put(username, player);
+            DataManager.players.put(username, player);
             MapSocketHandler.broadcastUpdate(UpdateType.NEW_PLAYER, player);
         }
 

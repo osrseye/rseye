@@ -1,6 +1,6 @@
 package com.basketbandit.rseye.socket;
 
-import com.basketbandit.rseye.Application;
+import com.basketbandit.rseye.DataManager;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.event.Event;
 import com.google.gson.Gson;
@@ -69,8 +69,8 @@ public class MapSocketHandler extends TextWebSocketHandler {
 
             if(message.getPayload().equals("fetch")) {
                 HashMap<String, Player.BasicInfo> hashMap = new HashMap<>();
-                Application.players.keySet().forEach(username -> {
-                    Player player = Application.players.get(username);
+                DataManager.players.keySet().forEach(username -> {
+                    Player player = DataManager.players.get(username);
                     hashMap.put(username, player.basicInfo());
                 });
                 session.sendMessage(new TextMessage("fetch:" + gson.toJson(hashMap)));

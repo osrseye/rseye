@@ -1,6 +1,6 @@
 package com.basketbandit.rseye.entity;
 
-import com.basketbandit.rseye.AssetManager;
+import com.basketbandit.rseye.DataManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,14 +60,13 @@ public class Player {
         }
 
         public int xpForNext(int level) {
-            return level == 99 ? 0 : AssetManager.xpTable.get(level+1);
+            return level == 99 ? 0 : DataManager.xpTable.get(level+1);
         }
 
         public int xpUntilNext(int level, int currentXp) {
-            return level == 99 ? 0 : AssetManager.xpTable.get(level+1) - currentXp;
+            return level == 99 ? 0 : DataManager.xpTable.get(level+1) - currentXp;
         }
     }
-
     public record Quests(Integer questPoints, HashMap<Integer, Quest> quests) {
         public Quests() {
             this(0, new HashMap<>());
