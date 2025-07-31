@@ -133,7 +133,7 @@ $('.loot-tracker-ui').click(function() {
     $('.sub-content').addClass("visible");
 });
 
-$('.loot-tracker-exit-ui').click(function() {
+$(document).on('click','#loot-tracker-exit-ui',function() {
     $('.sub-content').removeClass("visible");
 });
 

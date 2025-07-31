@@ -18,6 +18,12 @@
                 <div class="loot-tracker-ui btn btn-success">Global Loot Tracker</div>
             </div>
 
+            <div class="sub-content">
+                <div id="global-loot-tracker">
+                    <fragment th:replace="~{./global/loot-tracker}"></fragment>
+                </div>
+            </div>
+
             <div class="update-feed"></div>
 
             <div id="map-player-status">
@@ -52,13 +58,6 @@
                 <div id="bank-button" class="btn ui-button" aria-container=".bank-container">
                     <img src="/data/icons/bank_icon.webp"/>
                 </div>
-            </div>
-        </div>
-
-
-        <div class="sub-content">
-            <div id="global-loot-tracker">
-                <fragment th:replace="~{./global/loot-tracker}"></fragment>
             </div>
         </div>
     </div>
