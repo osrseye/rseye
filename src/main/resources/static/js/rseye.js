@@ -128,6 +128,15 @@ $('.ui-button').click(function() {
     container.is(':hidden') ? $(this).removeClass("container-visible") : $(this).addClass("container-visible");
 });
 
+// loot tracker visibility
+$('.loot-tracker-ui').click(function() {
+    $('.sub-content').addClass("visible");
+});
+
+$('.loot-tracker-exit-ui').click(function() {
+    $('.sub-content').removeClass("visible");
+});
+
 function clearFeed() {
     if($('.feed-item').length > 5) {
         $('.update-feed').find(".feed-item:last").fadeOut("slow", function() {

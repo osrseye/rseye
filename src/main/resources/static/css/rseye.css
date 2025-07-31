@@ -56,30 +56,20 @@ canvas {
     display: none;
 }
 
-.sub-content {
-    display: flex;
+#hidden-data {
+    display: none;
 }
 
-.content-header {
+.map-ui {
     width: 100%;
-    padding: 10px;
-    background-color: rgba(0,0,0,0.8);
-    color: white;
+    position: absolute;
+    top: 5px;
+    z-index: 1000;
     text-align: center;
 }
 
-#global-loot-tracker {
-    width: 100%;
-    min-height: 99vh;
-    max-height: 99vh;
-    display: inline-flex;
-    flex-direction: column;
-    padding-right: 0px;
-    box-sizing: content-box;
-}
-
-#hidden-data {
-    display: none;
+.loot-tracker-exit-ui {
+    margin-left: 10px;
 }
 
 /* MAP */
@@ -119,11 +109,13 @@ canvas {
 #map-player-status {
     position: absolute;
     width: 300px;
+    height: 700px;
     top: 10px;
     right: 0px;
     padding: 10px;
     padding-right: 0px;
     color: #ffffff;
+    overflow: overlay;
 }
 
 .map-player-status-player {

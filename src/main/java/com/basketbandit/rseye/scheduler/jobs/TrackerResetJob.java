@@ -9,7 +9,6 @@ import java.util.concurrent.TimeUnit;
 public class TrackerResetJob extends Job {
     private final LootTrackerResetTask lootTrackerResetTask;
 
-
     public TrackerResetJob(LootTrackerResetTask lootTrackerResetTask) {
         super(Utils.minutesUntilMidnight(), 1440, TimeUnit.MINUTES);
         this.lootTrackerResetTask = lootTrackerResetTask;
