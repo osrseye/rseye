@@ -4,6 +4,7 @@
         <div class="monster-header">
             <span th:text="${record.monster.name}"></span>
             <span class="monster-header-kills" th:text="${' x ' + record.kills}"></span>
+            <span th:if="${record.lootHighAlchValue > 0}" class="monster-header-ha muted" th:text="${'HA: ' + record.lootHighAlchValueFormatted}"></span>
         </div>
         <div class="monster-loot">
             <div class="monster-loot-item" th:if="${!record.loot.isEmpty}" th:each="item: ${record.loot.values}">

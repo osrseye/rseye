@@ -1,5 +1,7 @@
 package com.basketbandit.rseye.entity;
 
+import com.basketbandit.rseye.Utils;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,10 +24,11 @@ public class LootTracker {
         return !records.isEmpty();
     }
 
-    public class Record {
+    public static class Record {
         private final Monster monster;
         private int kills = 0;
         private final HashMap<String, Item> loot = new HashMap<>();
+        private int lootHighAlchValue = 0;
 
         public Record(Monster monster) {
             this.monster = monster;
@@ -37,6 +40,14 @@ public class LootTracker {
 
         public int kills() {
             return kills;
+        }
+
+        public int lootHighAlchValue() {
+            return lootHighAlchValue;
+        }
+
+        public String lootHighAlchValueFormatted() {
+            return Utils.formatNumber(lootHighAlchValue);
         }
 
         public HashMap<String, Item> loot() {
@@ -53,6 +64,7 @@ public class LootTracker {
                 } else {
                     this.loot.put(item.name(), item);
                 }
+                lootHighAlchValue += (item.highAlchValue() * item.quantity());
             });
         }
     }

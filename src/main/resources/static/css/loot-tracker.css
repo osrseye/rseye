@@ -71,6 +71,10 @@
     color: #aaaaaa;
 }
 
+.monster-header-ha {
+    display: block;
+}
+
 .monster-loot {
     position: relative;
     display: flex;
