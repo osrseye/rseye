@@ -4,7 +4,7 @@
         <span class="feed-player" th:text="${raid.player.username.natural + ' (level-' + raid.player.combatLevel + ')'}"></span>
     </div>
 
-    <span class="combat-feed-title">Loot</span>
+    <span class="combat-feed-title">Loot <span th:if="${raid.lootHighAlchValue() != '0'}" class="muted" th:text="${'HA: ' + raid.lootHighAlchValue()}"></span></span>
     <span th:if="${raid.loot.size > 0}" class="combat-loot">
         <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" data-container=".feed-item" th:title="${item.name}" th:each="item: ${raid.loot}">
             <div class="loot-item">

@@ -11,7 +11,7 @@
         <span th:style="|color: ${combat.combatLevelDifferenceTextColour()}|" th:text="${' (level-' + combat.monster.combatLevel + ')'}"></span>
     </div>
 
-    <span class="combat-feed-title">Loot</span>
+    <span class="combat-feed-title">Loot <span th:if="${combat.lootHighAlchValue() != '0'}" class="muted" th:text="${'HA: ' + combat.lootHighAlchValue()}"></span></span>
     <span th:if="${combat.loot.size > 0}" class="combat-loot">
         <a th:if="${item.quantity} != 0" th:href="@{https://oldschool.runescape.wiki/w/__${item.nameEncoded}__}" target="_blank" data-toggle="tooltip" data-placement="top" data-container=".feed-item" th:title="${item.name}" th:each="item: ${combat.loot}">
             <div class="loot-item">

@@ -1,5 +1,6 @@
 package com.basketbandit.rseye.entity.event;
 
+import com.basketbandit.rseye.Utils;
 import com.basketbandit.rseye.entity.Item;
 import com.basketbandit.rseye.entity.Monster;
 import com.basketbandit.rseye.entity.Player;
@@ -19,5 +20,13 @@ public record CombatEvent(Player.CombatInfo player, Item weapon, Monster monster
                combatLevelDifference() == 0 ? "#ffff00" :
                combatLevelDifference() > -4 ? "#c0ff00" :
                combatLevelDifference() > -7 ? "#40ff00" : "#00ff00";
+    }
+
+    public String lootHighAlchValue() {
+        int value = 0;
+        for(Item item: loot) {
+            value += (item.highAlchValue() * item.quantity());
+        }
+        return Utils.formatNumber(value);
     }
 }

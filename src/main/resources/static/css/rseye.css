@@ -309,6 +309,11 @@ canvas {
     color: #32cd32!important;
 }
 
+.muted {
+    font-size: .750em;
+    color: rgba(255, 255, 255, 0.5);
+}
+
 /* PLAYER */
 
 .player-data {
