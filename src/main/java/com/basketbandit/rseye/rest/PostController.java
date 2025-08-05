@@ -7,6 +7,7 @@ import com.basketbandit.rseye.entity.Monster;
 import com.basketbandit.rseye.entity.Player;
 import com.basketbandit.rseye.entity.Quest;
 import com.basketbandit.rseye.entity.event.*;
+import com.basketbandit.rseye.entity.player.*;
 import com.basketbandit.rseye.socket.MapSocketHandler;
 import com.basketbandit.rseye.socket.UpdateType;
 import com.google.gson.JsonArray;
@@ -89,7 +90,7 @@ public class PostController {
             totalLevel += skill.get("level");
         }
 
-        player.setSkills(new Player.Skills(totalLevel, data.get("combatLevel").getAsInt(), skills));
+        player.setSkills(new Skills(totalLevel, data.get("combatLevel").getAsInt(), skills));
 
         // submit exp update
         if(!diff.isEmpty()) {
@@ -116,7 +117,7 @@ public class PostController {
             }
         });
 
-        player.setBank(new Player.Bank(value, bank));
+        player.setBank(new Bank(value, bank));
         MapSocketHandler.broadcastUpdate(UpdateType.BANK_UPDATE, player);
     }
 
@@ -132,7 +133,7 @@ public class PostController {
             equipped.put(slot, item);
         });
 
-        player.setEquipment(new Player.Equipment(equipped));
+        player.setEquipment(new Equipment(equipped));
         MapSocketHandler.broadcastUpdate(UpdateType.EQUIPMENT_UPDATE, player);
     }
 
@@ -147,7 +148,7 @@ public class PostController {
             inventory.add(item);
         });
 
-        player.setInventory(new Player.Inventory(inventory));
+        player.setInventory(new Inventory(inventory));
         MapSocketHandler.broadcastUpdate(UpdateType.INVENTORY_UPDATE, player);
     }
 
@@ -168,7 +169,7 @@ public class PostController {
             quests.put(quest.get("id").getAsInt(), new Quest(quest.get("id").getAsInt(), quest.get("name").getAsString(), quest.get("state").getAsString()));
         });
 
-        player.setQuests(new Player.Quests(data.get("questPoints").getAsInt(), quests));
+        player.setQuests(new Quests(data.get("questPoints").getAsInt(), quests));
         MapSocketHandler.broadcastUpdate(UpdateType.QUEST_DATA, player);
     }
 
@@ -202,14 +203,14 @@ public class PostController {
     @PostMapping("/api/v1/overhead_update/")
     public void overheadUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         String overhead = data.has("overhead") ? data.get("overhead").getAsString() : "null";
-        player.setOverhead(new Player.Overhead(overhead));
+        player.setOverhead(new Overhead(overhead));
         MapSocketHandler.broadcastUpdate(UpdateType.OVERHEAD_UPDATE, new OverheadEvent(player.username(), player.overhead().overhead()));
     }
 
     @PostMapping("/api/v1/skull_update/")
     public void skullUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
         String skull = data.has("skull") ? data.get("skull").getAsString() : "null";
-        player.setSkull(new Player.Skull(skull));
+        player.setSkull(new Skull(skull));
         MapSocketHandler.broadcastUpdate(UpdateType.SKULL_UPDATE, new SkullEvent(player.username(), player.skull().skull()));
     }
 

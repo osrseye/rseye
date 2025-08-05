@@ -2,6 +2,7 @@ package com.basketbandit.rseye.rest.intercept;
 
 import com.basketbandit.rseye.DataManager;
 import com.basketbandit.rseye.entity.Player;
+import com.basketbandit.rseye.entity.player.Username;
 import com.basketbandit.rseye.socket.MapSocketHandler;
 import com.basketbandit.rseye.socket.UpdateType;
 import com.google.gson.JsonObject;
@@ -35,7 +36,7 @@ public class PostInterceptor implements HandlerInterceptor {
         String username = object.get("username").getAsString();
         Player player = DataManager.players.getOrDefault(username, new Player());
         if(!username.equals(player.username().natural())) {
-            player.setUsername(new Player.Username(username));
+            player.setUsername(new Username(username));
             DataManager.players.put(username, player);
             MapSocketHandler.broadcastUpdate(UpdateType.NEW_PLAYER, player);
         }

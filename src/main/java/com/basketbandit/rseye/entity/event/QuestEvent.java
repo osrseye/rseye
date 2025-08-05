@@ -1,6 +1,6 @@
 package com.basketbandit.rseye.entity.event;
 
-import com.basketbandit.rseye.entity.Player;
+import com.basketbandit.rseye.entity.player.Username;
 
-public record QuestEvent(Player.Username username, String quest, String state) implements Event  {
+public record QuestEvent(Username username, String quest, String state) implements Event  {
 }
