@@ -1,8 +1,8 @@
 <div class="skills-container" xmlns:th="http://www.w3.org/1999/xhtml">
-    <img width="204px" height="275px" src="/data/ui/skills_tab.webp">
+    <img width="204px" height="275px" src="/data/ui/skills_tab.webp" alt="skill_tab">
     <table th:if="${!skills.skills.isEmpty}" class="skill-table">
         <tr>
-            <td class="skill-td"data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('ATTACK')}">
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('ATTACK')}">
                 <span th:text="${skills.skills.ATTACK.level}"></span>
                 <div class="progress skill-progress">
                     <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('ATTACK')} + '%'" th:aria-valuenow="${skills.skills.ATTACK.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.ATTACK.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.ATTACK.level)}"></div>

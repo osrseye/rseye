@@ -130,7 +130,6 @@ public class Player {
     }
 
     /**********/
-    /**********/
 
     public record BasicInfo(Username username, Position position){}
     public BasicInfo basicInfo() {
