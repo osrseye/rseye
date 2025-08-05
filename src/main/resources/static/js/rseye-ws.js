@@ -61,7 +61,8 @@ function connect() {
         // load each player
         $.each(JSON.parse(payload), function(username, player) {
             $.get("/player/"+player.username.natural, function(data) {
-                $(".players").append(data); // hidden data
+                $("#player-data").append(data); // hidden data
+                $("#"+player.username.encoded+"-container").hide();
                 $("#"+player.username.encoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
 
                 // add to world map
@@ -81,7 +82,8 @@ function connect() {
     function newPlayer(payload) {
         const player = JSON.parse(payload);
         $.get("/player/"+player.username.natural, function(data) {
-            $(".players").append(data); // hidden data
+            $("#player-data").append(data); // hidden data
+            $("#"+player.username.encoded+"-container").hide();
             $("#"+player.username.encoded).detach().appendTo(data.includes("LOGGED_IN") ? ".map-player-online" : ".map-player-offline");
             $("#"+player.username.encoded+"-position").detach().appendTo('#canvas-container');
 
@@ -205,6 +207,7 @@ function connect() {
         const player = JSON.parse(payload);
         $.get("/player/"+player.username.natural+"/status", function(data) {
             $("#"+player.username.encoded).find(".status").html(data);
+            $("#"+player.username.encoded+"-container").find(".status").html(data);
         });
     }
 
@@ -263,6 +266,7 @@ function connect() {
 function send(data) {
     if(ws.readyState == 1) {
         ws.send(data);
+        return;
     }
     if(ws.readyState == 0) {
         setTimeout(() => {
