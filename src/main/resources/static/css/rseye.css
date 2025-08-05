@@ -500,6 +500,7 @@ ul.bank-ul {
     color: #ffff00;
     font-size: 12px;
     text-shadow: 1px 1px 2px #000;
+    z-index: 100;
 }
 
 /* INVENTORY */
