@@ -1,11 +1,3 @@
-#player-container {
-    display: inline-flex;
-    flex-direction: column;
-    width: -webkit-fill-available;
-    margin: 5px;
-    min-height: 99vh;
-}
-
 .players {
     background-color: #888888;
     display: flex;
@@ -16,6 +8,40 @@
     border-bottom-left-radius: 5px;
     overflow-y: auto;
     overflow-x: hidden;
+}
+
+#player-container {
+    display: inline-flex;
+    flex-direction: column;
+    width: -webkit-fill-available;
+    margin: 5px;
+    min-height: 99vh;
+}
+
+.left-pillar {
+    position: absolute;
+    top: 5px;
+    left: -18px;
+    height: 270px;
+    z-index: 10001;
+}
+
+.right-pillar {
+    position: absolute;
+    top: 5px;
+    left: 194px;
+    height: 270px;
+    z-index: 10001;
+}
+
+.player-equipment, .player-inventory, .player-skills, .player-quests, .player-bank {
+    position: absolute;
+    z-index: 10000;
+}
+
+.player-bank {
+    bottom: -275px;
+    right: 28px;
 }
 
 .player {
@@ -87,10 +113,12 @@
 
 .hitpoints-container {
     left: -30px;
+    z-index: 10001;
 }
 
 .prayer-container {
     left: -30px;
+    z-index: 100001;
 }
 
 .hitpoints-container .progress, .prayer-container .progress {
@@ -109,6 +137,72 @@
     margin-left: 10px;
 }
 
+/* 90 degree rotated status */
+
+#player-data .hitpoints-container, #player-data .prayer-container {
+    position: absolute;
+    width: 258px;
+    top: 127px;
+    -webkit-transform: rotate(-90deg); /* Chrome, Safari, Opera */
+    transform: rotate(-90deg);
+    z-index: 100001;
+}
+
+#player-data .hitpoints-container span, #player-data .hitpoints-container img, #player-data .prayer-container span, #player-data .prayer-container img {
+    -webkit-transform: rotate(90deg); /* Chrome, Safari, Opera */
+    transform: rotate(90deg);
+}
+
+#player-data .hitpoints-container .progress, #player-data .prayer-container .progress {
+    height: 18px!important;
+    border-radius: 0px!important;
+}
+
+#player-data .hitpoints-icon, #player-data .prayer-icon {
+    top: 1px!important;
+}
+
+#player-data .bg-danger, #player-data .bg-info {
+    --bs-bg-opacity:0.6;
+}
+
+#player-data .hitpoints-container .progress {
+    background-color: #dc354522;
+}
+
+#player-data .prayer-container .progress {
+    background-color: #0dcaf022;
+}
+
+#player-data .current-hitpoints {
+    position: absolute;
+    width: 20px;
+    left: 215px;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+    top: -4px;
+}
+
+#player-data .current-prayer {
+    position: absolute;
+    width: 20px;
+    left: 215px;
+    text-align: center;
+    padding: 0px;
+    margin: 0px;
+    top: -4px;
+}
+
+#player-data .prayer-container {
+    left: 82px;
+}
+
+#player-data .hitpoints-container {
+    left: -130px;
+}
+
+/* */
 
 .player-mini-username {
     position: absolute;
@@ -182,53 +276,4 @@
 
 .MELEE, .RANGED, .MAGIC, .REDEMPTION, .RETRIBUTION, .SMITE, .SKULL {
     display: none;
-}
-
-/* Style tab links */
-.player-tabs {
-    z-index: 1100;
-    position: absolute;
-    bottom: 2px;
-    right: 2px;
-}
-
-.player-tabs button {
-    width: 36px;
-    height: 36px;
-}
-
-.tablink {
-    background-color: #555;
-    color: white;
-    float: left;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    padding: 5px 5px;
-}
-
-.tablink:hover {
-  background-color: #777;
-}
-
-.tabcontent {
-    position: absolute;
-    color: white;
-    width: 100%;
-    height: 100%;
-    z-index: 1000;
-    background: rgba(0,0,0,0.7);
-    justify-content: center;
-    align-items: center;
-    display: none;
-}
-
-.lefttab {
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 5px;
-}
-
-.righttab {
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
 }

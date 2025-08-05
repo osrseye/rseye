@@ -39,9 +39,10 @@ mapController.addEventListener('mousemove', (e) => {
         if(followedPlayer != null) {
             followedPlayer = null;
             $('#followed-player').html("<span class='title-text'>NOT FOLLOWING</span>");
-            $('#followed-player-ui').addClass("ui-disabled");
-            $('#followed-player-data').html("");
-            $('#followed-player-ui > .container-visible').removeClass("container-visible");
+            $('#followed-player-ui').addClass("hidden");
+            $('#player-data').find("[class^=player]").addClass("hidden");
+            $('#player-data').find("[class=status]").addClass("hidden");
+            $('.pillars').addClass("hidden");
         }
     }
 });
@@ -96,26 +97,26 @@ function updatePlayerContainer(container, player, data) {
     }
 }
 
-$(document).on('click','[class~=locator]',function() {
-    followedPlayer = $(this);
+$(document).on('click','[class~=locator]', function() {
     $('#followed-player').html("<span class='title-text'>FOLLOWING</span><br><span class='feed-player'>" + $(this).attr("aria-username") + "</span>");
 
+    followedPlayer = $(this);
+
+    $('.player-div').hide();
+
     // followed player
-    const playerDiv = $('#'+$(this).attr("aria-username-sane") + "-container");
+    $('#'+followedPlayer.attr("aria-username-sane") + "-container").toggle();
+
     $('#inventory-button').addClass("container-visible");
     $('#equipment-button, #skills-button, #quests-button, #bank-button').removeClass("container-visible");
-    $('#followed-player-ui').removeClass("ui-disabled");
-    $('#followed-player-data').html("<div id='followed-player-" + $(this).attr("aria-username-sane") + "'></div>");
-    const followDiv = $('#followed-player-' + $(this).attr("aria-username-sane"));
-    followDiv.append(playerDiv.find(".equipment-container").clone(true).toggle());
-    followDiv.append(playerDiv.find(".inventory-container").clone(true));
-    followDiv.append(playerDiv.find(".skills-container").clone(true).toggle());
-    followDiv.append(playerDiv.find(".quests-container").clone(true).toggle());
-    followDiv.append(playerDiv.find(".bank-container").clone(true).toggle());
-    followDiv.find(".bank-container").find(":input").val("").trigger("input"); // stops search input being cloned and resets any toggles
+    $('#followed-player-ui').removeClass("hidden");
+    $('.pillars').removeClass("hidden");
+    $('#player-data').find(".status").removeClass("hidden");
+    $('#player-data').find("[class^=player]").addClass("hidden");
+    $('#'+followedPlayer.attr("aria-username-sane") + "-container").find(".player-inventory").removeClass("hidden");
 
     // pan map to followed player
-    let player = $('#'+$(this).attr("aria-username-sane"));
+    let player = $('#'+followedPlayer.attr("aria-username-sane"));
     worldMap.panTo(player.attr("aria-x"), player.attr("aria-y"), player.attr("aria-plane"));
 });
 
@@ -124,8 +125,21 @@ $('.ui-button').click(function() {
     if(followedPlayer == null) {
         return;
     }
-    const container = $('#followed-player-data').find($(this).attr("aria-container")).toggle();
-    container.is(':hidden') ? $(this).removeClass("container-visible") : $(this).addClass("container-visible");
+
+    // deal with bank ui / container individually
+    if($(this).attr("aria-container") === ".player-bank") {
+        $(this).toggleClass("container-visible");
+        $('#player-data').find($(this).attr("aria-container")).toggleClass("hidden");
+        return;
+    }
+
+    // deal with non-bank ui buttons
+    $('#followed-player-ui').find("[class$=container-visible]").not("[id=bank-button]").removeClass("container-visible");
+    $(this).addClass("container-visible");
+
+    // deal with non-bank player containers
+    $('#player-data').find("[class^=player]").not("[class=player-bank]").addClass("hidden");
+    $('#player-data').find($(this).attr("aria-container")).removeClass("hidden");
 });
 
 // loot tracker visibility
@@ -144,29 +158,4 @@ function clearFeed() {
             clearFeed(); // calls function recursively AFTER the element has been removed
         });
     }
-}
-
-////////////////////////////////////////////////////////////////////
-
-function openPage(pageName, button) {
-    // Hide all elements with class="tabcontent" by default */
-    var tabcontent = document.getElementsByClassName("tabcontent");
-    for(var i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-
-    // Remove the background color of all tablinks/buttons
-    var tablinks = document.getElementsByClassName("tablink");
-    for(var i = 0; i < tablinks.length; i++) {
-        tablinks[i].style.backgroundColor = "";
-    }
-
-    // Show the specific tab content
-    var tabsToDisplay = document.getElementsByClassName(pageName);
-    for(var i = 0; i < tabsToDisplay.length; i++) {
-        tabsToDisplay[i].style.display = "flex";
-    }
-
-    // Add the specific color to the button used to open the tab content
-    button.style.backgroundColor = '#222222';
 }

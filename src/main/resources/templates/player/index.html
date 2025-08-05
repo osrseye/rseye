@@ -1,23 +1,27 @@
-<div th:id="${username.encoded + '-container'}">
-    <div class="player-container">
-        <div class="player-equipment">
-            <fragment th:replace="~{./player/equipment}"></fragment>
-        </div>
-        <div class="player-inventory">
-            <fragment th:replace="~{./player/inventory}"></fragment>
-        </div>
-        <div class="player-skills">
-            <fragment th:replace="~{./player/skills}"></fragment>
-        </div>
-        <div class="player-quests">
-            <fragment th:replace="~{./player/quests}"></fragment>
-        </div>
-        <div class="player-bank">
-            <fragment th:replace="~{./player/bank}"></fragment>
-        </div>
+<div th:id="${username.encoded + '-container'}" class="fixed player-div">
+
+    <img class="left-pillar pillars" src="/data/ui/left_pillar.png" alt="">
+    <img class="right-pillar pillars" src="/data/ui/right_pillar.png" alt="">
+
+    <div class="status">
+        <fragment th:replace="~{./player/status}"></fragment>
     </div>
 
-    <div style="display: none">
-        <fragment th:replace="~{./player/map-display}"></fragment>
+    <div class="player-equipment hidden">
+        <fragment th:replace="~{./player/equipment}"></fragment>
     </div>
+    <div class="player-inventory">
+        <fragment th:replace="~{./player/inventory}"></fragment>
+    </div>
+    <div class="player-skills hidden">
+        <fragment th:replace="~{./player/skills}"></fragment>
+    </div>
+    <div class="player-quests hidden">
+        <fragment th:replace="~{./player/quests}"></fragment>
+    </div>
+    <div class="player-bank hidden">
+        <fragment th:replace="~{./player/bank}"></fragment>
+    </div>
+
+    <fragment th:replace="~{./player/map-display}"></fragment>
 </div>
