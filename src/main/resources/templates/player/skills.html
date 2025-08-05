@@ -2,43 +2,158 @@
     <img width="204px" height="275px" src="/data/ui/skills_tab.webp">
     <table th:if="${!skills.skills.isEmpty}" class="skill-table">
         <tr>
-            <td class="skill-td" th:text="${skills.skills.ATTACK.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('ATTACK')}"></td>
-            <td class="skill-td" th:text="${skills.skills.HITPOINTS.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('HITPOINTS')}"></td>
-            <td class="skill-td" th:text="${skills.skills.MINING.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('MINING')}"></td>
+            <td class="skill-td"data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('ATTACK')}">
+                <span th:text="${skills.skills.ATTACK.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('ATTACK')} + '%'" th:aria-valuenow="${skills.skills.ATTACK.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.ATTACK.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.ATTACK.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('HITPOINTS')}">
+                <span th:text="${skills.skills.HITPOINTS.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('HITPOINTS')} + '%'" th:aria-valuenow="${skills.skills.HITPOINTS.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.HITPOINTS.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.HITPOINTS.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('MINING')}">
+                <span th:text="${skills.skills.MINING.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('MINING')} + '%'" th:aria-valuenow="${skills.skills.MINING.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.MINING.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.MINING.level)}"></div>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.STRENGTH.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('STRENGTH')}"></td>
-            <td class="skill-td" th:text="${skills.skills.AGILITY.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('AGILITY')}"></td>
-            <td class="skill-td" th:text="${skills.skills.SMITHING.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('SMITHING')}"></td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('STRENGTH')}">
+                <span th:text="${skills.skills.STRENGTH.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('STRENGTH')} + '%'" th:aria-valuenow="${skills.skills.STRENGTH.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.STRENGTH.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.STRENGTH.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('AGILITY')}">
+                <span th:text="${skills.skills.AGILITY.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('AGILITY')} + '%'" th:aria-valuenow="${skills.skills.AGILITY.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.AGILITY.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.AGILITY.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('SMITHING')}">
+                <span th:text="${skills.skills.SMITHING.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('SMITHING')} + '%'" th:aria-valuenow="${skills.skills.SMITHING.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.SMITHING.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.SMITHING.level)}"></div>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.DEFENCE.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('DEFENCE')}"></td>
-            <td class="skill-td" th:text="${skills.skills.HERBLORE.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('HERBLORE')}"></td>
-            <td class="skill-td" th:text="${skills.skills.FISHING.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('FISHING')}"></td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('DEFENCE')}">
+                <span th:text="${skills.skills.DEFENCE.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('DEFENCE')} + '%'" th:aria-valuenow="${skills.skills.DEFENCE.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.DEFENCE.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.DEFENCE.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('HERBLORE')}">
+                <span th:text="${skills.skills.HERBLORE.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('HERBLORE')} + '%'" th:aria-valuenow="${skills.skills.HERBLORE.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.HERBLORE.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.HERBLORE.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('FISHING')}">
+                <span th:text="${skills.skills.FISHING.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('FISHING')} + '%'" th:aria-valuenow="${skills.skills.FISHING.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.FISHING.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.FISHING.level)}"></div>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.RANGED.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('RANGED')}"></td>
-            <td class="skill-td" th:text="${skills.skills.THIEVING.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('THIEVING')}"></td>
-            <td class="skill-td" th:text="${skills.skills.COOKING.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('COOKING')}"></td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('RANGED')}">
+                <span th:text="${skills.skills.RANGED.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('RANGED')} + '%'" th:aria-valuenow="${skills.skills.RANGED.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.RANGED.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.RANGED.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('THIEVING')}">
+                <span th:text="${skills.skills.THIEVING.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('THIEVING')} + '%'" th:aria-valuenow="${skills.skills.THIEVING.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.THIEVING.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.THIEVING.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('COOKING')}">
+                <span th:text="${skills.skills.COOKING.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('COOKING')} + '%'" th:aria-valuenow="${skills.skills.COOKING.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.COOKING.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.COOKING.level)}"></div>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.PRAYER.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('PRAYER')}"></td>
-            <td class="skill-td" th:text="${skills.skills.CRAFTING.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('CRAFTING')}"></td>
-            <td class="skill-td" th:text="${skills.skills.FIREMAKING.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('FIREMAKING')}"></td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('PRAYER')}">
+                <span th:text="${skills.skills.PRAYER.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('PRAYER')} + '%'" th:aria-valuenow="${skills.skills.PRAYER.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.PRAYER.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.PRAYER.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('CRAFTING')}">
+                <span th:text="${skills.skills.CRAFTING.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('CRAFTING')} + '%'" th:aria-valuenow="${skills.skills.CRAFTING.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.CRAFTING.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.CRAFTING.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('FIREMAKING')}">
+                <span th:text="${skills.skills.FIREMAKING.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('FIREMAKING')} + '%'" th:aria-valuenow="${skills.skills.FIREMAKING.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.FIREMAKING.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.FIREMAKING.level)}"></div>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.MAGIC.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('MAGIC')}"></td>
-            <td class="skill-td" th:text="${skills.skills.FLETCHING.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('FLETCHING')}"></td>
-            <td class="skill-td" th:text="${skills.skills.WOODCUTTING.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('WOODCUTTING')}"></td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('MAGIC')}">
+                <span th:text="${skills.skills.MAGIC.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('MAGIC')} + '%'" th:aria-valuenow="${skills.skills.MAGIC.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.MAGIC.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.MAGIC.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('FLETCHING')}">
+                <span th:text="${skills.skills.FLETCHING.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('FLETCHING')} + '%'" th:aria-valuenow="${skills.skills.FLETCHING.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.FLETCHING.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.FLETCHING.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('WOODCUTTING')}">
+                <span th:text="${skills.skills.WOODCUTTING.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('WOODCUTTING')} + '%'" th:aria-valuenow="${skills.skills.WOODCUTTING.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.WOODCUTTING.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.WOODCUTTING.level)}"></div>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.RUNECRAFT.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('RUNECRAFT')}"></td>
-            <td class="skill-td" th:text="${skills.skills.SLAYER.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('SLAYER')}"></td>
-            <td class="skill-td" th:text="${skills.skills.FARMING.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('FARMING')}"></td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('RUNECRAFT')}">
+                <span th:text="${skills.skills.RUNECRAFT.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('RUNECRAFT')} + '%'" th:aria-valuenow="${skills.skills.RUNECRAFT.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.RUNECRAFT.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.RUNECRAFT.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('SLAYER')}">
+                <span th:text="${skills.skills.SLAYER.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('SLAYER')} + '%'" th:aria-valuenow="${skills.skills.SLAYER.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.SLAYER.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.SLAYER.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('FARMING')}">
+                <span th:text="${skills.skills.FARMING.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('FARMING')} + '%'" th:aria-valuenow="${skills.skills.FARMING.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.FARMING.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.FARMING.level)}"></div>
+                </div>
+            </td>
         </tr>
         <tr>
-            <td class="skill-td" th:text="${skills.skills.CONSTRUCTION.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('CONSTRUCTION')}"></td>
-            <td class="skill-td" th:text="${skills.skills.HUNTER.level}" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('HUNTER')}"></td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('CONSTRUCTION')}">
+                <span th:text="${skills.skills.CONSTRUCTION.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('CONSTRUCTION')} + '%'" th:aria-valuenow="${skills.skills.CONSTRUCTION.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.CONSTRUCTION.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.CONSTRUCTION.level)}"></div>
+                </div>
+            </td>
+            <td class="skill-td" data-bs-toggle="tooltip" data-container=".skill-td" th:title="${skills.summary('HUNTER')}">
+                <span th:text="${skills.skills.HUNTER.level}"></span>
+                <div class="progress skill-progress">
+                    <div class="progress-bar" role="progressbar" th:style="'width: ' + ${skills.percentageThroughLevel('HUNTER')} + '%'" th:aria-valuenow="${skills.skills.HUNTER.xp}" th:aria-valuemin="${skills.xpFor(skills.skills.HUNTER.level)}" th:aria-valuemax="${skills.xpForNext(skills.skills.HUNTER.level)}"></div>
+                </div>
+            </td>
             <td class="skill-td skill-total" th:text="${skills.totalLevel}"></td>
         </tr>
     </table>

@@ -59,12 +59,36 @@ public class Player {
             return "%s XP: %,d\nNext level at: %,d\nRemaining XP: %,d".formatted(skillNameFormatted, currentXp, xpForNext, xpUntilNext);
         }
 
+        public float percentageThroughLevel(String key) {
+            HashMap<String, Integer> skill = skills.getOrDefault(key, new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0)));
+            if(skill.get("xp") == 0) {
+                return 0;
+            }
+            float difference = xpDifferenceBetween(xpFor(skill.get("level")), xpForNext(skill.get("level")));
+            float xpPast = xpPastLevel(skill.get("level"), skill.get("xp"));
+            return (xpPast / difference) * 100;
+        }
+
+        public int xpFor(int level) {
+            return DataManager.xpTable.get(Math.min(99, Math.max(1, level)));
+        }
+
+        public int xpPastLevel(int level, int currentXp) {
+            return currentXp - DataManager.xpTable.get(Math.min(99, Math.max(1, level)));
+        }
+
         public int xpForNext(int level) {
             return level == 99 ? 0 : DataManager.xpTable.get(level+1);
         }
 
         public int xpUntilNext(int level, int currentXp) {
             return level == 99 ? 0 : DataManager.xpTable.get(level+1) - currentXp;
+        }
+
+        public int xpDifferenceBetween(int levelSmall, int levelBig) {
+            levelSmall = Math.min(200000000, Math.max(0, levelSmall));
+            levelBig = Math.min(200000000, Math.max(0, levelBig));
+            return levelBig - levelSmall;
         }
     }
     public record Quests(Integer questPoints, HashMap<Integer, Quest> quests) {
