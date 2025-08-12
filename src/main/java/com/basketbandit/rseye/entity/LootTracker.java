@@ -16,6 +16,12 @@ public class LootTracker {
         this.records.put(monster.name(), record);
     }
 
+    public void trackLoot(Activity activity, ArrayList<Item> loot) {
+        Record record = this.records.getOrDefault(activity.name(), new Record(activity));
+        record.trackLoot(loot);
+        this.records.put(activity.name(), record);
+    }
+
     public Collection<Record> records() {
         return records.values();
     }
@@ -26,16 +32,31 @@ public class LootTracker {
 
     public static class Record {
         private final Monster monster;
+        private final Activity activity;
         private int kills = 0;
         private final HashMap<String, Item> loot = new HashMap<>();
         private int lootHighAlchValue = 0;
 
         public Record(Monster monster) {
             this.monster = monster;
+            this.activity = null;
+        }
+
+        public Record(Activity activity) {
+            this.monster = null;
+            this.activity = null;
         }
 
         public Monster monster() {
             return monster;
+        }
+
+        public Activity activity() {
+            return activity;
+        }
+
+        public String recordType() {
+            return monster == null ? "Activity" : "Monster";
         }
 
         public int kills() {

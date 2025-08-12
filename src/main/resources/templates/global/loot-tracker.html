@@ -2,7 +2,8 @@
 <div class="monster-container">
     <div th:class="monster" th:if="${lootTracker.hasRecord()}" th:each="record: ${lootTracker.records}">
         <div class="monster-header">
-            <span th:text="${record.monster.name}"></span>
+            <span th:if="${record.recordType() == 'Monster'}" th:text="${record.monster.name}"></span>
+            <span th:if="${record.recordType() == 'Activity'}" th:text="${record.activity.name}"></span>
             <span class="monster-header-kills" th:text="${' x ' + record.kills}"></span>
             <span th:if="${record.lootHighAlchValue > 0}" class="monster-header-ha muted" th:text="${'HA: ' + record.lootHighAlchValueFormatted}"></span>
         </div>

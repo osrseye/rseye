@@ -184,7 +184,8 @@ public class PostController {
             loot.add(item);
         });
 
-        switch(data.get("lootType").getAsString()) {
+        String lootType = "";
+        switch(lootType = data.get("lootType").getAsString()) {
             case "NPC", "Player" -> {
                 Item weapon = player.equipment().equipped().getOrDefault("WEAPON", null);
                 Monster monster = DataManager.monsters.getOrDefault(data.get("entityId").getAsString(), DataManager.monsters.get("0"));
@@ -194,7 +195,8 @@ public class PostController {
                 MapSocketHandler.broadcastUpdate(UpdateType.COMBAT_LOOT_UPDATE, player);
             }
             case "Barrows", "Theatre of Blood", "Chambers of Xeric", "Tombs of Amascut" -> {
-                DataManager.raidFeed.add(new RaidEvent(player.combatInfo(), data.get("lootType").getAsString(), loot));
+                DataManager.raidFeed.add(new RaidEvent(player.combatInfo(), lootType, loot));
+                DataManager.globalLootTracker.trackLoot(new Activity(lootType), loot); // update loot trackers
                 MapSocketHandler.broadcastUpdate(UpdateType.RAID_LOOT_UPDATE, player);
             }
         }
