@@ -144,11 +144,20 @@ $('.ui-button').click(function() {
 
 // loot tracker visibility
 $('.loot-tracker-ui').click(function() {
-    $('.sub-content').addClass("visible");
+    $('.global-loot-tracker-container').addClass("visible");
 });
 
 $(document).on('click','#loot-tracker-exit-ui',function() {
-    $('.sub-content').removeClass("visible");
+    $('.global-loot-tracker-container').removeClass("visible");
+});
+
+// xp tracker visibility
+$('.xp-tracker-ui').click(function() {
+    $('.global-xp-tracker-container').addClass("visible");
+});
+
+$(document).on('click','#xp-tracker-exit-ui',function() {
+    $('.global-xp-tracker-container').removeClass("visible");
 });
 
 function clearFeed() {

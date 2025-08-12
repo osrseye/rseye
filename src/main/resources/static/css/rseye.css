@@ -21,8 +21,16 @@ li {
     position: fixed;
 }
 
+.block {
+    display: block;
+}
+
 .hidden {
     display: none!important;
+}
+
+.font16 {
+    font-size: 16pt;
 }
 
 canvas {

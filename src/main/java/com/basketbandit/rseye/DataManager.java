@@ -1,9 +1,6 @@
 package com.basketbandit.rseye;
 
-import com.basketbandit.rseye.entity.Item;
-import com.basketbandit.rseye.entity.LootTracker;
-import com.basketbandit.rseye.entity.Monster;
-import com.basketbandit.rseye.entity.Player;
+import com.basketbandit.rseye.entity.*;
 import com.basketbandit.rseye.entity.event.CombatEvent;
 import com.basketbandit.rseye.entity.event.GrowthEvent;
 import com.basketbandit.rseye.entity.event.QuestEvent;
@@ -48,6 +45,7 @@ public class DataManager {
     public static CopyOnWriteArrayList<GrowthEvent> deathFeed = new CopyOnWriteArrayList<>();
     public static CopyOnWriteArrayList<QuestEvent> questFeed = new CopyOnWriteArrayList<>();
     public static LootTracker globalLootTracker = new LootTracker();
+    public static ExperienceTracker experienceTracker = new ExperienceTracker();
 
     public DataManager() {
         // load items
@@ -142,7 +140,7 @@ public class DataManager {
 
         ScheduleHandler.registerJob(new UpdateJob(new PlayerStateCheckTask(), new EventLogClearTask()));
         ScheduleHandler.registerJob(new PingJob(new PingWebSocketTask()));
-        ScheduleHandler.registerJob(new TrackerResetJob(new LootTrackerResetTask()));
+        ScheduleHandler.registerJob(new TrackerResetJob(new TrackerResetTask()));
         ScheduleHandler.registerJob(new SaveJob(new SavePlayerDataTask()));
     }
 }

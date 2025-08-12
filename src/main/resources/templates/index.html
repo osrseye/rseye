@@ -15,12 +15,23 @@
 
         <div id="map-overlay">
             <div class="map-ui">
-                <div class="loot-tracker-ui btn btn-success">Global Loot Tracker</div>
+                <div class="loot-tracker-ui btn">
+                    <img src="/data/icons/inventory_icon.webp" alt=""/>
+                </div>
+                <div class="xp-tracker-ui btn">
+                    <img src="/data/icons/skills_icon.webp" alt=""/>
+                </div>
             </div>
 
-            <div class="sub-content">
+            <div class="global-loot-tracker-container sub-content">
                 <div id="global-loot-tracker">
                     <fragment th:replace="~{./global/loot-tracker}"></fragment>
+                </div>
+            </div>
+
+            <div class="global-xp-tracker-container sub-content">
+                <div id="global-xp-tracker">
+                    <fragment th:replace="~{./global/xp-tracker}"></fragment>
                 </div>
             </div>
 

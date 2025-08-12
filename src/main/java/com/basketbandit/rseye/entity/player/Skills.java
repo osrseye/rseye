@@ -1,55 +1,59 @@
 package com.basketbandit.rseye.entity.player;
 
 import com.basketbandit.rseye.DataManager;
+import com.basketbandit.rseye.entity.Skill;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public record Skills(Integer totalLevel, Integer combatLevel, HashMap<String, HashMap<String, Integer>> skills) {
+public record Skills(Integer totalLevel, Integer combatLevel, ConcurrentHashMap<String, Skill> skills) {
     public Skills() {
-        this(38, 3, new HashMap<>(Map.ofEntries(
-            Map.entry("ATTACK", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("HITPOINTS", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("MINING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("STRENGTH", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("AGILITY", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("SMITHING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("DEFENCE", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("HERBLORE", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("FISHING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("RANGED", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("THIEVING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("COOKING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("PRAYER", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("CRAFTING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("FIREMAKING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("MAGIC", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("FLETCHING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("WOODCUTTING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("RUNECRAFT", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("SLAYER", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("FARMING", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("CONSTRUCTION", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0))),
-            Map.entry("HUNTER", new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0)))
+        this(38, 3, new ConcurrentHashMap<>(Map.ofEntries(
+            Map.entry("ATTACK", new Skill("Attack", 0, 0, 0)),
+            Map.entry("HITPOINTS", new Skill("Hitpoints", 0, 0, 0)),
+            Map.entry("MINING", new Skill("Mining", 0, 0, 0)),
+            Map.entry("STRENGTH", new Skill("Strength", 0, 0, 0)),
+            Map.entry("AGILITY", new Skill("Agility", 0, 0, 0)),
+            Map.entry("SMITHING", new Skill("Smithing", 0, 0, 0)),
+            Map.entry("DEFENCE", new Skill("Defence", 0, 0, 0)),
+            Map.entry("HERBLORE", new Skill("Herblore", 0, 0, 0)),
+            Map.entry("FISHING", new Skill("Fishing", 0, 0, 0)),
+            Map.entry("RANGED", new Skill("Ranged", 0, 0, 0)),
+            Map.entry("THIEVING", new Skill("Thieving", 0, 0, 0)),
+            Map.entry("COOKING", new Skill("Cooking", 0, 0, 0)),
+            Map.entry("PRAYER", new Skill("Prayer", 0, 0, 0)),
+            Map.entry("CRAFTING", new Skill("Crafting", 0, 0, 0)),
+            Map.entry("FIREMAKING", new Skill("Firemaking", 0, 0, 0)),
+            Map.entry("MAGIC", new Skill("Magic", 0, 0, 0)),
+            Map.entry("FLETCHING", new Skill("Fletching", 0, 0, 0)),
+            Map.entry("WOODCUTTING", new Skill("Woodcutting", 0, 0, 0)),
+            Map.entry("RUNECRAFT", new Skill("Runecraft", 0, 0, 0)),
+            Map.entry("SLAYER", new Skill("Slayer", 0, 0, 0)),
+            Map.entry("FARMING", new Skill("Farming", 0, 0, 0)),
+            Map.entry("CONSTRUCTION", new Skill("Construction", 0, 0, 0)),
+            Map.entry("HUNTER", new Skill("Hunter", 0, 0, 0))
         )));
     }
 
+    public Collection<Skill> skillsAsCollection() {
+        return skills.values();
+    }
+
     public String summary(String key) {
-        HashMap<String, Integer> skill = skills.getOrDefault(key, new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0)));
-        String skillNameFormatted = key.charAt(0) + key.substring(1).toLowerCase();
-        int currentXp = skill.get("xp");
-        int xpForNext = xpForNext(skill.get("level"));
-        int xpUntilNext = xpUntilNext(skill.get("level"), skill.get("xp"));
-        return "%s XP: %,d\nNext level at: %,d\nRemaining XP: %,d".formatted(skillNameFormatted, currentXp, xpForNext, xpUntilNext);
+        Skill skill = skills.getOrDefault(key, new Skill("Missing", 0, 0, 0));
+        int xpForNext = xpForNext(skill.level());
+        int xpUntilNext = xpUntilNext(skill.level(), skill.xp());
+        return "%s XP: %,d\nNext level at: %,d\nRemaining XP: %,d".formatted(skill.name(), skill.xp(), xpForNext, xpUntilNext);
     }
 
     public float percentageThroughLevel(String key) {
-        HashMap<String, Integer> skill = skills.getOrDefault(key, new HashMap<>(Map.of("level", 0, "xp", 0, "boostedLevel", 0)));
-        if(skill.get("xp") == 0) {
+        Skill skill = skills.getOrDefault(key, new Skill("Missing", 0, 0, 0));
+        if(skill.xp() == 0) {
             return 0;
         }
-        float difference = xpDifferenceBetween(xpFor(skill.get("level")), xpForNext(skill.get("level")));
-        float xpPast = xpPastLevel(skill.get("level"), skill.get("xp"));
+        float difference = xpDifferenceBetween(xpFor(skill.level()), xpForNext(skill.level()));
+        float xpPast = xpPastLevel(skill.level(), skill.xp());
         return (xpPast / difference) * 100;
     }
 
@@ -73,5 +77,17 @@ public record Skills(Integer totalLevel, Integer combatLevel, HashMap<String, Ha
         levelSmall = Math.min(200000000, Math.max(0, levelSmall));
         levelBig = Math.min(200000000, Math.max(0, levelBig));
         return levelBig - levelSmall;
+    }
+
+    public int levelAtXp(int xp) {
+        int level = 1;
+        for(Integer key : DataManager.xpTable.keySet()) {
+            if(xp > DataManager.xpTable.get(key)) {
+                level = key;
+                continue;
+            }
+            break;
+        }
+        return level;
     }
 }

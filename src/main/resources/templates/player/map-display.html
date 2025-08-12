@@ -3,7 +3,7 @@
         <div class="player-current-state">
             <span class="player-mini-username" th:text="${username.natural}"></span>
             <div class="player-mini-combat">
-                <div class="combat-level" th:text="${skills.combatLevel}"></div>
+                <fragment th:replace="~{./player/combat}"></fragment>
                 <img class="combat-icon" src="/data/icons/combat_icon.webp" alt="combat_icon"/>
             </div>
             <span th:if="${loginState == 'LOGGED_IN'}" class="badge badge-success player-mini-login">Online</span>

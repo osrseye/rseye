@@ -14,14 +14,18 @@
     text-align: center;
 }
 
-#loot-tracker-exit-ui {
-    margin-left: 10px;
+.loot-tracker-ui, .xp-tracker-ui {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+#loot-tracker-exit-ui, #xp-tracker-exit-ui {
     padding: 0px!important;
     width: 35px;
     height: 25px;
+    float: right;
 }
 
-#global-loot-tracker {
+#global-loot-tracker, #global-xp-tracker {
     width: 100%;
     height: 100vh;
     display: inline-flex;
@@ -30,9 +34,14 @@
     box-sizing: content-box;
 }
 
-.monster-container {
+.experience-container, .monster-container {
+    height: 100vh;
     padding: 5px;
     background-color: #222222CC;
+    text-align: center;
+}
+
+.monster-container {
     align-items: baseline;
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
@@ -41,9 +50,40 @@
     gap: 5px;
     grid-auto-rows: 86px;
     grid-auto-flow: dense;
-    height: 100vh;
     grid-auto-columns: auto;
     justify-content: center;
+}
+
+.skill-tracker {
+    width: 220px;
+    text-align: initial;
+    display: inline-block;
+    box-sizing: content-box;
+    color: white;
+    background-color: rgba(0,0,0,0.4);
+    border-radius: 5px;
+    margin: 2px;
+}
+
+.skill-header {
+    position: relative;
+    padding: 5px 5px 5px 10px;
+    background: rgba(10, 10, 10, 0.3);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.skill-xp {
+    position: relative;
+    margin: 5px 10px 5px 10px;
+    width: 211px;
+}
+
+.skill-level {
+    position: absolute;
+    margin-right: 5px;
+    bottom: 0px;
+    right: 5px;
 }
 
 .monster {

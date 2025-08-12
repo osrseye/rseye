@@ -129,6 +129,10 @@ function connect() {
 
         skillData(payload); // reload skill ui
 
+        $.get("/xp-tracker", function(data) {
+            $("#global-xp-tracker").html(data);
+        });
+
         var updateString = "";
         for(const [key, value] of Object.entries(player.data)) {
             updateString += "<img class='xp-drop-icon' src='/data/icons/skill/"+key+".png'/><span>"+value+"</span><br>";
@@ -163,6 +167,9 @@ function connect() {
 
     function skillData(payload) {
         const player = JSON.parse(payload);
+        $.get("/player/"+player.username.natural+"/combat", function(data) {
+            $("#"+player.username.encoded).find(".combat-level").html(data);
+        });
         $.get("/player/"+player.username.natural+"/skills", function(data) {
             updatePlayerContainer(".skills-container", player, data);
         });

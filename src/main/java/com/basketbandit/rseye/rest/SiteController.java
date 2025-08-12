@@ -17,6 +17,7 @@ public class SiteController {
     public ModelAndView index() {
         ModelAndView mv = new ModelAndView("index");
         mv.addObject("lootTracker", DataManager.globalLootTracker);
+        mv.addObject("xpTracker", DataManager.experienceTracker);
         return mv;
     }
 
@@ -27,6 +28,13 @@ public class SiteController {
         return mv;
     }
 
+    @GetMapping("/xp-tracker")
+    public ModelAndView getExperienceTracker() {
+        ModelAndView mv = new ModelAndView("./global/xp-tracker");
+        mv.addObject("xpTracker", DataManager.experienceTracker);
+        return mv;
+    }
+
     @GetMapping("/player/{username}")
     public ModelAndView getPlayer(@PathVariable("username") String username) {
         Player player = DataManager.players.getOrDefault(username, new Player());
@@ -34,6 +42,7 @@ public class SiteController {
         mv.addObject("loginState", player.loginState());
         mv.addObject("username", player.username());
         mv.addObject("position", player.position());
+        mv.addObject("combatLevel", player.skills().combatLevel());
         mv.addObject("skills", player.skills());
         mv.addObject("quests", player.quests());
         mv.addObject("equipment", player.equipment());
@@ -42,6 +51,14 @@ public class SiteController {
         mv.addObject("overhead", player.overhead());
         mv.addObject("skull", player.skull());
         mv.addObject("lootTracker", player.lootTracker());
+        return mv;
+    }
+
+    @GetMapping("/player/{username}/combat")
+    public ModelAndView getPlayerCombat(@PathVariable("username") String username) {
+        Player player = DataManager.players.getOrDefault(username, new Player());
+        ModelAndView mv = new ModelAndView("./player/combat");
+        mv.addObject("combatLevel", player.skills().combatLevel());
         return mv;
     }
 

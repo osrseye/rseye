@@ -10,7 +10,6 @@ import java.util.Objects;
 public class Item {
     private final String id;
     private final String name;
-    private final String nameEncoded;
     private final String icon;
     private final boolean stackable;
     private final int stacked;
@@ -26,7 +25,6 @@ public class Item {
     public Item(String id, String name, String icon, boolean stackable, int stacked, int highAlchValue, boolean isPlaceholder) {
         this.id = id;
         this.name = name;
-        this.nameEncoded = URLEncoder.encode(name, StandardCharsets.UTF_8).replace("+", "%20");
         this.icon = icon;
         this.stackable = stackable;
         this.stacked = stacked;
@@ -42,7 +40,6 @@ public class Item {
     public Item(Item item) {
         this.id = item.id;
         this.name = item.name;
-        this.nameEncoded = item.nameEncoded;
         this.icon = item.icon;
         this.stackable = item.stackable;
         this.stacked = item.stacked;
@@ -62,7 +59,7 @@ public class Item {
     }
 
     public String nameEncoded() {
-        return nameEncoded;
+        return URLEncoder.encode(name, StandardCharsets.UTF_8).replace("+", "%20");
     }
 
     public String icon() {
@@ -123,11 +120,11 @@ public class Item {
         if(this == o) return true;
         if(o == null || getClass() != o.getClass()) return false;
         Item item = (Item) o;
-        return highAlchValue == item.highAlchValue && quantity == item.quantity && isPlaceholder == item.isPlaceholder && Objects.equals(id, item.id) && Objects.equals(name, item.name) && Objects.equals(nameEncoded, item.nameEncoded) && Objects.equals(icon, item.icon) && Objects.equals(quantityFormatted, item.quantityFormatted);
+        return highAlchValue == item.highAlchValue && quantity == item.quantity && isPlaceholder == item.isPlaceholder && Objects.equals(id, item.id) && Objects.equals(name, item.name) && Objects.equals(icon, item.icon) && Objects.equals(quantityFormatted, item.quantityFormatted);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, nameEncoded, icon, stackable, stacked, highAlchValue, quantity, quantityFormatted, isPlaceholder);
+        return Objects.hash(id, name, icon, stackable, stacked, highAlchValue, quantity, quantityFormatted, isPlaceholder);
     }
 }

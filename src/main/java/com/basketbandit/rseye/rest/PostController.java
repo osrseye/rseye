@@ -2,10 +2,7 @@ package com.basketbandit.rseye.rest;
 
 import com.basketbandit.rseye.DataManager;
 import com.basketbandit.rseye.Utils;
-import com.basketbandit.rseye.entity.Item;
-import com.basketbandit.rseye.entity.Monster;
-import com.basketbandit.rseye.entity.Player;
-import com.basketbandit.rseye.entity.Quest;
+import com.basketbandit.rseye.entity.*;
 import com.basketbandit.rseye.entity.event.*;
 import com.basketbandit.rseye.entity.player.*;
 import com.basketbandit.rseye.socket.MapSocketHandler;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 @RestController
@@ -44,56 +42,58 @@ public class PostController {
 
     @PostMapping("/api/v1/stat_update/") // mapping remains until runeline plugin changed
     public void skillUpdate(@RequestAttribute("player") Player player, @RequestAttribute("object") JsonObject data) {
-        HashMap<String, HashMap<String, Integer>> skills = player.skills().skills();
+        ConcurrentHashMap<String, Skill> skills = player.skills().skills();
         HashMap<String, Integer> diff = new HashMap<>();
         AtomicBoolean emitSkillData = new AtomicBoolean(false);
         data.get("statChanges").getAsJsonArray().forEach(s -> {
-            JsonObject skillUpdate = s.getAsJsonObject();
-            String skill = skillUpdate.get("skill").getAsString();
-            HashMap<String, Integer> skillCurrent = skills.get(skill);
+            JsonObject updated = s.getAsJsonObject();
+            String updatedSkill = updated.get("skill").getAsString();
+            int updatedLevel = updated.get("level").getAsInt();
+            int updatedBoostedLevel = updated.get("boostedLevel").getAsInt();
+            int updatedXp = updated.get("xp").getAsInt();
+            Skill current = skills.get(updatedSkill);
+
 
             // determine if the player has leveled-up a stat
-            if(skillCurrent.get("level") != 0 && skillCurrent.get("level") < skillUpdate.get("level").getAsInt()) {
-                DataManager.growthFeed.add(new GrowthEvent(player.username(), Utils.toPascal(skillUpdate.get("skill").getAsString()), skillUpdate.get("level").getAsString()));
+            if(current.level() != 0 && current.level() < updatedLevel) {
+                DataManager.growthFeed.add(new GrowthEvent(player.username(), Utils.toPascal(updatedSkill), updatedLevel));
                 MapSocketHandler.broadcastUpdate(UpdateType.SKILL_UPDATE, player);
                 emitSkillData.set(true);
             }
 
             // if the current level is 0, it's safe to assume we're about to update it - so emit.
-            if(skillCurrent.get("level") == 0) {
+            if(current.level() == 0) {
                 emitSkillData.set(true);
             }
 
             // determine if the players current prayer or hitpoints have changed
-            if((skill.equals("HITPOINTS") || skill.equals("PRAYER")) && skillCurrent.get("boostedLevel") != skillUpdate.get("boostedLevel").getAsInt()) {
+            if((updatedSkill.equals("HITPOINTS") || updatedSkill.equals("PRAYER")) && current.boostedLevel() != updatedBoostedLevel) {
                 MapSocketHandler.broadcastUpdate(UpdateType.STATUS_UPDATE, player);
             }
 
             // calculate exp differences
-            if(skillCurrent.get("level") != 0) {
-                int diffInt = skillUpdate.get("xp").getAsInt() - skillCurrent.get("xp");
+            if(current.level() != 0) {
+                int diffInt = updatedXp - current.xp();
                 if(diffInt > 0) {
-                    diff.put(skill, skillUpdate.get("xp").getAsInt() - skillCurrent.get("xp"));
+                    diff.put(updatedSkill, diffInt);
                 }
             }
 
             // update skills with new data
-            skills.put(skillUpdate.get("skill").getAsString(), new HashMap<>(){{
-                put("level", skillUpdate.get("level").getAsInt());
-                put("xp", skillUpdate.get("xp").getAsInt());
-                put("boostedLevel", skillUpdate.get("boostedLevel").getAsInt());
-            }});
+            current.update(updatedLevel, updatedBoostedLevel, updatedXp);
         });
 
         int totalLevel = 0;
-        for(HashMap<String, Integer> skill: skills.values()) {
-            totalLevel += skill.get("level");
+        for(Skill skill: skills.values()) {
+            totalLevel += skill.level();
         }
 
         player.setSkills(new Skills(totalLevel, data.get("combatLevel").getAsInt(), skills));
 
         // submit exp update
         if(!diff.isEmpty()) {
+            // update experience trackers
+            DataManager.experienceTracker.trackExperience(player.username(), diff);
             MapSocketHandler.broadcastUpdate(UpdateType.EXP_UPDATE, new ExperienceEvent(player.username(), diff));
         }
 

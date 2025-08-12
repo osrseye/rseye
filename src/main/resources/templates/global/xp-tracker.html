@@ -1,0 +1,13 @@
+<div class="content-header">Global Experience Tracker <span id="xp-tracker-exit-ui" class="btn btn-danger">❌</span></div>
+<div class="experience-container">
+    <div th:class="skill-tracker" th:each="skill: ${xpTracker.globalTracker().skillsAsCollection()}">
+        <div class="skill-header">
+            <img th:src="${skill.icon()}" th:alt="${skill.name()}"/>
+        </div>
+        <div class="skill-xp">
+            <span class="muted block">XP Gained:</span>
+            <span class="font16" th:text="${skill.xpFormatted()}"></span>
+            <span class="muted skill-level" th:text="${'Lvl: ' + xpTracker.globalTracker().levelAtXp(skill.xp())}"></span>
+        </div>
+    </div>
+</div>

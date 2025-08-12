@@ -96,6 +96,10 @@
 
 /* player status */
 
+.progress .bg-danger {
+    background-color: rgba(170, 0, 16) !important;
+}
+
 .player-current-state {
     position: absolute;
     width: 100%;
@@ -163,7 +167,8 @@
 }
 
 #player-data .bg-danger, #player-data .bg-info {
-    --bs-bg-opacity:0.6;
+    --bs-bg-opacity: 0.6!important;
+    opacity: 0.6;
 }
 
 #player-data .hitpoints-container .progress {
