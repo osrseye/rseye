@@ -239,9 +239,7 @@ function connect() {
         });
         $.get("/loot-tracker", function(data) {
             $("#global-loot-tracker").html(data);
-
-            // rejig the track to display items in a "masonry" layout
-            const items = document.querySelectorAll('.monster');
+            const items = document.querySelectorAll('.monster'); // rejig the track to display items in a "masonry" layout
             items.forEach(item => {
               const rowHeight = 86; // matches grid-auto-rows
               const rows = Math.ceil(item.getBoundingClientRect().height / rowHeight);
@@ -257,6 +255,15 @@ function connect() {
             $(".update-feed").animate({top: 5}, 1000);
             clearFeed();
         });
+        $.get("/loot-tracker", function(data) {
+            $("#global-loot-tracker").html(data);
+            const items = document.querySelectorAll('.monster'); // rejig the track to display items in a "masonry" layout
+            items.forEach(item => {
+              const rowHeight = 86; // matches grid-auto-rows
+              const rows = Math.ceil(item.getBoundingClientRect().height / rowHeight);
+              item.style.setProperty('--rows', rows);
+            });
+        })
     }
 
     function deathUpdate(payload) {
