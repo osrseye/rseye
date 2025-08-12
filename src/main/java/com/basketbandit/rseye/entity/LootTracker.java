@@ -44,7 +44,7 @@ public class LootTracker {
 
         public Record(Activity activity) {
             this.monster = null;
-            this.activity = null;
+            this.activity = activity;
         }
 
         public Monster monster() {

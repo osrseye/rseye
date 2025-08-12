@@ -184,7 +184,7 @@ public class PostController {
             loot.add(item);
         });
 
-        String lootType = "";
+        String lootType;
         switch(lootType = data.get("lootType").getAsString()) {
             case "NPC", "Player" -> {
                 Item weapon = player.equipment().equipped().getOrDefault("WEAPON", null);
