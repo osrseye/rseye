@@ -48,7 +48,29 @@ public class DataManager {
     public static ExperienceTracker experienceTracker = new ExperienceTracker();
 
     public DataManager() {
-        // load items
+        // load items (poor, up-to-date data)
+        try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/item-db.json"), StandardCharsets.UTF_8))) {
+            Gson gson = new Gson();
+            JsonObject obj = gson.fromJson(r, JsonObject.class);
+            // poor data doesn't have link information
+            obj.keySet().forEach(id -> {
+                JsonObject object = obj.get(id).getAsJsonObject();
+                Item item = new Item(
+                        id,
+                        object.get("name").getAsString(),
+                        "/data/icons/items/" + id + ".png",
+                        false,
+                        0,
+                        0,
+                        false
+                );
+                items.put(id, item);
+            });
+        } catch(Exception e) {
+            log.error("There was an issue loading assets: {}", e.getMessage(), e);
+        }
+
+        // load items (rich, out of date data) and replace any poor items
         try(BufferedReader r = new BufferedReader(new InputStreamReader(new FileInputStream("./data/items-cache-data.json"), StandardCharsets.UTF_8))) {
             Gson gson = new Gson();
             JsonObject obj = gson.fromJson(r, JsonObject.class);
