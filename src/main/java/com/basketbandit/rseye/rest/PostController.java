@@ -34,7 +34,7 @@ public class PostController {
             p.get("plane").getAsInt(),
             p.get("x").getAsInt(),
             p.get("y").getAsInt(),
-            (p.get("x").getAsInt()-1024)*4,
+            (p.get("x").getAsInt()-960)*4,
             (256*178) - ((p.get("y").getAsInt()-1215)*4)
         );
         MapSocketHandler.broadcastUpdate(UpdateType.POSITION_UPDATE, player);
