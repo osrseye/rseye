@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public record Skills(Integer totalLevel, Integer combatLevel, ConcurrentHashMap<String, Skill> skills) {
     public Skills() {
-        this(38, 3, new ConcurrentHashMap<>(Map.ofEntries(
+        this(39, 3, new ConcurrentHashMap<>(Map.ofEntries(
             Map.entry("ATTACK", new Skill("Attack", 0, 0, 0)),
             Map.entry("HITPOINTS", new Skill("Hitpoints", 0, 0, 0)),
             Map.entry("MINING", new Skill("Mining", 0, 0, 0)),
@@ -32,7 +32,8 @@ public record Skills(Integer totalLevel, Integer combatLevel, ConcurrentHashMap<
             Map.entry("SLAYER", new Skill("Slayer", 0, 0, 0)),
             Map.entry("FARMING", new Skill("Farming", 0, 0, 0)),
             Map.entry("CONSTRUCTION", new Skill("Construction", 0, 0, 0)),
-            Map.entry("HUNTER", new Skill("Hunter", 0, 0, 0))
+            Map.entry("HUNTER", new Skill("Hunter", 0, 0, 0)),
+            Map.entry("SAILING", new Skill("Sailing", 0, 0, 0))
         )));
     }
 
