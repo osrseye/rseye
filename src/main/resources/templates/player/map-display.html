@@ -1,7 +1,7 @@
 <div th:id="${username.encoded}" th:class="${loginState + ' locator map-player-status-player'}" th:aria-username-sane="${username.encoded}" th:aria-username="${username.natural}" th:aria-x="${position.offx}" th:aria-y="${position.offy}" th:aria-plane="${position.plane}">
     <div class="player-container">
         <div class="player-current-state">
-            <span class="player-mini-username" th:text="${username.natural}"></span>
+            <div class="player-mini-username" th:text="${username.natural}"></div>
             <div class="player-mini-combat">
                 <fragment th:replace="~{./player/combat}"></fragment>
                 <img class="combat-icon" src="/data/icons/combat_icon.webp" alt="combat_icon"/>
